@@ -1,0 +1,202 @@
+[
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/CanvasTriangle.o",
+   "libs/sdw/CanvasTriangle.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/CanvasTriangle.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/CanvasLine.o",
+   "libs/sdw/CanvasLine.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/CanvasLine.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/Colour.o",
+   "libs/sdw/Colour.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/Colour.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/Utils.o",
+   "libs/sdw/Utils.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/Utils.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/RayTriangleIntersection.o",
+   "libs/sdw/RayTriangleIntersection.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/RayTriangleIntersection.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/TextureMap.o",
+   "libs/sdw/TextureMap.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/TextureMap.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/TexturePoint.o",
+   "libs/sdw/TexturePoint.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/TexturePoint.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/DrawingWindow.o",
+   "libs/sdw/DrawingWindow.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/DrawingWindow.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/ModelTriangle.o",
+   "libs/sdw/ModelTriangle.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/ModelTriangle.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-c",
+   "-o",
+   "build/CanvasPoint.o",
+   "libs/sdw/CanvasPoint.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "libs/sdw/CanvasPoint.cpp"
+ },
+ {
+  "directory": "/home/jelgar/Documents/uni/Year3/graphics/cgcw",
+  "arguments": [
+   "clang++",
+   "-c",
+   "-pipe",
+   "-Wall",
+   "-std=c++11",
+   "-ggdb",
+   "-g3",
+   "-o",
+   "build/Triangle.o",
+   "src/Triangle.cpp",
+   "-I/usr/include/SDL2",
+   "-D_REENTRANT",
+   "-I./libs/sdw/",
+   "-I./libs/glm-0.9.7.2/"
+  ],
+  "file": "src/Triangle.cpp"
+ }
+]
