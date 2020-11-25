@@ -55,9 +55,14 @@ speedy: $(SDW_OBJECT_FILES) ## Rule to build for high performance executable (fo
 	./$(EXECUTABLE)
 
 production: $(SDW_OBJECT_FILES) ## Rule to compile and link for final production release
-	$(COMPILER) $(COMPILER_OPTIONS) -o $(OBJECT_FILE) $(SOURCE_FILE) $(SDL_COMPILER_FLAGS) $(SDW_COMPILER_FLAGS) $(GLM_COMPILER_FLAGS)
+	$(COMPILER) $(COMPILER_OPTIONS) $(SOURCE_FILE) $(SDL_COMPILER_FLAGS) $(SDW_COMPILER_FLAGS) $(GLM_COMPILER_FLAGS)
 	$(COMPILER) $(LINKER_OPTIONS) -o $(EXECUTABLE) $(OBJECT_FILE) $(SDW_LINKER_FLAGS) $(SDL_LINKER_FLAGS)
 	./$(EXECUTABLE)
+
+
+unit: 
+	$(COMPILER) -o tests/test tests/tests.cpp -lgtest -lpthread -fPIE $(SDW_COMPILER_FLAGS) $(SDW_LINKER_FLAGS) $(SDL_COMPILER_FLAGS) $(SDL_LINKER_FLAGS) $(GLM_COMPILER_FLAGS)
+	./tests/test
 
 $(BUILD_DIR)/%.o: $(SDW_DIR)%.cpp ## Rule for building all of the the DisplayWindow classes
 	@mkdir -p $(BUILD_DIR)
