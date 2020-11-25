@@ -2,6 +2,7 @@
 
 // Include tests
 #include "test-line.cpp"
+#include "test-point.cpp"
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
