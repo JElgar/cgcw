@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cmath>
 #include "CanvasLine.h"
+#include "CanvasTriangle.h"
 
 #define WIDTH 512
 #define HEIGHT 512
@@ -32,6 +33,8 @@ int main(int argc, char *argv[]) {
 	SDL_Event event;
 
     CanvasLine(CanvasPoint(0,0, -1), CanvasPoint(100,100, -1)).draw(Colour(255, 0, 0), window);
+    
+    CanvasTriangle(CanvasPoint(0,0, -1), CanvasPoint(300,100, -1), CanvasPoint(100, 50, -1)).draw(Colour(255, 0, 0), window);
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !

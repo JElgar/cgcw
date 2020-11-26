@@ -7,3 +7,19 @@ TEST(UtilsTest, TestInterpolateSingleFloats) {
   ASSERT_EQ(inters.size(), 10);
   ASSERT_EQ(inters, exp_inters);
 }
+
+TEST(UtilsTest, TestInRange) {
+  float bound1  = 1.2;
+  float bound2  = 2.2;
+  float value = 1.5;
+
+  ASSERT_EQ(inRange(value, bound1, bound2), true);
+}
+
+TEST(UtilsTest, TestInRangeSameValue) {
+  float bound1  = 1.2;
+  float bound2  = 2.2;
+  float value = 1.2;
+
+  ASSERT_EQ(inRange(value, bound1, bound2), true);
+}

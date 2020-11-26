@@ -32,11 +32,11 @@ CanvasPoint CanvasLine::getPointFromRatio(float ratio) {
 CanvasPoint CanvasLine::findIntersectionWithY(float y) {
 
   if (!inRange(y, v0().y(), v1().y())) {
-    std::cout << "y our of range in findIntersectionWithY" << std::endl;
+    std::cout << "y " << y << "out of range in findIntersectionWithY" << std::endl;
     return CanvasPoint();
   }
   
-  if (gradient() == 0) {
+  if (v0().y() - v1().y() == 0) {
     std::cout << "Gradient of line is 0 in findIntersectionWithY" << std::endl;
     return CanvasPoint();
   }
