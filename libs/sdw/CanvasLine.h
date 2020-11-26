@@ -29,9 +29,6 @@ class CanvasLine {
 
 		friend std::ostream &operator<<(std::ostream &os, const CanvasLine &line);
         
-		bool isOffScreen(DrawingWindow &window);
-
 		void draw(Colour colour, DrawingWindow &window);
 		void draw(std::vector<Colour> colourList, DrawingWindow &window);
-		
 };

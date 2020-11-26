@@ -10,6 +10,7 @@ class CanvasPoint {
 		CanvasPoint();
 		CanvasPoint(float xPos, float yPos);
 		CanvasPoint(float xPos, float yPos, float zPos);
+		CanvasPoint(float xPos, float yPos, float zPos, Colour &colour);
 		CanvasPoint(glm::vec3 point);
 
         float x();
@@ -18,6 +19,8 @@ class CanvasPoint {
         Colour getColour();
 
         bool isOffScreen(DrawingWindow &window);
+
+        void draw(DrawingWindow &window);
 		
         //void addTexturePoint(TexturePoint texturePoint);
 		//TexturePoint getTexturePoint();

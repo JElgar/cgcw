@@ -37,3 +37,14 @@ TEST(LineTest, FindIntersectionWithY) {
   ASSERT_EQ(intersection.x(), 2);
   ASSERT_EQ(intersection.y(), 2);
 }
+
+
+TEST(LineTest, FindIntersectionWithYException) {
+  CanvasPoint point1 = CanvasPoint(1, 1);
+  CanvasPoint point2 = CanvasPoint(3, 3);
+  CanvasLine line = CanvasLine(point1, point2);
+
+  CanvasPoint intersection = line.findIntersectionWithY(2);
+  ASSERT_EQ(intersection.x(), 2);
+  ASSERT_EQ(intersection.y(), 2);
+}

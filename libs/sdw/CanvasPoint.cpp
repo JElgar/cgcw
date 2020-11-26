@@ -5,11 +5,16 @@ CanvasPoint::CanvasPoint() {
 }
 
 CanvasPoint::CanvasPoint(float x, float y) {
-  _point = glm::vec3(x, y, 0.0);
+  _point = glm::vec3(x, y, -1);
 }
 
 CanvasPoint::CanvasPoint(float x, float y, float z) {
   _point = glm::vec3(x, y, z);
+}
+
+CanvasPoint::CanvasPoint(float x, float y, float z, Colour &colour) {
+  _point = glm::vec3(x, y, z);
+  _colour = colour;
 }
 
 
@@ -32,6 +37,11 @@ Colour CanvasPoint::getColour() {
 
 bool CanvasPoint::isOffScreen(DrawingWindow &window) {
   return !window.pixelOnScreen(x(), y());
+}
+
+
+void CanvasPoint::draw(DrawingWindow &window) {
+  window.setPixel(x(), y(), z(), _colour);
 }
 
 

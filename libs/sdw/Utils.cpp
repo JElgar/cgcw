@@ -27,3 +27,7 @@ std::vector<float> interpolateSingleFloats(float from, float to, int numberOfVal
 	}
 	return results;
 }
+
+bool inRange(float inValue, float bound1, float bound2) {
+  return (bound1 < inValue && bound2 > inValue) || (bound1 > inValue && bound2 < inValue);
+}
