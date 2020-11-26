@@ -13,18 +13,6 @@ CanvasPoint::CanvasPoint(float x, float y, float z) {
 }
 
 
-float CanvasPoint::x() {
-  return _point.x;
-}
-
-float CanvasPoint::y() {
-  return _point.y;
-}
-
-float CanvasPoint::z() {
-  return _point.z;
-}
-
 Colour CanvasPoint::getColour() {
   return _colour;
 }

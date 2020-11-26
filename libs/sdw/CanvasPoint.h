@@ -2,19 +2,22 @@
 
 //#include "TexturePoint.h"
 #include <iostream>
-#include "DrawingWindow.h"
 #include <glm/glm.hpp>
+#include "Point.h"
+#include "Colour.h"
+#include "DrawingWindow.h"
 
-class CanvasPoint {
+class CanvasPoint : public Point {
 	public:
 		CanvasPoint();
 		CanvasPoint(float xPos, float yPos);
 		CanvasPoint(float xPos, float yPos, float zPos);
 		CanvasPoint(glm::vec3 point);
+		
+        CanvasPoint &v0();
+		CanvasPoint &v1();
+		CanvasPoint &v2();
 
-        float x();
-        float y();
-        float z();
         Colour getColour();
 
         bool isOffScreen(DrawingWindow &window);
@@ -25,7 +28,6 @@ class CanvasPoint {
         friend std::ostream &operator<<(std::ostream &os, const CanvasPoint &point);
 
 	private:
-        glm::vec3 _point;
         Colour _colour;
 		
         //TexturePoint _texturePoint;

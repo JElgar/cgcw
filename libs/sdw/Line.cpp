@@ -16,20 +16,20 @@ float Line::gradient() {
   return (v1().y() - v0().y()) / (v1().x() - v0().x());
 }
 
-CanvasPoint Line::getPointFromRatio(float ratio) {
+Point Line::getPointFromRatio(float ratio) {
   float xCoord = v0().x() + (v1().x() - v0().x())*ratio;
   float yCoord = v0().y() + (v1().y() - v0().y())*ratio;
   return CanvasPoint(xCoord, yCoord);
 }
 
 
-CanvasPoint Line::findIntersectionWithY(float y) {
+Point Line::findIntersectionWithY(float y) {
   CanvasPoint point;
 
-  if ((int)v0().x() == (int)(v1().x())) {
+  if (int(v0().x()) == int(v1().x())) {
     point = CanvasPoint(v0().x(), y);
   } else if (gradient() == 0) {
-    if(int(v0().y()) == y) {
+    if (int(v0().y()) == y) {
       point = CanvasPoint(v0().x(), y);
     } else {
       std::cout << "Gradient of line is 0 in findIntersectionWithY" << std::endl;
@@ -45,12 +45,12 @@ CanvasPoint Line::findIntersectionWithY(float y) {
   return finalPoint;
 }
 
-CanvasPoint Line::v0() {
-    return _v0;
+Point Line::v0() {
+    return _points[0];
 }
 
-CanvasPoint Line::v1() {
-    return _v1;
+Point Line::v1() {
+    return _points[1];
 }
 
 std::ostream &operator<<(std::ostream &os, Line &line) {

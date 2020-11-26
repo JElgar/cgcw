@@ -1,7 +1,8 @@
 #include "CanvasLine.h"
+#include "Utils.h"
 
 CanvasLine::CanvasLine() = default;
-CanvasLine::CanvasLine(const CanvasPoint &v0, const CanvasPoint &v1) {
+CanvasLine::CanvasLine(CanvasPoint &v0, CanvasPoint &v1) {
   _v0 = v0;
   _v1 = v1;
 }
@@ -37,43 +38,43 @@ bool CanvasLine::isOffScreen(DrawingWindow &window) {
 }
 
 void CanvasLine::draw(std::vector<Colour> colourList, DrawingWindow &window) {
-//
-//  if (isOffScreen(window)) {
-//    return;
-//  }
-//
-//  float distanceX = v1().x() - v0().x();
-//  float distanceY = v1().y() - v0().y();
-//  if (int(distanceX) == 0 && int(distanceY) == 0) {
-//    //std::cout << "WARNING WARNING DRAWING LINE OF LENGTH 0!!!!!" << std::endl;
-//  } else {
-//
-//    int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)))+1;
-//    
-//    if (numberOfSteps == 1) {
-//      window.setPixel(v0().x(), v0().y(), v0().z(), colourList[0]);
-//    }
-//
-//    std::vector<float> xVals = interpolateSingleFloats(v0().x(), v1().x(), numberOfSteps);
-//    std::vector<float> yVals = interpolateSingleFloats(v0().y(), v1().y(), numberOfSteps);
-//    std::vector<float> zVals = interpolateSingleFloats(v0().z(), v1().z(), numberOfSteps);
-//    bool isXIncreasing = xVals[0] < xVals[1];
-//    bool isYIncreasing = yVals[0] < yVals[1];
-//    for (int i = 0; i < numberOfSteps; i++) {
-//      if (isXIncreasing && (xVals[i] >= window.width)) return;
-//      if (!isXIncreasing && (xVals[i] < 0)) return;
-//      if (isYIncreasing && (yVals[i] >= window.height)) return;
-//      if (!isYIncreasing && (yVals[i] < 0)) return;
-//
-//      Colour colour;
-//      if (colourList.size() == 1) {
-//        colour = colourList[0];
-//      } else {
-//        colour = colourList[i];
-//      }
-//
-//      window.setPixel(xVals[i], yVals[i], zVals[i], colour);
-//    }
-//  }
+
+  if (isOffScreen(window)) {
+    return;
+  }
+
+  float distanceX = v1().x() - v0().x();
+  float distanceY = v1().y() - v0().y();
+  if (int(distanceX) == 0 && int(distanceY) == 0) {
+    //std::cout << "WARNING WARNING DRAWING LINE OF LENGTH 0!!!!!" << std::endl;
+  } else {
+
+    int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)))+1;
+    
+    if (numberOfSteps == 1) {
+      window.setPixel(v0().x(), v0().y(), v0().z(), colourList[0]);
+    }
+
+    std::vector<float> xVals = interpolateSingleFloats(v0().x(), v1().x(), numberOfSteps);
+    std::vector<float> yVals = interpolateSingleFloats(v0().y(), v1().y(), numberOfSteps);
+    std::vector<float> zVals = interpolateSingleFloats(v0().z(), v1().z(), numberOfSteps);
+    bool isXIncreasing = xVals[0] < xVals[1];
+    bool isYIncreasing = yVals[0] < yVals[1];
+    for (int i = 0; i < numberOfSteps; i++) {
+      if (isXIncreasing && (xVals[i] >= window.width)) return;
+      if (!isXIncreasing && (xVals[i] < 0)) return;
+      if (isYIncreasing && (yVals[i] >= window.height)) return;
+      if (!isYIncreasing && (yVals[i] < 0)) return;
+
+      Colour colour;
+      if (colourList.size() == 1) {
+        colour = colourList[0];
+      } else {
+        colour = colourList[i];
+      }
+
+      window.setPixel(xVals[i], yVals[i], zVals[i], colour);
+    }
+  }
 }
 

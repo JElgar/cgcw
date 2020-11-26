@@ -1,4 +1,6 @@
 #include <DrawingWindow.h>
+#include <CanvasLine.h>
+#include <CanvasPoint.h>
 #include <fstream>
 #include <vector>
 #include <math.h>
@@ -29,6 +31,8 @@ int main(int argc, char *argv[]) {
 
 	//Camera camera = Camera(0, 0, 10, 15);
 	SDL_Event event;
+    
+    CanvasLine(CanvasPoint(0, 100, -1), CanvasPoint(100, 100, -1)).draw(Colour(255, 0, 0), window);
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !

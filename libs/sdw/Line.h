@@ -1,18 +1,15 @@
-#include "CanvasPoint.h"
+#include "Shape.h"
 
-class Line {
-	protected:
-		CanvasPoint _v0;
-		CanvasPoint _v1;
+class Line : Shape {
 	public:
-		CanvasPoint v0();
-		CanvasPoint v1();
+		Point v0();
+		Point v1();
 
 		float length();
 		float gradient();
 
-		CanvasPoint findIntersectionWithY(float y);
-		CanvasPoint getPointFromRatio(float ratio);
+		Point findIntersectionWithY(float y);
+		Point getPointFromRatio(float ratio);
 
 		friend std::ostream &operator<<(std::ostream &os, const Line &line);
 };
