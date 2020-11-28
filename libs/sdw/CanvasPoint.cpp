@@ -77,4 +77,8 @@ std::ostream &operator<<(std::ostream &os, const CanvasPoint &point) {
 	return os;
 }
 
+bool CanvasPointYComparitor(CanvasPoint & lhs, CanvasPoint & rhs) {
+  return lhs.y() < rhs.y();
+}
+
 

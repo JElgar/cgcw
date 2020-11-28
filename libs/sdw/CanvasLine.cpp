@@ -3,6 +3,7 @@
 CanvasLine::CanvasLine() = default;
 CanvasLine::CanvasLine(const CanvasPoint &v0, const CanvasPoint &v1) {
   _vertices = {v0, v1};
+  orderVertices();
 }
 
 
@@ -61,7 +62,6 @@ void CanvasLine::draw(Colour colour, DrawingWindow &window) {
   draw(colourList, window);
 }
 
-
 void CanvasLine::mapTexture(TextureMap &texture, DrawingWindow &window) {
 
   std::vector<glm::vec2> textPoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), length());
@@ -100,6 +100,11 @@ void CanvasLine::draw(std::vector<Colour> colourList, DrawingWindow &window) {
     }
 
   }
+}
+
+
+void CanvasLine::orderVertices() {
+  std::sort(std::begin(_vertices), std::end(_vertices), CanvasPointYComparitor);
 }
 
 std::ostream &operator<<(std::ostream &os, CanvasLine &line) {

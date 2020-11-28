@@ -31,5 +31,7 @@ class CanvasLine {
 		void draw(std::vector<Colour> colourList, DrawingWindow &window);
 		void mapTexture(TextureMap &textureMap, DrawingWindow &window);
 
+        void orderVertices();
+
         friend std::ostream &operator<<(std::ostream &os, CanvasLine &line);
 };

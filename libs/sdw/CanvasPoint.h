@@ -36,3 +36,5 @@ class CanvasPoint {
         Colour _colour;
         TexturePoint _texturePoint;
 };
+
+bool CanvasPointYComparitor(CanvasPoint & lhs, CanvasPoint & rhs);
