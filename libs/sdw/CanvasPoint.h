@@ -11,8 +11,10 @@ class CanvasPoint {
 		CanvasPoint(float xPos, float yPos);
 		CanvasPoint(glm::vec3 point);
 		CanvasPoint(float xPos, float yPos, float zPos);
+		CanvasPoint(glm::vec3 point, Colour &colour);
 		CanvasPoint(float xPos, float yPos, float zPos, Colour &colour);
-		CanvasPoint(glm::vec3, TexturePoint &texturePoint);
+		CanvasPoint(glm::vec3 point, TexturePoint &texturePoint);
+		CanvasPoint(glm::vec3 point, glm::vec2 texturePoint);
 		CanvasPoint(float xPos, float yPos, float zPos, TexturePoint &texturePoint);
 
         const float x();

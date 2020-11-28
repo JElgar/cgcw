@@ -63,11 +63,15 @@ void CanvasLine::draw(Colour colour, DrawingWindow &window) {
 }
 
 void CanvasLine::mapTexture(TextureMap &texture, DrawingWindow &window) {
-
-  std::vector<glm::vec2> textPoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), length());
-  std::vector<glm::vec3> points = interpolate(v0().point(), v1().point(), (int)length());
   
-  for (int i = 0; i < (int)length(); i++) {
+  float distanceX = v1().x() - v0().x();
+  float distanceY = v1().y() - v0().y();
+  int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)))+1;
+
+  std::vector<glm::vec2> textPoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), numberOfSteps);
+  std::vector<glm::vec3> points = interpolate(v0().point(), v1().point(), numberOfSteps);
+  
+  for (int i = 0; i < numberOfSteps; i++) {
     TexturePoint texturePoint = TexturePoint(textPoints[i]);
     CanvasPoint point = CanvasPoint(points[i], texturePoint);
     point.draw(texture, window);
@@ -80,15 +84,14 @@ void CanvasLine::draw(std::vector<Colour> colourList, DrawingWindow &window) {
   float distanceX = v1().x() - v0().x();
   float distanceY = v1().y() - v0().y();
 
-  if (!(int(distanceX) == 0 && int(distanceY) == 0)) {
+  // If the line is less than 1 pixel long dont draw it
+  if (length() >= 1) {
 
+    // Get the points between v0 and v1 which to draw
     int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)))+1;
+    std::vector<glm::vec3> points = interpolate(v0().point(), v1().point(), numberOfSteps);
     
-    std::vector<float> xVals = interpolate(v0().x(), v1().x(), numberOfSteps);
-    std::vector<float> yVals = interpolate(v0().y(), v1().y(), numberOfSteps);
-    std::vector<float> zVals = interpolate(v0().z(), v1().z(), numberOfSteps);
     for (int i = 0; i < numberOfSteps; i++) {
-      
       Colour colour;
       if (colourList.size() == 1) {
         colour = colourList[0];
@@ -96,7 +99,7 @@ void CanvasLine::draw(std::vector<Colour> colourList, DrawingWindow &window) {
         colour = colourList[i];
       }
 
-      CanvasPoint(xVals[i], yVals[i], zVals[i], colour).draw(window);
+      CanvasPoint(points[i], colour).draw(window);
     }
 
   }

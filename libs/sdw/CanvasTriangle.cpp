@@ -83,15 +83,16 @@ void CanvasTriangle::mapTexture(TextureMap texture, DrawingWindow &window) {
   // Find the central point's texture point so we can interpolate the sides between
   // By central we mean with the same y value as v1 
   float centrePointRatio = (v1().y() - v0().y()) / (v2().y() - v0().y());
-  TexturePoint intersectionTexturePoint = TexturePoint(
+  CanvasPoint centerPoint = CanvasPoint(
+    // Set the point
+    v0().point() + (v2().point() - v0().point()) * centrePointRatio,
+    // Set the texture
     v0().texturePoint().point() + (v2().texturePoint().point() - v0().texturePoint().point()) * centrePointRatio
   );
-  CanvasPoint centerPoint = CanvasPoint(
-    v0().point() + (v2().point() - v0().point()) * centrePointRatio, intersectionTexturePoint
-  );
 
-  // For both top and bottom create two lines (with the same start and end y values) to texture between
-  
+  /**
+  For both top and bottom create two lines (with the same start and end y values) to texture between
+  */
   // Texture the top half
   CanvasLine topShortLine = CanvasLine(v0(), v1());
   CanvasLine topHalfLine = CanvasLine(v0(), centerPoint);

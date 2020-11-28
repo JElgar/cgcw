@@ -12,6 +12,11 @@ CanvasPoint::CanvasPoint(float x, float y, float z) {
   _point = glm::vec3(x, y, z);
 }
 
+CanvasPoint::CanvasPoint(glm::vec3 point, Colour &colour) {
+  _point = point;
+  _colour = colour;
+}
+
 CanvasPoint::CanvasPoint(float x, float y, float z, Colour &colour) {
   _point = glm::vec3(x, y, z);
   _colour = colour;
@@ -20,6 +25,11 @@ CanvasPoint::CanvasPoint(float x, float y, float z, Colour &colour) {
 CanvasPoint::CanvasPoint(glm::vec3 point, TexturePoint &texturePoint) {
   _point = point;
   _texturePoint = texturePoint;
+}
+
+CanvasPoint::CanvasPoint(glm::vec3 point, glm::vec2 texturePoint) {
+  _point = point;
+  _texturePoint = TexturePoint(texturePoint);
 }
 
 CanvasPoint::CanvasPoint(float x, float y, float z, TexturePoint &texturePoint) {
