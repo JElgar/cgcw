@@ -17,25 +17,42 @@ CanvasPoint::CanvasPoint(float x, float y, float z, Colour &colour) {
   _colour = colour;
 }
 
+CanvasPoint::CanvasPoint(glm::vec3 point, TexturePoint &texturePoint) {
+  _point = point;
+  _texturePoint = texturePoint;
+}
 
-float CanvasPoint::x() {
+CanvasPoint::CanvasPoint(float x, float y, float z, TexturePoint &texturePoint) {
+  _point = glm::vec3(x, y, z);
+  _texturePoint = texturePoint;
+}
+
+
+const float CanvasPoint::x() {
   return _point.x;
 }
 
-float CanvasPoint::y() {
+const float CanvasPoint::y() {
   return _point.y;
 }
 
-float CanvasPoint::z() {
+const float CanvasPoint::z() {
   return _point.z;
 }
 
-Colour CanvasPoint::getColour() {
+const glm::vec3 CanvasPoint::point() {
+  return _point;
+}
+
+const Colour CanvasPoint::getColour() {
   return _colour;
 }
 
+TexturePoint CanvasPoint::texturePoint() {
+	return _texturePoint;
+}
 
-bool CanvasPoint::isOffScreen(DrawingWindow &window) {
+const bool CanvasPoint::isOffScreen(DrawingWindow &window) {
   return !window.pixelOnScreen(x(), y());
 }
 
@@ -44,17 +61,20 @@ void CanvasPoint::draw(DrawingWindow &window) {
   window.setPixel(x(), y(), z(), _colour);
 }
 
+void CanvasPoint::draw(TextureMap &texture, DrawingWindow &window) {
+  Colour colour = texture.getColourFromPoint(texturePoint());
+  window.setPixel(x(), y(), z(), colour);
+}
+
+
+void CanvasPoint::setTexturePoint(TexturePoint &texturePoint) {
+	_texturePoint = texturePoint;
+}
+
 
 std::ostream &operator<<(std::ostream &os, const CanvasPoint &point) {
 	os << "(" << point._point.x << ", " << point._point.y << ", " << point._point.z << ") " <<  "  " << point._colour;
 	return os;
 }
 
-//TexturePoint CanvasPoint::getTexturePoint() {
-//	return _texturePoint;
-//}
 
-//void CanvasPoint::addTexturePoint(TexturePoint texturePoint) {
-//	_texturePoint = texturePoint;
-//}
-//

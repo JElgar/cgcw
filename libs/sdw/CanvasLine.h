@@ -9,6 +9,7 @@
 #include "Colour.h"
 #include "CanvasPoint.h"
 #include "Utils.h"
+#include "TextureMap.h"
 
 class CanvasLine {
 	private:
@@ -16,7 +17,6 @@ class CanvasLine {
 	public:
 		CanvasLine();
 		CanvasLine(const CanvasPoint &v0, const CanvasPoint &v1);
-		//CanvasLine(const TexturePoint &v0, const TexturePoint &v1);
         
         CanvasPoint v0();
 		CanvasPoint v1();
@@ -27,8 +27,9 @@ class CanvasLine {
 		CanvasPoint findIntersectionWithY(float y);
 		CanvasPoint getPointFromRatio(float ratio);
 
-		friend std::ostream &operator<<(std::ostream &os, const CanvasLine &line);
-        
 		void draw(Colour colour, DrawingWindow &window);
 		void draw(std::vector<Colour> colourList, DrawingWindow &window);
+		void mapTexture(TextureMap &textureMap, DrawingWindow &window);
+
+        friend std::ostream &operator<<(std::ostream &os, CanvasLine &line);
 };

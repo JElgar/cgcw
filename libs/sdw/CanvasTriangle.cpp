@@ -38,87 +38,74 @@ void CanvasTriangle::fillTriangle(Colour colour, DrawingWindow &window) {
   }
 }
 
-//std::vector<uint32_t> CanvasTriangle::getColourValuesFromTexture(TextureMap texture, CanvasLine line) {
-//  bool topHalf = line.v1().y < v1().y;
-//
-//  float ratioLeft;
-//  // If we are in the top half of the triangle
-//  if (topHalf) {
-//    CanvasLine leftSub = CanvasLine(v0(), line.v0());
-//    CanvasLine leftFull = CanvasLine(v0(), v1());
-//    ratioLeft = leftSub.length() / leftFull.length();
-//
-//  } else {
-//    CanvasLine leftSub = CanvasLine(v1(), line.v0());
-//    CanvasLine leftFull = CanvasLine(v1(), v2());
-//    ratioLeft = leftSub.length() / leftFull.length();
-//  }
-//
-//  CanvasLine rightSub = CanvasLine(v0(), line.v1());
-//  CanvasLine rightFull = CanvasLine(v0(), v2());
-//  float ratioRight = rightSub.length() / rightFull.length();
-//  if (ratioLeft > 1 || ratioRight > 1) {
-//    return std::vector<uint32_t>();
-//  }
-//  CanvasPoint leftPointA;
-//  CanvasPoint leftPointB;
-//  if (topHalf) {
-//    leftPointA = CanvasPoint(v0().getTexturePoint().x, v0().getTexturePoint().y);
-//    leftPointB = CanvasPoint(v1().getTexturePoint().x, v1().getTexturePoint().y);
-//  } else {
-//    leftPointA = CanvasPoint(v1().getTexturePoint().x, v1().getTexturePoint().y);
-//    leftPointB = CanvasPoint(v2().getTexturePoint().x, v2().getTexturePoint().y);
-//  }
-//  CanvasPoint rightPointA = CanvasPoint(v0().getTexturePoint().x, v0().getTexturePoint().y);
-//  CanvasPoint rightPointB = CanvasPoint(v2().getTexturePoint().x, v2().getTexturePoint().y);
-//
-//  CanvasLine leftTextLine = CanvasLine(leftPointA, leftPointB);
-//  CanvasLine rightTextLine = CanvasLine(rightPointA, rightPointB);
-//
-//  CanvasPoint leftTextPoint = leftTextLine.getPointFromRatio(ratioLeft);
-//  CanvasPoint rightTextPoint = rightTextLine.getPointFromRatio(ratioRight);
-//
-//  std::vector<float> xVals = interpolateSingleFloats(leftTextPoint.x, rightTextPoint.x, (int)line.length());
-//  std::vector<float> yVals = interpolateSingleFloats(leftTextPoint.y, rightTextPoint.y, (int)line.length());
-//  std::vector<uint32_t> colourVals;
-//  for (int i = 0; i < (int)line.length(); i++) {
-//    colourVals.push_back(texture.getColourFromPoint(xVals[i], yVals[i]));
-//  }
-//  return colourVals;
-//}
 
-//void CanvasTriangle::mapTexture(TextureMap texture, DrawingWindow &window) {
-//  orderVertices();
-//  CanvasLine line01 = CanvasLine(v0(), v1());
-//  CanvasLine line12 = CanvasLine(v1(), v2());
-//  CanvasLine line02 = CanvasLine(v0(), v2());
-//  if (line01.length() < 1 || line12.length() < 1 || line02.length() < 1) {
-//    return;
-//  }
-//
-//  for (int y = v0().y; y < v1().y; y++) {
-//
-//    CanvasPoint point1 = line01.findIntersectionWithY(y);
-//    CanvasPoint point2 = line02.findIntersectionWithY(y);
-//    CanvasLine line = CanvasLine(point1, point2);
-//    std::vector<uint32_t> colourList = getColourValuesFromTexture(texture, line);
-//    if (colourList.size() > 0) {
-//      line.draw(colourList, window);
-//    }
-//  }
-//
-//
-//  for (int y = v1().y; y < v2().y; y++) {
-//    CanvasPoint point1 = line12.findIntersectionWithY(y);
-//    CanvasPoint point2 = line02.findIntersectionWithY(y);
-//
-//    CanvasLine line = CanvasLine(point1, point2);
-//    std::vector<uint32_t> colourList = getColourValuesFromTexture(texture, line);
-//    if (colourList.size() > 0) {
-//      line.draw(colourList, window);
-//    }
-//  }
-//}
+void CanvasTriangle::mapTexture(TextureMap texture, DrawingWindow &window) {
+
+  std::cout << "Mapping texture" << std::endl;
+
+  orderVertices();
+  CanvasLine line01 = CanvasLine(v0(), v1());
+  CanvasLine line12 = CanvasLine(v1(), v2());
+  CanvasLine line02 = CanvasLine(v0(), v2());
+
+  std::cout << "y0: " << v0().y() << std::endl;
+  std::cout << "y1: " << v1().y() << std::endl;
+  std::cout << "y2: " << v2().y() << std::endl;
+
+  
+  float centrePointratio = (v1().y() - v0().y()) / (v2().y() - v0().y());
+  TexturePoint intersectionTexturePoint = TexturePoint(
+    v0().texturePoint().point() + (v2().texturePoint().point() - v0().texturePoint().point()) * centrePointratio
+  );
+  std::cout << "Centre point ratio is " << centrePointratio << std::endl;
+  std::cout << "Centre point is " << intersectionTexturePoint << std::endl;
+
+  
+  // If the line is less than 1px thick skip drawing
+  if (line01.length() < 1 || line12.length() < 1 || line02.length() < 1) {
+    return;
+  }
+
+  int numberOfSteps = v1().y() - v0().y();
+
+  std::vector<glm::vec2> line01TexturePoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), numberOfSteps);
+  std::vector<glm::vec2> line02TopTexturePoints = interpolate(v0().texturePoint().point(), intersectionTexturePoint.point(), numberOfSteps);
+  
+  std::cout << "Mapping top half" << std::endl;
+
+  for (int y = v0().y(), i = 0; y < v1().y(); y++, i++) {
+    std::cout << "y: " << y << std::endl;
+    CanvasPoint point1 = line01.findIntersectionWithY(y);
+    CanvasPoint point2 = line02.findIntersectionWithY(y);
+
+    TexturePoint point1TextPoint = TexturePoint(line01TexturePoints[i]);
+    TexturePoint point2TextPoint = TexturePoint(line02TopTexturePoints[i]);
+    
+    point1.setTexturePoint(point1TextPoint);
+    point2.setTexturePoint(point2TextPoint);
+
+    CanvasLine line = CanvasLine(point1, point2);
+    line.mapTexture(texture, window);
+  }
+
+  std::vector<glm::vec2> line12TexturePoints = interpolate(v1().texturePoint().point(), v2().texturePoint().point(), v2().y() - v1().y());
+  std::vector<glm::vec2> line02BottomTexturePoints = interpolate(intersectionTexturePoint.point(), v2().texturePoint().point(), v2().y() - v1().y());
+
+  for (int y = v1().y(), i = 0; y < v2().y(); y++, i++) {
+    CanvasPoint point1 = line12.findIntersectionWithY(y);
+    CanvasPoint point2 = line02.findIntersectionWithY(y);
+    
+    TexturePoint point1TextPoint = TexturePoint(line12TexturePoints[i]);
+    TexturePoint point2TextPoint = TexturePoint(line02BottomTexturePoints[i]);
+    point1.setTexturePoint(point1TextPoint);
+    point2.setTexturePoint(point2TextPoint);
+
+    CanvasLine line = CanvasLine(point1, point2);
+    line.mapTexture(texture, window);
+  }
+  
+  std::cout << "Got to end of triangle" << std::endl;
+}
 
 void CanvasTriangle::draw(Colour colour, DrawingWindow &window) {
   CanvasLine(v0(), v1()).draw(colour, window);

@@ -20,7 +20,7 @@ class CanvasTriangle {
         void fillTriangle(Colour colour, DrawingWindow &window);
 		void draw(Colour colour, DrawingWindow &window);
 
-		//void mapTexture(TextureMap texture, DrawingWindow &window);
+		void mapTexture(TextureMap texture, DrawingWindow &window);
 		//void draw(TextureMap texture, Colour colour, DrawingWindow &window);
 		
         //std::vector<uint32_t> getColourValuesFromTexture(TextureMap texture, CanvasLine line);

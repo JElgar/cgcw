@@ -55,20 +55,23 @@ CanvasPoint CanvasLine::v1() {
     return _vertices[1];
 }
 
-std::ostream &operator<<(std::ostream &os, CanvasLine &line) {
-	os << line.v0() << line.v1();
-	return os;
-}
-
-
-//CanvasLine::CanvasLine(const TexturePoint &v0, const TexturePoint &v1) {
-//  _v0 = CanvasPoint(v0.x, v0.y);
-//  _v1 = CanvasPoint(v1.x, v1.y);
-//}
 
 void CanvasLine::draw(Colour colour, DrawingWindow &window) {
   std::vector<Colour> colourList = {colour};
   draw(colourList, window);
+}
+
+
+void CanvasLine::mapTexture(TextureMap &texture, DrawingWindow &window) {
+
+  std::vector<glm::vec2> textPoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), length());
+  std::vector<glm::vec3> points = interpolate(v0().point(), v1().point(), (int)length());
+  
+  for (int i = 0; i < (int)length(); i++) {
+    TexturePoint texturePoint = TexturePoint(textPoints[i]);
+    CanvasPoint point = CanvasPoint(points[i], texturePoint);
+    point.draw(texture, window);
+  }
 }
 		
 
@@ -81,9 +84,9 @@ void CanvasLine::draw(std::vector<Colour> colourList, DrawingWindow &window) {
 
     int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)))+1;
     
-    std::vector<float> xVals = interpolateSingleFloats(v0().x(), v1().x(), numberOfSteps);
-    std::vector<float> yVals = interpolateSingleFloats(v0().y(), v1().y(), numberOfSteps);
-    std::vector<float> zVals = interpolateSingleFloats(v0().z(), v1().z(), numberOfSteps);
+    std::vector<float> xVals = interpolate(v0().x(), v1().x(), numberOfSteps);
+    std::vector<float> yVals = interpolate(v0().y(), v1().y(), numberOfSteps);
+    std::vector<float> zVals = interpolate(v0().z(), v1().z(), numberOfSteps);
     for (int i = 0; i < numberOfSteps; i++) {
       
       Colour colour;
@@ -99,3 +102,7 @@ void CanvasLine::draw(std::vector<Colour> colourList, DrawingWindow &window) {
   }
 }
 
+std::ostream &operator<<(std::ostream &os, CanvasLine &line) {
+	os << line.v0() << line.v1();
+	return os;
+}
