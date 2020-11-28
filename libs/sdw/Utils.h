@@ -5,7 +5,18 @@
 #include <glm/glm.hpp>
 
 std::vector<std::string> split(const std::string &line, char delimiter);
-std::vector<float> interpolate(float from, float to, int numberOfValues);
-std::vector<glm::vec3> interpolate(glm::vec3 from, glm::vec3 to, int numberOfValues);
-std::vector<glm::vec2> interpolate(glm::vec2 from, glm::vec2 to, int numberOfValues);
 bool inRange(float inValue, float bound1, float bound2);
+template <class T> std::vector<T> interpolate(T from, T to, int numberOfValues) {
+
+  std::vector<T> results;
+  if (numberOfValues == 1) {
+	  results.push_back(from);
+	  return results;
+  }
+  
+  T interval = (to-from) / (float)(numberOfValues-1);
+  for (float i = 0; i < numberOfValues; i++) {
+	  results.push_back(from + interval*i);
+  }
+  return results;
+}
