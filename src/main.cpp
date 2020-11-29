@@ -6,6 +6,8 @@
 #include "CanvasLine.h"
 #include "CanvasTriangle.h"
 #include "TextureMap.h"
+#include "ModelTriangle.h"
+#include "ObjModel.h"
 
 #define WIDTH 512
 #define HEIGHT 512
@@ -30,15 +32,16 @@ void handleEvent(SDL_Event event, DrawingWindow &window) {
 int main(int argc, char *argv[]) {
 	DrawingWindow window = DrawingWindow(WIDTH, HEIGHT, false);
 
-	//Camera camera = Camera(0, 0, 10, 15);
+	Camera camera = Camera(0, 0, 2, 15);
 	SDL_Event event;
 
-    //CanvasLine(CanvasPoint(0,0, -1), CanvasPoint(100,100, -1)).draw(Colour(255, 0, 0), window);
-    //
-    Colour colour = Colour(0, 255, 255);
-    CanvasTriangle(CanvasPoint(0,0, -1), CanvasPoint(255,400, -1), CanvasPoint(200, 200, -1)).fill(colour, window);
+    ModelTriangle triangle = ModelTriangle(ModelPoint(100, 100, -10), ModelPoint(100, 200, -10), ModelPoint(400, 300, -10));
 
-    window.savePixelBufferToFile("tests/fixtures/fill_triangle-512x512.txt");
+    Colour colour = Colour(255, 0, 0);
+    triangle.draw(colour, window, camera, 10);
+
+    ObjModel model = ObjModel("assets/", "cornell-box.obj", 0.17);
+    model.draw(window, camera, 40);
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !

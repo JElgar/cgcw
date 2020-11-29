@@ -19,6 +19,7 @@ CanvasPoint &CanvasTriangle::v2() {
 }
 
 void CanvasTriangle::fill(Colour &colour, DrawingWindow &window) {
+  std::cout << this->v0() << this->v1() << std::endl;
   CanvasLine line01 = CanvasLine(v0(), v1());
   CanvasLine line12 = CanvasLine(v1(), v2());
   CanvasLine line02 = CanvasLine(v0(), v2());
@@ -77,10 +78,6 @@ void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, Textur
 
 
 void CanvasTriangle::mapTexture(TextureMap &texture, DrawingWindow &window) {
-
-  CanvasLine line01 = CanvasLine(v0(), v1());
-  CanvasLine line12 = CanvasLine(v1(), v2());
-  CanvasLine line02 = CanvasLine(v0(), v2());
 
   // Find the central point's texture point so we can interpolate the sides between
   // By central we mean with the same y value as v1 
