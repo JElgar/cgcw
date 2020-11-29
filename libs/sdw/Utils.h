@@ -6,6 +6,10 @@
 
 std::vector<std::string> split(const std::string &line, char delimiter);
 bool inRange(float inValue, float bound1, float bound2);
+
+void saveVectorToFile(std::vector<uint32_t> vector, std::string filename);
+std::vector<uint32_t> readVectorFromFile(std::string filename);
+
 template <class T> std::vector<T> interpolate(T from, T to, int numberOfValues) {
 
   std::vector<T> results;

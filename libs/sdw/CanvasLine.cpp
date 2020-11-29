@@ -70,7 +70,8 @@ void CanvasLine::mapTexture(TextureMap &texture, DrawingWindow &window) {
 
   std::vector<glm::vec2> textPoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), numberOfSteps);
   std::vector<glm::vec3> points = interpolate(v0().point(), v1().point(), numberOfSteps);
-  
+ 
+  // Draw points with the given texture
   for (int i = 0; i < numberOfSteps; i++) {
     TexturePoint texturePoint = TexturePoint(textPoints[i]);
     CanvasPoint point = CanvasPoint(points[i], texturePoint);

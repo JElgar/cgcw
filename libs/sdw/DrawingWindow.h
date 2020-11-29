@@ -7,6 +7,7 @@
 #include <limits>
 #include "SDL.h"
 #include "Colour.h"
+#include "Utils.h"
 
 class DrawingWindow {
 
@@ -26,8 +27,6 @@ public:
 	DrawingWindow();
 	DrawingWindow(int w, int h, bool fullscreen);
 	void renderFrame();
-	void savePPM(const std::string &filename) const;
-	void saveBMP(const std::string &filename) const;
 	bool pollForInputEvents(SDL_Event &event);
 	void setPixelColour(size_t x, size_t y, Colour &colour);
 	Colour getPixelColour(size_t x, size_t y);
@@ -36,6 +35,11 @@ public:
 	void setPixel(size_t x, size_t y, float z, Colour &colour);
 	void clearPixels();
     bool pixelOnScreen(size_t x, size_t y);
+    std::vector<uint32_t> getPixelBuffer();
+	
+    void savePPM(const std::string &filename) const;
+	void saveBMP(const std::string &filename) const;
+    void savePixelBufferToFile(std::string filename);
 };
 
 void printMessageAndQuit(const std::string &message, const char *error);

@@ -18,11 +18,12 @@ CanvasPoint &CanvasTriangle::v2() {
     return _vertices[2];
 }
 
-void CanvasTriangle::fillTriangle(Colour colour, DrawingWindow &window) {
+void CanvasTriangle::fillTriangle(Colour &colour, DrawingWindow &window) {
   CanvasLine line01 = CanvasLine(v0(), v1());
   CanvasLine line12 = CanvasLine(v1(), v2());
   CanvasLine line02 = CanvasLine(v0(), v2());
 
+  // Fill top half of traingle
   for (float y = v0().y(); y < v1().y(); y++) {
     CanvasPoint point1 = line01.findIntersectionWithY(y);
     CanvasPoint point2 = line02.findIntersectionWithY(y);
@@ -30,6 +31,7 @@ void CanvasTriangle::fillTriangle(Colour colour, DrawingWindow &window) {
     line.draw(colour, window);
   }
 
+  // Fill bottom half of traingle
   for (float y = v1().y(); y < v2().y(); y++) {
     CanvasPoint point1 = line12.findIntersectionWithY(y);
     CanvasPoint point2 = line02.findIntersectionWithY(y);
@@ -74,7 +76,7 @@ void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, Textur
 } 
 
 
-void CanvasTriangle::mapTexture(TextureMap texture, DrawingWindow &window) {
+void CanvasTriangle::mapTexture(TextureMap &texture, DrawingWindow &window) {
 
   CanvasLine line01 = CanvasLine(v0(), v1());
   CanvasLine line12 = CanvasLine(v1(), v2());
@@ -104,16 +106,11 @@ void CanvasTriangle::mapTexture(TextureMap texture, DrawingWindow &window) {
   mapTextureBetween2Lines(bottomShortLine, bottomHalfLine, texture, window);
 }
 
-void CanvasTriangle::draw(Colour colour, DrawingWindow &window) {
+void CanvasTriangle::draw(Colour &colour, DrawingWindow &window) {
   CanvasLine(v0(), v1()).draw(colour, window);
   CanvasLine(v1(), v2()).draw(colour, window);
   CanvasLine(v2(), v0()).draw(colour, window);
-  fillTriangle(colour, window);
 }
-
-//void CanvasTriangle::draw(TextureMap texture, Colour colour, DrawingWindow &window) {
-//  mapTexture(texture, window);
-//}
 
 void CanvasTriangle::orderVertices() {
   std::sort(std::begin(_vertices), std::end(_vertices), CanvasPointYComparitor);

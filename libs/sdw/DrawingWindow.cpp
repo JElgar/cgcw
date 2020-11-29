@@ -124,3 +124,12 @@ void printMessageAndQuit(const std::string &message, const char *error) {
 bool DrawingWindow::pixelOnScreen(size_t x, size_t y) {
   return !((x >= width) || (x < 0) || (y >= height) || (y < 0));
 }
+    
+
+void DrawingWindow::savePixelBufferToFile(std::string filename) {
+  saveVectorToFile(pixelBuffer, filename);
+}
+
+std::vector<uint32_t> DrawingWindow::getPixelBuffer() {
+  return pixelBuffer;
+}

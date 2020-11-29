@@ -4,6 +4,7 @@
 #include "test-line.cpp"
 #include "test-point.cpp"
 #include "test-utils.cpp"
+#include "test-triangle.cpp"
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
