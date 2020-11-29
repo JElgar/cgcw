@@ -35,32 +35,10 @@ int main(int argc, char *argv[]) {
 
     //CanvasLine(CanvasPoint(0,0, -1), CanvasPoint(100,100, -1)).draw(Colour(255, 0, 0), window);
     //
-    //Colour colour = Colour(255, 0, 0);
-    //CanvasTriangle(CanvasPoint(0,0, -1), CanvasPoint(300,100, -1), CanvasPoint(100, 50, -1)).draw(colour, window);
-    
-    TextureMap texture = TextureMap("assets/texture.ppm");
+    Colour colour = Colour(0, 255, 255);
+    CanvasTriangle(CanvasPoint(0,0, -1), CanvasPoint(255,400, -1), CanvasPoint(200, 200, -1)).fill(colour, window);
 
-    TexturePoint texture1 = TexturePoint(170, 50);
-    TexturePoint texture2 = TexturePoint(300, 300);
-    TexturePoint texture3 = TexturePoint(50, 200);
-
-    CanvasTriangle(CanvasPoint(160,10, -1, texture1), CanvasPoint(300,230, -1, texture2), CanvasPoint(10, 150, -1, texture3)).mapTexture(texture, window);
-
-    window.savePixelBufferToFile("test-pixelBuffer.txt");
-    std::vector<uint32_t> exampleBuffer = readVectorFromFile("test-pixelBuffer.txt");
-    for(uint32_t item : exampleBuffer) {
-      if (item != 0) {
-        std::cout << item << std::endl;
-      }
-    }
-
-    // glm::vec2 from = glm::vec2(195, 5);
-    // glm::vec2 to = glm::vec2(65, 330);
-    // std::vector<glm::vec2> interpolatedStuff = interpolate(from, to, 140);
-    // for (int i = 0; i < interpolatedStuff.size(); i++) {
-    //   std::cout << "Value " << i << ": " << interpolatedStuff[i].x << ", " <<  interpolatedStuff[i].y << std::endl;
-    // }
-    //
+    window.savePixelBufferToFile("tests/fixtures/fill_triangle-512x512.txt");
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !

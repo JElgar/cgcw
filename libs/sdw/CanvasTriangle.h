@@ -17,7 +17,7 @@ class CanvasTriangle {
 		CanvasPoint &v1();
 		CanvasPoint &v2();
 		
-        void fillTriangle(Colour &colour, DrawingWindow &window);
+        void fill(Colour &colour, DrawingWindow &window);
 		void draw(Colour &colour, DrawingWindow &window);
 		void mapTexture(TextureMap &texture, DrawingWindow &window);
 		

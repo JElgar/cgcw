@@ -18,7 +18,7 @@ CanvasPoint &CanvasTriangle::v2() {
     return _vertices[2];
 }
 
-void CanvasTriangle::fillTriangle(Colour &colour, DrawingWindow &window) {
+void CanvasTriangle::fill(Colour &colour, DrawingWindow &window) {
   CanvasLine line01 = CanvasLine(v0(), v1());
   CanvasLine line12 = CanvasLine(v1(), v2());
   CanvasLine line02 = CanvasLine(v0(), v2());
