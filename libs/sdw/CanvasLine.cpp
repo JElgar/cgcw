@@ -33,7 +33,7 @@ CanvasPoint CanvasLine::getPointFromRatio(float ratio) {
 CanvasPoint CanvasLine::findIntersectionWithY(float y) {
 
   if (!inRange(y, v0().y(), v1().y())) {
-    std::cout << "y " << y << "out of range in findIntersectionWithY" << std::endl;
+    std::cout << v0().y() << ", " << v1().y() << "y " << y << "out of range in findIntersectionWithY" << std::endl;
     return CanvasPoint();
   }
   
@@ -63,14 +63,14 @@ void CanvasLine::draw(Colour colour, DrawingWindow &window) {
 }
 
 void CanvasLine::mapTexture(TextureMap &texture, DrawingWindow &window) {
-  
+
   float distanceX = v1().x() - v0().x();
   float distanceY = v1().y() - v0().y();
-  int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)))+1;
+  int numberOfSteps = std::ceil(std::max(std::abs(distanceX), std::abs(distanceY)));
 
   std::vector<glm::vec2> textPoints = interpolate(v0().texturePoint().point(), v1().texturePoint().point(), numberOfSteps);
   std::vector<glm::vec3> points = interpolate(v0().point(), v1().point(), numberOfSteps);
- 
+  
   // Draw points with the given texture
   for (int i = 0; i < numberOfSteps; i++) {
     TexturePoint texturePoint = TexturePoint(textPoints[i]);

@@ -19,7 +19,6 @@ CanvasPoint &CanvasTriangle::v2() {
 }
 
 void CanvasTriangle::fill(Colour &colour, DrawingWindow &window) {
-  std::cout << this->v0() << this->v1() << std::endl;
   CanvasLine line01 = CanvasLine(v0(), v1());
   CanvasLine line12 = CanvasLine(v1(), v2());
   CanvasLine line02 = CanvasLine(v0(), v2());
@@ -44,8 +43,9 @@ void CanvasTriangle::fill(Colour &colour, DrawingWindow &window) {
 
 void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, TextureMap &texture, DrawingWindow &window) {
 
-  if (lineLeft.v0().y() != lineRight.v1().y() || lineLeft.v0().y() != lineRight.v1().y()) {
-    std::runtime_error("Cannot texture between 2 line with different start or end y values");
+  if (lineLeft.v0().y() != lineRight.v0().y() || lineLeft.v1().y() != lineRight.v1().y()) {
+    std::cerr << "Cannot texture between 2 line with different start or end y values";
+    return;
   }
 
   // Find the number of lines that need to be textured
@@ -56,7 +56,7 @@ void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, Textur
   std::vector<glm::vec2> lineRightTexturePoints = interpolate(lineRight.v0().texturePoint().point(), lineRight.v1().texturePoint().point(), numberOfSteps);
 
   // Go through each line that is to be textured
-  for (int y = lineLeft.v0().y(), i = 0; y < lineLeft.v1().y(); y++, i++) {
+  for (float y = lineLeft.v0().y(), i = 0; y < lineLeft.v1().y() && i < numberOfSteps; y++, i++) {
 
     // Get the line by finding the points on each line that intersect the current y value
     CanvasPoint point1 = lineLeft.findIntersectionWithY(y);
@@ -95,7 +95,7 @@ void CanvasTriangle::mapTexture(TextureMap &texture, DrawingWindow &window) {
   // Texture the top half
   CanvasLine topShortLine = CanvasLine(v0(), v1());
   CanvasLine topHalfLine = CanvasLine(v0(), centerPoint);
-  mapTextureBetween2Lines(topShortLine, topHalfLine, texture, window);
+  mapTextureBetween2Lines(topShortLine, topHalfLine, texture, window); 
   
   // Texture the bottom half
   CanvasLine bottomShortLine = CanvasLine(v1(), v2());

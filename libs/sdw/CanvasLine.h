@@ -27,7 +27,7 @@ class CanvasLine {
 		CanvasPoint findIntersectionWithY(float y);
 		CanvasPoint getPointFromRatio(float ratio);
 
-		void draw(Colour colour, DrawingWindow &window);
+        void draw(Colour colour, DrawingWindow &window);
 		void draw(std::vector<Colour> colourList, DrawingWindow &window);
 		void mapTexture(TextureMap &textureMap, DrawingWindow &window);
 

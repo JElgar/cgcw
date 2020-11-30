@@ -12,18 +12,22 @@
 #define WIDTH 512
 #define HEIGHT 512
 
-//void update(DrawingWindow &window, Camera &camera, ObjModel &model) {
-//	window.clearPixels();
-//	camera.rotate(0.06, 0.06, 0.06);
-//  model.draw(window, camera, 20);
-//}
+void update(DrawingWindow &window, Camera &camera, ObjModel &model) {
+  window.clearPixels();
+  //camera.rotate(0.06, 0.06, 0.06);
+  model.draw(window, camera, 20);
+}
 
-void handleEvent(SDL_Event event, DrawingWindow &window) {
+void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_LEFT) {
+          camera.rotate(0, -0.06, 0.00);
 		} else if (event.key.keysym.sym == SDLK_RIGHT) {
+          camera.rotate(0, 0.06, 0.00);
 		} else if (event.key.keysym.sym == SDLK_UP) {
+          camera.translate(0, 0, -0.6);
 		} else if (event.key.keysym.sym == SDLK_DOWN) {
+          camera.translate(0, 0, 0.6);
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		}
 	}
@@ -40,13 +44,13 @@ int main(int argc, char *argv[]) {
     Colour colour = Colour(255, 0, 0);
     triangle.draw(colour, window, camera, 10);
 
-    ObjModel model = ObjModel("assets/", "cornell-box.obj", 0.17);
+    ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     model.draw(window, camera, 40);
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !
-		if (window.pollForInputEvents(event)) handleEvent(event, window);
-		//update(window, camera, model);
+		if (window.pollForInputEvents(event)) handleEvent(event, window, camera);
+		update(window, camera, model);
 		// Need to render the frame at the end, or nothing actually gets shown on the screen !
 		window.renderFrame();
 	}
