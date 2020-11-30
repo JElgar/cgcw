@@ -5,6 +5,7 @@
 #include "test-point.cpp"
 #include "test-utils.cpp"
 #include "test-triangle.cpp"
+#include "test-model.cpp"
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

@@ -39,11 +39,6 @@ int main(int argc, char *argv[]) {
 	Camera camera = Camera(0, 0, 2, 15);
 	SDL_Event event;
 
-    ModelTriangle triangle = ModelTriangle(ModelPoint(100, 100, -10), ModelPoint(100, 200, -10), ModelPoint(400, 300, -10));
-
-    Colour colour = Colour(255, 0, 0);
-    triangle.draw(colour, window, camera, 10);
-
     ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     model.draw(window, camera, 40);
 
