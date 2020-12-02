@@ -1,5 +1,4 @@
 #include "ModelTriangle.h"
-#include <utility>
 
 ModelTriangle::ModelTriangle() = default;
 ModelTriangle::ModelTriangle(ModelPoint v0, ModelPoint v1, ModelPoint v2) {
@@ -18,7 +17,6 @@ void ModelTriangle::draw(TextureMap &texture, DrawingWindow &window, Camera &cam
   project(window, camera, scalar).mapTexture(texture, window);
 }
 
-
 ModelPoint ModelTriangle::v0() {
 	return _vertices[0];
 }
@@ -30,6 +28,22 @@ ModelPoint ModelTriangle::v1() {
 ModelPoint ModelTriangle::v2() {
 	return _vertices[2];
 }
+
+
+RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray, Camera &camera) {
+  glm::vec3 e0 = v1().getVec3() - v0().getVec3();
+  glm::vec3 e1 = v2().getVec3() - v0().getVec3();
+  glm::vec3 SPVector = camera.getVec3()  - v0().getVec3();
+  glm::mat3 DEMatrix(-ray.directionVector(), e0, e1);
+  glm::vec3 possibleSolution = glm::inverse(DEMatrix) * SPVector;
+  if (possibleSolution[1] > 1 || possibleSolution[1] < 0 || possibleSolution[2] > 1 || possibleSolution[2] < 0 || possibleSolution[1] + possibleSolution[2] > 1) {
+    return RayTriangleIntersection();
+  }
+  glm::vec3 r = v0().getVec3() + (possibleSolution[1] * e0) + (possibleSolution[2] * e1);
+  return RayTriangleIntersection(r, possibleSolution[0], *this);
+}
+
+
 
 std::ostream &operator<<(std::ostream &os, ModelTriangle triangle) {
 	os  << triangle.v0().x() << triangle.v0().y() << triangle.v0().z()

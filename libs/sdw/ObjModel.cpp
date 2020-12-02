@@ -121,19 +121,47 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
   return materials;
 }
 
-//void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scalar) {
-//  for (int x = 0; x < window.width; x++) {
-//    for (int y = 0; y < window.height; y++) {
-//      CanvasPoint point = CanvasPoint(x, y);
-//      Ray(camera, point).findModelIntersection(this).draw(window, camera, scalar);
-//    }
-//  }
-//}
+void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scalar) {
+  #pragma omp parallel for
+  for (int x = 0; x < window.width; x++) {
+    for (int y = 0; y < window.height; y++) {
+      CanvasPoint point = CanvasPoint(x, y);
+      Ray ray = Ray(point, camera, window);
+      Colour colour = Colour(0, 0, 255);
+      RayTriangleIntersection intersection = getClosestIntersection(ray, camera);
+      point.setColour(colour);
+      point.setZ(-intersection.getDistanceFromCamera());
+      if (!intersection.isNull()) {
+        std::cout << "Intersection at " << x << ", " << y << std::endl;
+        CanvasPoint point2 = CanvasPoint(
+            point.x()*scalar + (float)(window.width/2),
+            point.y()*scalar + (float)(window.height/2),
+            point.z() 
+        );
+        point2.setColour(colour);
+        point.draw(window);
+      }
+    }
+  }
+  std::cout << "Finished ray tracing" << std::endl;
+}
 
 void ObjModel::draw(DrawingWindow &window, Camera &camera, float scalar) {
   for (ObjObject object: _objects) {
     object.draw(window, camera, scalar);
   }
+}
+
+RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray, Camera &camera) {
+  std::vector<RayTriangleIntersection> intersections;
+  for (ObjObject object: getObjects()) {
+    RayTriangleIntersection possibleIntersection = object.getClosestIntersection(ray, camera);
+    if (!possibleIntersection.isNull()) {
+      std::cout << object.getName() << " has been intersected" << std::endl;
+      intersections.push_back(possibleIntersection);
+    }
+  }
+  return ::getClosestIntersection(intersections);
 }
 
 std::vector<ObjObject> ObjModel::getObjects() {

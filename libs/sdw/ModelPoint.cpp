@@ -14,23 +14,27 @@ TexturePoint ModelPoint::texturePoint() {
   return _texturePoint;
 }
 
-const float ModelPoint::x() {
+float ModelPoint::x() {
   return _point.x;
 }
 
-const float ModelPoint::y() {
+float ModelPoint::y() {
   return _point.y;
 }
 
-const float ModelPoint::z() {
+float ModelPoint::z() {
   return _point.z;
 }
 
-const float ModelPoint::w() {
+float ModelPoint::w() {
   return _point.w;
 }
 
-const glm::vec4 ModelPoint::getVec4() {
+glm::vec3 ModelPoint::getVec3() {
+  return glm::vec3(x(), y(), z()); 
+}
+
+glm::vec4 ModelPoint::getVec4() {
   return _point; 
 }
 
@@ -40,8 +44,7 @@ bool ModelPoint::hasTexturePoint() {
 
 CanvasPoint ModelPoint::project(DrawingWindow &window, Camera &camera, float scalar) {
 
-  glm::vec4 modelPoint = glm::vec4(x(), y(), z(), 1);
-  glm::vec4 adjustedPoint = modelPoint*camera.getWorldToCameraMatrix();
+  glm::vec4 adjustedPoint = _point*camera.getWorldToCameraMatrix();
   
   float canvasX = camera.getFocalLength() * ((camera.x()-adjustedPoint.x)/(adjustedPoint.z-camera.z()));
   float canvasY = camera.getFocalLength() * ((adjustedPoint.y-camera.y())/(adjustedPoint.z-camera.z()));

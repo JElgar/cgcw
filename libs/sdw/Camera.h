@@ -1,3 +1,4 @@
+#pragma once
 #include <math.h>
 #include <glm/glm.hpp>
 
@@ -9,10 +10,12 @@ class Camera {
     float _focalLength;
 
   public:
-    glm::mat4 _projectionMatrix;
+    //glm::mat4 _projectionMatrix;
     float x();
     float y();
     float z();
+    glm::vec3 getVec3();
+
     Camera(float x, float y, float z, float focalLength);
     glm::mat4 getCameraToWorldMatrix();
     glm::mat4 getWorldToCameraMatrix();

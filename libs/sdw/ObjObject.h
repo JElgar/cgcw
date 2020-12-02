@@ -2,11 +2,14 @@
 #include <sstream>
 #include <string>
 #include <fstream>
-#include "Utils.h"
 #include <iostream>
+
+#include "Utils.h"
 #include "ModelPoint.h"
 #include "ModelTriangle.h"
 #include "ObjMaterial.h"
+
+class RayTriangleIntersection;
 
 class ObjObject {
   public:
@@ -18,9 +21,12 @@ class ObjObject {
     void draw(DrawingWindow &window, Camera &camera, float scalar);
     std::vector<ModelTriangle> getFaces();
     void setMaterial(ObjMaterial material);
+    RayTriangleIntersection getClosestIntersection(Ray &ray, Camera &camera);
 
   private:
     std::string _name;
     ObjMaterial _material;
     std::vector<ModelTriangle> _faces;
 };
+
+#include "RayTriangleIntersection.h"

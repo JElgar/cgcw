@@ -24,6 +24,9 @@ class CanvasPoint {
         TexturePoint texturePoint();
         const Colour getColour();
 
+        void setColour(Colour &colour);
+        void setZ(float z);
+
         const bool isOffScreen(DrawingWindow &window);
 
         void draw(DrawingWindow &window);

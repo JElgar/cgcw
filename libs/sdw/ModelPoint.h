@@ -10,11 +10,12 @@ class ModelPoint {
     ModelPoint();
     ModelPoint(float x, float y, float z);
 
-    const float x();
-    const float y();
-    const float z();
-    const float w();
-    const glm::vec4 getVec4();
+    float x();
+    float y();
+    float z();
+    float w();
+    glm::vec3 getVec3();
+    glm::vec4 getVec4();
 
     TexturePoint texturePoint();
     void setTexturePoint(TexturePoint texturePoint);

@@ -3,13 +3,14 @@
 
 Camera::Camera(float x, float y, float z, float focalLength) {
   _focalLength = focalLength;
-  _cameraToWorldMatrix = glm::mat4(
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 1, 0,
-    x, y, z, 1
+  setCameraToWorldMatrix(
+    glm::mat4(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      x, y, z, 1
+    )
   );
-  _worldToCameraMatrix = glm::inverse(_cameraToWorldMatrix);
  
   //float fov = 90;
   ////float aspect_ratio = 1;
@@ -38,9 +39,9 @@ Camera::Camera(float x, float y, float z, float focalLength) {
   //  _projectionMatrix[3][3] = 0;
 }
 
-void setProjectionMatrix(float angleOfView, float near, float far) {
-   
-}
+//void setProjectionMatrix(float angleOfView, float near, float far) {
+//   
+//}
 
 void Camera::setCameraToWorldMatrix(glm::mat4 matrix) {
   _cameraToWorldMatrix = matrix;
@@ -57,6 +58,10 @@ float Camera::y() {
 
 float Camera::z() {
   return _cameraToWorldMatrix[3][2];
+}
+
+glm::vec3 Camera::getVec3() {
+  return glm::vec3(x(), y(), z());
 }
 
 glm::mat4 Camera::getCameraToWorldMatrix() {

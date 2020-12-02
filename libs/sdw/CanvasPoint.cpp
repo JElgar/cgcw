@@ -61,6 +61,14 @@ const Colour CanvasPoint::getColour() {
 TexturePoint CanvasPoint::texturePoint() {
 	return _texturePoint;
 }
+        
+void CanvasPoint::setColour(Colour &colour) {
+  _colour = colour;
+}
+
+void CanvasPoint::setZ(float z) {
+  _point.z = z;
+}
 
 const bool CanvasPoint::isOffScreen(DrawingWindow &window) {
   return !window.pixelOnScreen(x(), y());

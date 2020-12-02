@@ -1,13 +1,18 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include <utility>
+#include <glm/glm.hpp>
+
 #include "Colour.h"
 #include "TexturePoint.h"
 #include "ModelPoint.h"
 #include "CanvasTriangle.h"
 #include "TextureMap.h"
+#include "Ray.h"
+
+class RayTriangleIntersection;
 
 class ModelTriangle {
 	public:
@@ -21,8 +26,13 @@ class ModelTriangle {
 		CanvasTriangle project(DrawingWindow &window, Camera &camera, float scalar);
 		void draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar);
 		void draw(TextureMap &texture, DrawingWindow &window, Camera &camera, float scalar);
+
+        RayTriangleIntersection getClosestIntersection(Ray &ray, Camera &camera);
+
 		friend std::ostream &operator<<(std::ostream &os, ModelTriangle triangle);
 
 	private:
         std::vector<ModelPoint> _vertices;
 };
+
+#include "RayTriangleIntersection.h"

@@ -17,8 +17,9 @@ class ObjModel {
     ObjModel(std::string fileLocation, std::string filename, float vScalar);
     std::vector<ObjObject> getObjects();
     
+    RayTriangleIntersection getClosestIntersection(Ray &ray, Camera &camera);
     void draw(DrawingWindow &window, Camera &camera, float scalar);
-    //void drawRayTracing(DrawingWindow &window, Camera &camera, float scalar);
+    void drawRayTracing(DrawingWindow &window, Camera &camera, float scalar);
 
   private:
     std::vector<ObjObject> _objects;

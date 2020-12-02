@@ -13,9 +13,9 @@
 #define HEIGHT 512
 
 void update(DrawingWindow &window, Camera &camera, ObjModel &model) {
-  window.clearPixels();
+  //window.clearPixels();
   //camera.rotate(0.06, 0.06, 0.06);
-  model.draw(window, camera, 20);
+  //model.draw(window, camera, 1);
 }
 
 void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
@@ -36,11 +36,15 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
 int main(int argc, char *argv[]) {
 	DrawingWindow window = DrawingWindow(WIDTH, HEIGHT, false);
 
-	Camera camera = Camera(0, 0, 2, 15);
+	//Camera camera = Camera(0, 0, 80, 30);
+	Camera camera = Camera(0, 0, 2, 400);
 	SDL_Event event;
 
+    //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
-    model.draw(window, camera, 40);
+    model.drawRayTracing(window, camera, 3);
+    //model.draw(window, camera, 1);
+    
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !
