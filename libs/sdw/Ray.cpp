@@ -1,5 +1,7 @@
 #include "Ray.h"
 
+Ray::Ray() = default;
+
 Ray::Ray(glm::vec3 origin, glm::vec3 direction) {
   _origin = origin;
   _direction = direction/(float)(direction.length());
@@ -33,4 +35,10 @@ glm::vec3 Ray::direction() {
 
 glm::vec3 Ray::origin() {
   return _origin;
+}
+
+Ray Ray::reflect(RayTriangleIntersection &intersection) {
+  glm::vec3 reflectedDirection = direction() - glm::vec3(2,2,2) * intersection.getIntersectedTriangle().normal() * (glm::dot(direction(), intersection.getIntersectedTriangle().normal()));
+  
+  return Ray(intersection.getIntersectionPoint().getVec3(), reflectedDirection);
 }

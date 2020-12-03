@@ -6,9 +6,11 @@
 #include "CanvasPoint.h"
 #include "ModelPoint.h"
 
+class RayTriangleIntersection;
 
 class Ray {
   public:
+    Ray();
     Ray(glm::vec3 origin, glm::vec3 direction);
     Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window);
     Ray(ModelPoint &origin, ModelPoint &point);
@@ -18,7 +20,11 @@ class Ray {
 
     void setDirection(glm::vec3 direction);
 
+    Ray reflect(RayTriangleIntersection &intersection);
+
   private:
     glm::vec3 _origin;
     glm::vec3 _direction;
 };
+
+#include "RayTriangleIntersection.h"

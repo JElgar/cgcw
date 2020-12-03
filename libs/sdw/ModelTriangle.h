@@ -10,10 +10,10 @@
 #include "ModelPoint.h"
 #include "CanvasTriangle.h"
 #include "TextureMap.h"
-#include "Ray.h"
 #include "ObjMaterial.h"
 
 class RayTriangleIntersection;
+class Ray;
 
 class ModelTriangle {
 	public:
@@ -43,3 +43,4 @@ class ModelTriangle {
 };
 
 #include "RayTriangleIntersection.h"
+#include "Ray.h"

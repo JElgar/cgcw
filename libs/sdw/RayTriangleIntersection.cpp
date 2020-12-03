@@ -12,11 +12,16 @@ RayTriangleIntersection::RayTriangleIntersection() {
 //	_isNull = false;
 //}
 
-RayTriangleIntersection::RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle) {
+RayTriangleIntersection::RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle, Ray &ray) {
 	_intersectionPoint = point;
 	_distanceFromOrigin = distance;
 	_intersectedTriangle = triangle;
 	_isNull = false;
+    _ray = ray;
+}
+
+Ray RayTriangleIntersection::ray() {
+  return _ray;
 }
 
 bool RayTriangleIntersection::isNull() {
@@ -31,7 +36,7 @@ ModelPoint RayTriangleIntersection::getIntersectionPoint() {
 	return _intersectionPoint;
 }
  
-Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel model) {
+Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
   // TODO get colour if its a texture
   float brightness = 0.2; 
 
@@ -55,18 +60,31 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel mo
       } 
     }
   }
-  Colour pixelColour = getColour();
+  Colour pixelColour = getColour(model);
   pixelColour *= brightness;
   return pixelColour;
 }
 
-Colour RayTriangleIntersection::getColour() {
+Colour RayTriangleIntersection::getColour(ObjModel &model) {
   ObjMaterial intersectedMaterial = _intersectedTriangle.material();
-  if (intersectedMaterial.reflectivity() == 0.0) {
+
+  float reflectivity = intersectedMaterial.reflectivity();
+
+  if (reflectivity == 0.0) {
     return _intersectedTriangle.colour();
   }
-     
-  return _intersectedTriangle.colour();
+
+  std::cout << "Reflecting time!" << std::endl;
+  Ray reflectedRay = ray().reflect(*this);
+  RayTriangleIntersection reflectedIntersection = model.getClosestIntersection(reflectedRay);
+
+  Colour reflectedColour;
+  if (!reflectedIntersection.isNull()) {
+    reflectedColour = reflectedIntersection.getIntersectedTriangle().colour(); 
+  } else {
+    reflectedColour = Colour(0, 0, 0);
+  }
+  return _intersectedTriangle.colour() * (1-reflectivity) + reflectedColour * reflectivity;
 }
 
 CanvasPoint RayTriangleIntersection::getCanvasPoint(DrawingWindow &window, Camera camera, float scalar) {

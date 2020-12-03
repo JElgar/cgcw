@@ -56,7 +56,7 @@ RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
   }
   glm::vec3 r = v0().getVec3() + (possibleSolution[1] * e0) + (possibleSolution[2] * e1);
   ModelPoint intersectionPoint = ModelPoint(r);
-  return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this);
+  return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this, ray);
 }
 
 

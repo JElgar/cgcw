@@ -1,5 +1,4 @@
 #include "Colour.h"
-#include <utility>
 
 Colour::Colour() = default;
 Colour::Colour(int r, int g, int b) {
@@ -31,18 +30,35 @@ bool Colour::operator==(Colour& rhs) {
 uint32_t Colour::pack() {
   return (255 << 24) + (red << 16) + (green << 8) + blue;
 }
+
+void Colour::setRed(int value) {
+  red = std::max(value, 255);
+}
+
+void Colour::setGreen(int value) {
+  green = std::max(value, 255);
+}
+
+void Colour::setBlue(int value) {
+  blue = std::max(value, 255);
+}
     
 void Colour::operator*=(float intensity) {
-    red *= intensity;
-    if (red > 255) {
-      red = 255;
-    }
-    green *= intensity;
-    if (green > 255) {
-      green = 255;
-    }
-    blue *= intensity;
-    if (blue > 255) {
-      blue = 255;
-    }
+  setRed(red * intensity);
+  setGreen(green * intensity);
+  setBlue(blue * intensity);
+}
+        
+Colour Colour::operator*(float value) {
+  Colour c = *this;
+  c *= value;
+  return c;
+}
+
+Colour Colour::operator+(Colour colour) {
+  Colour c;
+  c.setRed(red + colour.red);
+  c.setGreen(green + colour.green);
+  c.setBlue(blue + colour.blue);
+  return c;
 }

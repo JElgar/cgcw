@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
+#include <utility>
 
 class Colour {
 	public:
@@ -13,11 +15,17 @@ class Colour {
 		int blue;
         float brightness;
 
+        void setRed(int red);
+        void setGreen(int green);
+        void setBlue(int green);
+
 		uint32_t pack();
         void setBrightness(float brightness); 
 
 
 		friend std::ostream &operator<<(std::ostream &os, const Colour &colour);
-        bool operator==(Colour& rhs);
+        bool operator==(Colour &rhs);
         void operator*=(float intensity);
+        Colour operator*(float intensity);
+        Colour operator+(Colour colour);
 };
