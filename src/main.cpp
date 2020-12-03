@@ -41,7 +41,8 @@ int main(int argc, char *argv[]) {
 	SDL_Event event;
 
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
-    ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
+    //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
+    ObjModel model = ObjModel("assets/", "cornell-box.obj", 0.17);
     model.drawRayTracing(window, camera, 1);
     //model.draw(window, camera, 1);
     
