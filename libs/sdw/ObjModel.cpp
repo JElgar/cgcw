@@ -142,7 +142,7 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
             point.z() 
         );
         Colour colour = intersection.getColour(lights, *this);
-        point2.setZ(-intersection.getDistanceFromCamera());
+        point2.setZ(-intersection.getDistanceFromOrigin());
         point2.setColour(colour);
         point2.draw(window);
       }
@@ -162,9 +162,6 @@ RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray) {
   for (ObjObject object: getObjects()) {
     RayTriangleIntersection possibleIntersection = object.getClosestIntersection(ray);
     if (!possibleIntersection.isNull()) {
-      if(object.getName() == "light") {
-        std::cout << possibleIntersection.getIntersectionPoint().x() << possibleIntersection.getIntersectionPoint().y() << possibleIntersection.getIntersectionPoint().z() << std::endl;
-      }
       intersections.push_back(possibleIntersection);
     }
   }

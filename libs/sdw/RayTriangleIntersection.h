@@ -16,7 +16,7 @@ class RayTriangleIntersection {
 		RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle);
 		// RayTriangleIntersection(const glm::vec3 &point, float distance, const ModelTriangle &triangle, const ObjObject &object);
 		
-		float getDistanceFromCamera();
+		float getDistanceFromOrigin();
 		ModelTriangle getIntersectedTriangle();
 		ModelPoint getIntersectionPoint();
         Colour getColour(std::vector<Light> lights, ObjModel model);
@@ -29,7 +29,7 @@ class RayTriangleIntersection {
 	
     private:
 		ModelPoint _intersectionPoint;
-		float _distanceFromCamera;
+		float _distanceFromOrigin;
 		ModelTriangle _intersectedTriangle;
 		bool _isNull;
 };

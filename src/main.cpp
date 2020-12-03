@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 	SDL_Event event;
 
     //Light light = Light(glm::vec3(0.110042, 0.465659, 0.0556608));
-    Light light = Light(glm::vec3(0, 0, 1.5));
+    Light light = Light(glm::vec3(0, 0, 1.0), 2);
     std::vector<Light> lights;
     lights.push_back(light);
 

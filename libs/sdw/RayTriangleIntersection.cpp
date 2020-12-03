@@ -14,7 +14,7 @@ RayTriangleIntersection::RayTriangleIntersection() {
 
 RayTriangleIntersection::RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle) {
 	_intersectionPoint = point;
-	_distanceFromCamera = distance;
+	_distanceFromOrigin = distance;
 	_intersectedTriangle = triangle;
 	_isNull = false;
 }
@@ -23,8 +23,8 @@ bool RayTriangleIntersection::isNull() {
 	return _isNull;
 }
 
-float RayTriangleIntersection::getDistanceFromCamera() {
-	return _distanceFromCamera;
+float RayTriangleIntersection::getDistanceFromOrigin() {
+	return _distanceFromOrigin;
 }
 
 ModelPoint RayTriangleIntersection::getIntersectionPoint() {
@@ -46,16 +46,15 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel mo
     RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(ray);
 
     if (!lightIntersectionPoint.isNull()) {
-      if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
-        return getColour();
-      } else {
-        //std::cout << "Origin point: " << ray.origin().x << ", " << ray.origin().y << ray.origin().z << std::endl;
-        //std::cout << "Direction: " << ray.direction().x << ", " << ray.direction().y << ray.direction().z << std::endl;
-        //std::cout << "Ray intersected with something that is not the object" << std::endl;
-        //std::cout << intersectionPoint << std::endl;
-        //std::cout << lightIntersectionPoint << std::endl;
-        //std::cout << lightPoint.x() << lightPoint.y() << lightPoint.z() << std::endl;
-      }
+      if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.0001) {
+        float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
+        float lightIntensityAtPoint = light.intensity() / (4 * M_PI * distanceFromLight * distanceFromLight);
+
+        Colour pixelColour = getColour();
+        pixelColour *= lightIntensityAtPoint;
+
+        return pixelColour;
+      } 
     }
   }
   return Colour(0,0,0);
@@ -84,7 +83,7 @@ std::ostream &operator<<(std::ostream &os, RayTriangleIntersection &rti) {
 	} else {
 		os << "Intersection is at [" << rti._intersectionPoint.getVec3()[0] << "," << rti._intersectionPoint.getVec3()[1] << "," <<
 		rti._intersectionPoint.getVec3()[2] << "] on triangle " << rti._intersectedTriangle <<
-		" at a distance of " << rti._distanceFromCamera;
+		" at a distance of " << rti._distanceFromOrigin;
 	}
 	return os;
 }
@@ -93,8 +92,8 @@ RayTriangleIntersection getClosestIntersection(std::vector<RayTriangleIntersecti
   RayTriangleIntersection closestIntersection;
   float currentShortestDistance = std::numeric_limits<float>::infinity();
   for (RayTriangleIntersection intersection: intersections) {
-    if (intersection.getDistanceFromCamera() < currentShortestDistance) {
-      currentShortestDistance = intersection.getDistanceFromCamera();
+    if (intersection.getDistanceFromOrigin() < currentShortestDistance) {
+      currentShortestDistance = intersection.getDistanceFromOrigin();
       closestIntersection = intersection;
     }
   }
