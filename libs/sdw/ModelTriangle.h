@@ -32,7 +32,7 @@ class ModelTriangle {
 		void draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar);
 		void draw(TextureMap &texture, DrawingWindow &window, Camera &camera, float scalar);
 
-        RayTriangleIntersection getClosestIntersection(Ray &ray, Camera &camera);
+        RayTriangleIntersection getClosestIntersection(Ray &ray);
 
 		friend std::ostream &operator<<(std::ostream &os, ModelTriangle triangle);
 

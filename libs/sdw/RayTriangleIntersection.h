@@ -6,6 +6,9 @@
 
 #include "ModelTriangle.h"
 #include "Colour.h"
+#include "Light.h"
+
+class ObjModel;
 
 class RayTriangleIntersection {
 	public:
@@ -16,6 +19,7 @@ class RayTriangleIntersection {
 		float getDistanceFromCamera();
 		ModelTriangle getIntersectedTriangle();
 		ModelPoint getIntersectionPoint();
+        Colour getColour(std::vector<Light> lights, ObjModel model);
         Colour getColour();
 		CanvasPoint getCanvasPoint(DrawingWindow &window, Camera camera, float scalar);
         bool isNull();
@@ -31,3 +35,5 @@ class RayTriangleIntersection {
 };
 
 RayTriangleIntersection getClosestIntersection(std::vector<RayTriangleIntersection> intersections);
+
+#include "ObjModel.h"

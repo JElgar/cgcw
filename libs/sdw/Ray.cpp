@@ -1,35 +1,36 @@
 #include "Ray.h"
 
-Ray::Ray(glm::vec3 pVector, glm::vec3 dVector) {
-  _positionVector = pVector;
-  _directionVector = dVector/(float)(dVector.length());
+Ray::Ray(glm::vec3 origin, glm::vec3 direction) {
+  _origin = origin;
+  _direction = direction/(float)(direction.length());
 }
 
+// Create a ray that has the origin at the camera and is fired at a canvas point
 Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
-  _positionVector = glm::vec3(camera.x(), camera.y(), camera.z());
+  _origin= glm::vec3(camera.x(), camera.y(), camera.z());
   glm::vec3 pixelPosition = glm::vec3(
       camera.x() + pixel.x() - window.width / 2,
       camera.y() - (pixel.y() - window.height / 2),
       camera.z() - camera.getFocalLength()
   );
-  _directionVector = pixelPosition - _positionVector;
-  _directionVector /= (float)_directionVector.length();
+  _direction = pixelPosition - _origin;
+  _direction /= (float)_direction.length();
 }
 
-Ray::Ray(ModelPoint &origin, ModelPoint &point, DrawingWindow &window) {
-  _positionVector = origin.getVec3();
-  _directionVector = origin.getVec3() - point.getVec3();
-  _directionVector /= (float)_directionVector.length();
+Ray::Ray(ModelPoint &origin, ModelPoint &point) {
+  _origin = origin.getVec3();
+  _direction = point.getVec3() - origin.getVec3();
+  _direction /= (float)_direction.length();
 }
 
-void Ray::setDirectionVector(glm::vec3 directionVector) {
-  _directionVector = directionVector;
+void Ray::setDirection(glm::vec3 direction) {
+  _direction = direction;
 }
 
-glm::vec3 Ray::directionVector() {
-  return _directionVector;
+glm::vec3 Ray::direction() {
+  return _direction;
 }
 
-glm::vec3 Ray::positionVector() {
-  return _positionVector;
+glm::vec3 Ray::origin() {
+  return _origin;
 }

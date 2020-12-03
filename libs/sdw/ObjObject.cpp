@@ -40,10 +40,10 @@ void ObjObject::addFace(ModelPoint v0, ModelPoint v1, ModelPoint v2, ObjMaterial
 }
 
 
-RayTriangleIntersection ObjObject::getClosestIntersection(Ray &ray, Camera &camera) {
+RayTriangleIntersection ObjObject::getClosestIntersection(Ray &ray) {
   std::vector<RayTriangleIntersection> intersections;
   for (ModelTriangle triangle: getFaces()) {
-    RayTriangleIntersection possibleIntersection = triangle.getClosestIntersection(ray, camera);
+    RayTriangleIntersection possibleIntersection = triangle.getClosestIntersection(ray);
     if (!possibleIntersection.isNull()) {
       intersections.push_back(possibleIntersection);
     }

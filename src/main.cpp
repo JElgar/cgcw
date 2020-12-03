@@ -40,11 +40,15 @@ int main(int argc, char *argv[]) {
 	Camera camera = Camera(0, 0, 4, 2);
 	SDL_Event event;
 
+    //Light light = Light(glm::vec3(0.110042, 0.465659, 0.0556608));
+    Light light = Light(glm::vec3(0, 0, 1.5));
+    std::vector<Light> lights;
+    lights.push_back(light);
+
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel model = ObjModel("assets/", "cornell-box.obj", 0.17);
-    camera.rotate(0.06, 0.06, 0.06);
-    model.drawRayTracing(window, camera, 500);
+    model.drawRayTracing(window, camera, lights, 500);
     //model.draw(window, camera, 1);
     
 

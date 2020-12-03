@@ -9,16 +9,16 @@
 
 class Ray {
   public:
-    Ray(glm::vec3 pVector, glm::vec3 dVector);
+    Ray(glm::vec3 origin, glm::vec3 direction);
     Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window);
-    Ray(ModelPoint &origin, ModelPoint &point, DrawingWindow &window);
+    Ray(ModelPoint &origin, ModelPoint &point);
     
-    glm::vec3 positionVector();
-    glm::vec3 directionVector();
+    glm::vec3 origin();
+    glm::vec3 direction();
 
-    void setDirectionVector(glm::vec3 directionVector);
+    void setDirection(glm::vec3 direction);
 
   private:
-    glm::vec3 _positionVector;
-    glm::vec3 _directionVector;
+    glm::vec3 _origin;
+    glm::vec3 _direction;
 };

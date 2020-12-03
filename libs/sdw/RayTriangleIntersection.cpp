@@ -31,9 +31,37 @@ ModelPoint RayTriangleIntersection::getIntersectionPoint() {
 	return _intersectionPoint;
 }
  
-Colour RayTriangleIntersection::getColour() {
+Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel model) {
   // TODO get colour if its a texture
-  //Ray ray = Ray(getIntersectionPoint(), );
+
+  // Loop through all the lights
+  for (Light light : lights) {
+
+    // Create a ray from the point to the light
+    ModelPoint intersectionPoint = getIntersectionPoint();
+    ModelPoint lightPoint = light.position();
+    Ray ray = Ray(lightPoint, intersectionPoint);
+
+    // Fire the ray with respect to the model and find out if there are anyt hings between the model point and the light
+    RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(ray);
+
+    if (!lightIntersectionPoint.isNull()) {
+      if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
+        return getColour();
+      } else {
+        //std::cout << "Origin point: " << ray.origin().x << ", " << ray.origin().y << ray.origin().z << std::endl;
+        //std::cout << "Direction: " << ray.direction().x << ", " << ray.direction().y << ray.direction().z << std::endl;
+        //std::cout << "Ray intersected with something that is not the object" << std::endl;
+        //std::cout << intersectionPoint << std::endl;
+        //std::cout << lightIntersectionPoint << std::endl;
+        //std::cout << lightPoint.x() << lightPoint.y() << lightPoint.z() << std::endl;
+      }
+    }
+  }
+  return Colour(0,0,0);
+}
+
+Colour RayTriangleIntersection::getColour() {
   return _intersectedTriangle.colour();
 }
 

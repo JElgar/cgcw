@@ -21,7 +21,8 @@ class ObjObject {
     void draw(DrawingWindow &window, Camera &camera, float scalar);
     std::vector<ModelTriangle> getFaces();
     void setMaterial(ObjMaterial material);
-    RayTriangleIntersection getClosestIntersection(Ray &ray, Camera &camera);
+
+    RayTriangleIntersection getClosestIntersection(Ray &ray);
 
   private:
     std::string _name;

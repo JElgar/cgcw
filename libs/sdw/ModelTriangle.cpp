@@ -41,11 +41,11 @@ Colour ModelTriangle::colour() {
 	return _material.getColour();
 }
 
-RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray, Camera &camera) {
+RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
   glm::vec3 e0 = v1().getVec3() - v0().getVec3();
   glm::vec3 e1 = v2().getVec3() - v0().getVec3();
-  glm::vec3 SPVector = camera.getVec3()  - v0().getVec3();
-  glm::mat3 DEMatrix(-ray.directionVector(), e0, e1);
+  glm::vec3 SPVector = ray.origin()  - v0().getVec3();
+  glm::mat3 DEMatrix(-ray.direction(), e0, e1);
   glm::vec3 possibleSolution = glm::inverse(DEMatrix) * SPVector;
   if (possibleSolution[1] > 1 || possibleSolution[1] < 0 || possibleSolution[2] > 1 || possibleSolution[2] < 0 || possibleSolution[1] + possibleSolution[2] > 1) {
     return RayTriangleIntersection();

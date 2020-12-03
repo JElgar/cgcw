@@ -95,6 +95,15 @@ CanvasPoint ModelPoint::project(DrawingWindow &window, Camera &camera, float sca
 }
 
 std::ostream &operator<<(std::ostream &os, ModelPoint &point) {
-	os << "(" << point.x() << ", "<< point.y() << ", " << point.z() << ")";
-	return os;
+  os << "(" << point.x() << ", "<< point.y() << ", " << point.z() << ")";
+  return os;
+}
+
+bool ModelPoint::operator==(ModelPoint &rhs) {
+  bool equal = x() == rhs.x() && y() == rhs.y() && z() == rhs.z();
+  return equal;
+}
+
+bool ModelPoint::operator!=(ModelPoint &rhs) {
+  return !(x() == rhs.x() && y() == rhs.y() && z() == rhs.z());
 }

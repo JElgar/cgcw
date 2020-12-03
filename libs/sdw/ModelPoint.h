@@ -24,9 +24,11 @@ class ModelPoint {
     
     CanvasPoint project(DrawingWindow &window, Camera &camera, float scalar);
     
-    ModelPoint operator-(ModelPoint rhs);
+    ModelPoint operator-(ModelPoint &rhs);
+    bool operator==(ModelPoint &rhs);
+    bool operator!=(ModelPoint &rhs);
 		
-    friend std::ostream &operator<<(std::ostream &os, const ModelPoint point);
+    friend std::ostream &operator<<(std::ostream &os, ModelPoint &point);
 
   private:
     glm::vec4 _point;

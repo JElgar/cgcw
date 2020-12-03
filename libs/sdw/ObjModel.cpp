@@ -122,27 +122,26 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
   return materials;
 }
 
-void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scalar) {
-  #pragma omp parallel for
-
+void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar) {
   float startRatio = (scalar - 1) / (scalar * 2);
   float endRatio = (scalar + 1) / (scalar * 2);
   float increment = 1/(scalar+1);
 
+  #pragma omp parallel for
   for (float x = window.width * startRatio; x < window.width * endRatio; x += increment) {
     for (float y = window.height * startRatio ; y < window.height * endRatio; y += increment) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
-      ray.setDirectionVector(ray.directionVector() * camera.getOrientationMatrix());
+      ray.setDirection(ray.direction() * camera.getOrientationMatrix());
         
-      RayTriangleIntersection intersection = getClosestIntersection(ray, camera);
+      RayTriangleIntersection intersection = getClosestIntersection(ray);
       if (!intersection.isNull()) {
         CanvasPoint point2 = CanvasPoint(
             ((x - (window.width / 2)) * scalar) + (window.width / 2),
             ((y - (window.height/ 2)) * scalar) + (window.height/ 2),
             point.z() 
         );
-        Colour colour = intersection.getColour();
+        Colour colour = intersection.getColour(lights, *this);
         point2.setZ(-intersection.getDistanceFromCamera());
         point2.setColour(colour);
         point2.draw(window);
@@ -158,11 +157,14 @@ void ObjModel::draw(DrawingWindow &window, Camera &camera, float scalar) {
   }
 }
 
-RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray, Camera &camera) {
+RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray) {
   std::vector<RayTriangleIntersection> intersections;
   for (ObjObject object: getObjects()) {
-    RayTriangleIntersection possibleIntersection = object.getClosestIntersection(ray, camera);
+    RayTriangleIntersection possibleIntersection = object.getClosestIntersection(ray);
     if (!possibleIntersection.isNull()) {
+      if(object.getName() == "light") {
+        std::cout << possibleIntersection.getIntersectionPoint().x() << possibleIntersection.getIntersectionPoint().y() << possibleIntersection.getIntersectionPoint().z() << std::endl;
+      }
       intersections.push_back(possibleIntersection);
     }
   }
