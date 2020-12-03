@@ -24,6 +24,7 @@ class ModelTriangle {
 		ModelPoint v1();
 		ModelPoint v2();
         ObjMaterial material();
+        Colour colour();
 
         void setMaterial(ObjMaterial &material);
 

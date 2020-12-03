@@ -12,7 +12,7 @@ RayTriangleIntersection::RayTriangleIntersection() {
 //	_isNull = false;
 //}
 
-RayTriangleIntersection::RayTriangleIntersection(const glm::vec3 &point, float distance, const ModelTriangle &triangle) {
+RayTriangleIntersection::RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle) {
 	_intersectionPoint = point;
 	_distanceFromCamera = distance;
 	_intersectedTriangle = triangle;
@@ -27,17 +27,18 @@ float RayTriangleIntersection::getDistanceFromCamera() {
 	return _distanceFromCamera;
 }
 
-glm::vec3 RayTriangleIntersection::getIntersectionPoint() {
+ModelPoint RayTriangleIntersection::getIntersectionPoint() {
 	return _intersectionPoint;
 }
-
+ 
 Colour RayTriangleIntersection::getColour() {
-  return _intersectedTriangle.material().getColour();
+  // TODO get colour if its a texture
+  //Ray ray = Ray(getIntersectionPoint(), );
+  return _intersectedTriangle.colour();
 }
 
 CanvasPoint RayTriangleIntersection::getCanvasPoint(DrawingWindow &window, Camera camera, float scalar) {
-	ModelPoint point = ModelPoint(_intersectionPoint[0], _intersectionPoint[1], _intersectionPoint[2]);
-	return point.project(window, camera, scalar);
+	return _intersectionPoint.project(window, camera, scalar);
 }
 
 //void RayTriangleIntersection::draw(DrawingWindow &window, Camera camera, float scalar) {
@@ -49,12 +50,12 @@ ModelTriangle RayTriangleIntersection::getIntersectedTriangle() {
 	return _intersectedTriangle;
 }
 
-std::ostream &operator<<(std::ostream &os, const RayTriangleIntersection &rti) {
+std::ostream &operator<<(std::ostream &os, RayTriangleIntersection &rti) {
 	if (rti._isNull) {
 		os << "Intersection is null";
 	} else {
-		os << "Intersection is at [" << rti._intersectionPoint[0] << "," << rti._intersectionPoint[1] << "," <<
-		rti._intersectionPoint[2] << "] on triangle " << rti._intersectedTriangle <<
+		os << "Intersection is at [" << rti._intersectionPoint.getVec3()[0] << "," << rti._intersectionPoint.getVec3()[1] << "," <<
+		rti._intersectionPoint.getVec3()[2] << "] on triangle " << rti._intersectedTriangle <<
 		" at a distance of " << rti._distanceFromCamera;
 	}
 	return os;

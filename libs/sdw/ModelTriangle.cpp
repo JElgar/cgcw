@@ -37,6 +37,10 @@ ObjMaterial ModelTriangle::material() {
 	return _material;
 }
 
+Colour ModelTriangle::colour() {
+	return _material.getColour();
+}
+
 RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray, Camera &camera) {
   glm::vec3 e0 = v1().getVec3() - v0().getVec3();
   glm::vec3 e1 = v2().getVec3() - v0().getVec3();
@@ -47,7 +51,8 @@ RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray, Camera &
     return RayTriangleIntersection();
   }
   glm::vec3 r = v0().getVec3() + (possibleSolution[1] * e0) + (possibleSolution[2] * e1);
-  return RayTriangleIntersection(r, possibleSolution[0], *this);
+  ModelPoint intersectionPoint = ModelPoint(r);
+  return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this);
 }
 
 

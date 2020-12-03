@@ -6,6 +6,11 @@ ModelPoint::ModelPoint(float x, float y, float z) {
   _texturePoint = TexturePoint(-1,-1);
 }
 
+ModelPoint::ModelPoint(glm::vec3 point) {
+  _point = glm::vec4(point.x, point.y, point.z, 1);
+  _texturePoint = TexturePoint(-1,-1);
+}
+
 void ModelPoint::setTexturePoint(TexturePoint texturePoint) {
   _texturePoint = texturePoint;
 }

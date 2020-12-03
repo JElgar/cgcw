@@ -9,6 +9,7 @@ class ModelPoint {
   public:
     ModelPoint();
     ModelPoint(float x, float y, float z);
+    ModelPoint(glm::vec3);
 
     float x();
     float y();

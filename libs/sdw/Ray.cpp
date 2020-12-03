@@ -16,6 +16,12 @@ Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
   _directionVector /= (float)_directionVector.length();
 }
 
+Ray::Ray(ModelPoint &origin, ModelPoint &point, DrawingWindow &window) {
+  _positionVector = origin.getVec3();
+  _directionVector = origin.getVec3() - point.getVec3();
+  _directionVector /= (float)_directionVector.length();
+}
+
 glm::vec3 Ray::directionVector() {
   return _directionVector;
 }
