@@ -9,8 +9,8 @@ Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
   _positionVector = glm::vec3(camera.x(), camera.y(), camera.z());
   glm::vec3 pixelPosition = glm::vec3(
       camera.x() + pixel.x() - window.width / 2,
-      camera.y() + pixel.y() - window.height / 2,
-      camera.z()-camera.getFocalLength()
+      camera.y() - (pixel.y() - window.height / 2),
+      camera.z() - camera.getFocalLength()
   );
   _directionVector = pixelPosition - _positionVector;
   _directionVector /= (float)_directionVector.length();

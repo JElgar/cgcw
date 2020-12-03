@@ -124,24 +124,26 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
 
 void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scalar) {
   #pragma omp parallel for
-  for (int x = 0; x < window.width; x++) {
-    for (int y = 0; y < window.height; y++) {
+
+  float startRatio = (scalar - 1) / (scalar * 2);
+  float endRatio = (scalar + 1) / (scalar * 2);
+  float increment = 1/(scalar+1);
+
+  for (float x = window.width * startRatio; x < window.width * endRatio; x += increment) {
+    for (float y = window.height * startRatio ; y < window.height * endRatio; y += increment) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
-      //Colour colour = Colour(0, 0, 255);
       RayTriangleIntersection intersection = getClosestIntersection(ray, camera);
-      point.setZ(-intersection.getDistanceFromCamera());
       if (!intersection.isNull()) {
-        std::cout << "Intersection at " << x << ", " << y << std::endl;
         CanvasPoint point2 = CanvasPoint(
-            point.x()*scalar + (float)(window.width/2),
-            point.y()*scalar + (float)(window.height/2),
+            ((x - (window.width / 2)) * scalar) + (window.width / 2),
+            ((y - (window.height/ 2)) * scalar) + (window.height/ 2),
             point.z() 
         );
-        //point2.setColour(colour);
         Colour colour = intersection.getColour();
-        point.setColour(colour);
-        point.draw(window);
+        point2.setZ(-intersection.getDistanceFromCamera());
+        point2.setColour(colour);
+        point2.draw(window);
       }
     }
   }
@@ -159,7 +161,6 @@ RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray, Camera &camer
   for (ObjObject object: getObjects()) {
     RayTriangleIntersection possibleIntersection = object.getClosestIntersection(ray, camera);
     if (!possibleIntersection.isNull()) {
-      std::cout << object.getName() << " has been intersected" << std::endl;
       intersections.push_back(possibleIntersection);
     }
   }

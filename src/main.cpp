@@ -37,13 +37,13 @@ int main(int argc, char *argv[]) {
 	DrawingWindow window = DrawingWindow(WIDTH, HEIGHT, false);
 
 	//Camera camera = Camera(0, 0, 80, 30);
-	Camera camera = Camera(0, 0, 2, 400);
+	Camera camera = Camera(0, 0, 4, 2);
 	SDL_Event event;
 
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel model = ObjModel("assets/", "cornell-box.obj", 0.17);
-    model.drawRayTracing(window, camera, 1);
+    model.drawRayTracing(window, camera, 500);
     //model.draw(window, camera, 1);
     
 
