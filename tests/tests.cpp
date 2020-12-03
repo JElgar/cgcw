@@ -6,6 +6,7 @@
 #include "test-utils.cpp"
 #include "test-triangle.cpp"
 #include "test-model.cpp"
+#include "test-ray.cpp"
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

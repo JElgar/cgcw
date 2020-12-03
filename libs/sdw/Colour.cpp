@@ -16,6 +16,10 @@ std::ostream &operator<<(std::ostream &os, const Colour &colour) {
 	return os;
 }
 
+bool Colour::operator==(Colour& rhs) {
+  return pack() == rhs.pack();
+}
+
 uint32_t Colour::pack() {
   return (255 << 24) + (red << 16) + (green << 8) + blue;
 }

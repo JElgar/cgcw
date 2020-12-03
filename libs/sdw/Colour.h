@@ -10,6 +10,8 @@ class Colour {
 		Colour();
 		Colour(int r, int g, int b);
 		Colour(uint32_t colour);
-		friend std::ostream &operator<<(std::ostream &os, const Colour &colour);
 		uint32_t pack();
+
+		friend std::ostream &operator<<(std::ostream &os, const Colour &colour);
+        bool operator==(Colour& rhs);
 };

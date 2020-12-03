@@ -2,15 +2,15 @@
 #include <sstream>
 #include <string>
 #include <fstream>
-#include "Utils.h"
 #include <iostream>
+#include <algorithm>
+
+#include "Utils.h"
 #include "ModelPoint.h"
 #include "ModelTriangle.h"
 #include "ObjObject.h"
 #include "ObjMaterial.h"
 #include "Colour.h"
-//#include "Ray.h"
-#include <algorithm>
 
 class ObjModel {
   public:
