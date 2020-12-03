@@ -16,6 +16,8 @@ class Ray {
     glm::vec3 positionVector();
     glm::vec3 directionVector();
 
+    void setDirectionVector(glm::vec3 directionVector);
+
   private:
     glm::vec3 _positionVector;
     glm::vec3 _directionVector;

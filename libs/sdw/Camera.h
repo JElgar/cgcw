@@ -15,6 +15,7 @@ class Camera {
     float y();
     float z();
     glm::vec3 getVec3();
+    glm::mat3 getOrientationMatrix();
 
     Camera(float x, float y, float z, float focalLength);
     glm::mat4 getCameraToWorldMatrix();

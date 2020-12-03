@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel model = ObjModel("assets/", "cornell-box.obj", 0.17);
+    camera.rotate(0.06, 0.06, 0.06);
     model.drawRayTracing(window, camera, 500);
     //model.draw(window, camera, 1);
     

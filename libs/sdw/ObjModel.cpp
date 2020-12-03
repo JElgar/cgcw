@@ -133,6 +133,8 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scala
     for (float y = window.height * startRatio ; y < window.height * endRatio; y += increment) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
+      ray.setDirectionVector(ray.directionVector() * camera.getOrientationMatrix());
+        
       RayTriangleIntersection intersection = getClosestIntersection(ray, camera);
       if (!intersection.isNull()) {
         CanvasPoint point2 = CanvasPoint(

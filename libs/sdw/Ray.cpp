@@ -22,6 +22,10 @@ Ray::Ray(ModelPoint &origin, ModelPoint &point, DrawingWindow &window) {
   _directionVector /= (float)_directionVector.length();
 }
 
+void Ray::setDirectionVector(glm::vec3 directionVector) {
+  _directionVector = directionVector;
+}
+
 glm::vec3 Ray::directionVector() {
   return _directionVector;
 }

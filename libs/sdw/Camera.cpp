@@ -60,6 +60,14 @@ float Camera::z() {
   return _cameraToWorldMatrix[3][2];
 }
 
+glm::mat3 Camera::getOrientationMatrix() {
+  return glm::mat3(
+    _cameraToWorldMatrix[0][0], _cameraToWorldMatrix[0][1], _cameraToWorldMatrix[0][2],
+    _cameraToWorldMatrix[1][0], _cameraToWorldMatrix[1][1], _cameraToWorldMatrix[1][2],
+    _cameraToWorldMatrix[2][0], _cameraToWorldMatrix[2][1], _cameraToWorldMatrix[2][2]
+  );
+}
+
 glm::vec3 Camera::getVec3() {
   return glm::vec3(x(), y(), z());
 }
