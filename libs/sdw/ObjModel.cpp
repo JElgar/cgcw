@@ -51,7 +51,7 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
       TexturePoint newTextPoint = TexturePoint((std::stof(tokens[1]))*480, (std::stof(tokens[2]))*395);
       texturePoints.push_back(newTextPoint);
     
-    // Load in a face with texture points
+    // Load in a face with texture points/ material
     } else if (tokens[0] == "f") {
       std::vector<std::string> vertex0 = split(tokens[1], '/');
       std::vector<std::string> vertex1 = split(tokens[2], '/');
@@ -70,7 +70,8 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
       }
 
       // Add the face to the current working object
-      currentObj.addFace(pointA, pointB, pointC);
+      ObjMaterial currentObjMaterial = currentObj.getMaterial();
+      currentObj.addFace(pointA, pointB, pointC, currentObjMaterial);
     }
   }
 
@@ -127,9 +128,8 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scala
     for (int y = 0; y < window.height; y++) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
-      Colour colour = Colour(0, 0, 255);
+      //Colour colour = Colour(0, 0, 255);
       RayTriangleIntersection intersection = getClosestIntersection(ray, camera);
-      point.setColour(colour);
       point.setZ(-intersection.getDistanceFromCamera());
       if (!intersection.isNull()) {
         std::cout << "Intersection at " << x << ", " << y << std::endl;
@@ -138,7 +138,9 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, float scala
             point.y()*scalar + (float)(window.height/2),
             point.z() 
         );
-        point2.setColour(colour);
+        //point2.setColour(colour);
+        Colour colour = intersection.getColour();
+        point.setColour(colour);
         point.draw(window);
       }
     }

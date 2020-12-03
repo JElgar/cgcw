@@ -17,7 +17,7 @@ class ObjObject {
     ObjObject();
     std::string getName();
     ObjMaterial getMaterial();
-    void addFace(ModelPoint v0, ModelPoint v1, ModelPoint v2);
+    void addFace(ModelPoint v0, ModelPoint v1, ModelPoint v2, ObjMaterial &material);
     void draw(DrawingWindow &window, Camera &camera, float scalar);
     std::vector<ModelTriangle> getFaces();
     void setMaterial(ObjMaterial material);

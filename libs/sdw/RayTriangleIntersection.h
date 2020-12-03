@@ -16,6 +16,7 @@ class RayTriangleIntersection {
 		float getDistanceFromCamera();
 		ModelTriangle getIntersectedTriangle();
 		glm::vec3 getIntersectionPoint();
+        Colour getColour();
 		CanvasPoint getCanvasPoint(DrawingWindow &window, Camera camera, float scalar);
         bool isNull();
 

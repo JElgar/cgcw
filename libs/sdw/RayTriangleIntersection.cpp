@@ -31,6 +31,10 @@ glm::vec3 RayTriangleIntersection::getIntersectionPoint() {
 	return _intersectionPoint;
 }
 
+Colour RayTriangleIntersection::getColour() {
+  return _intersectedTriangle.material().getColour();
+}
+
 CanvasPoint RayTriangleIntersection::getCanvasPoint(DrawingWindow &window, Camera camera, float scalar) {
 	ModelPoint point = ModelPoint(_intersectionPoint[0], _intersectionPoint[1], _intersectionPoint[2]);
 	return point.project(window, camera, scalar);

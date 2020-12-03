@@ -33,8 +33,9 @@ void ObjObject::draw(DrawingWindow &window, Camera &camera, float scalar) {
   }
 }
 
-void ObjObject::addFace(ModelPoint v0, ModelPoint v1, ModelPoint v2) {
+void ObjObject::addFace(ModelPoint v0, ModelPoint v1, ModelPoint v2, ObjMaterial &material) {
   ModelTriangle newTriangle = ModelTriangle(v0, v1, v2);
+  newTriangle.setMaterial(material);
   _faces.push_back(newTriangle);
 }
 

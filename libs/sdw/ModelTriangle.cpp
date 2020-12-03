@@ -9,6 +9,10 @@ CanvasTriangle ModelTriangle::project(DrawingWindow &window, Camera &camera, flo
   return CanvasTriangle(v0().project(window, camera, scalar), v1().project(window, camera, scalar), v2().project(window, camera, scalar));
 }
 
+void ModelTriangle::setMaterial(ObjMaterial &material) {
+  _material = material;
+}
+
 void ModelTriangle::draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar) {
   project(window, camera, scalar).fill(colour, window);
 }
@@ -29,6 +33,9 @@ ModelPoint ModelTriangle::v2() {
 	return _vertices[2];
 }
 
+ObjMaterial ModelTriangle::material() {
+	return _material;
+}
 
 RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray, Camera &camera) {
   glm::vec3 e0 = v1().getVec3() - v0().getVec3();
