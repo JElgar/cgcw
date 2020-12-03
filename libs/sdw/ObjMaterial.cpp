@@ -1,9 +1,14 @@
 #include "ObjMaterial.h"
 
-ObjMaterial::ObjMaterial() = default;
+ObjMaterial::ObjMaterial() {
+  _hasTexture = false;
+  _reflectivity = 0.0;
+}
+
 ObjMaterial::ObjMaterial(std::string name) {
   _name = name;
   _hasTexture = false;
+  _reflectivity = 0.0;
 }
 
 void ObjMaterial::setColour(Colour colour) {
@@ -17,6 +22,10 @@ void ObjMaterial::setTexture(TextureMap texture) {
 
 Colour &ObjMaterial::getColour() {
   return _colour;
+}
+
+float ObjMaterial::reflectivity() {
+  return _reflectivity;
 }
 
 std::string ObjMaterial::getName() {

@@ -41,6 +41,10 @@ Colour ModelTriangle::colour() {
 	return _material.getColour();
 }
 
+glm::vec3 ModelTriangle::normal() {
+  return glm::cross((v1().getVec3() - v0().getVec3()), (v2().getVec3() - v0().getVec3()));
+}
+
 RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
   glm::vec3 e0 = v1().getVec3() - v0().getVec3();
   glm::vec3 e1 = v2().getVec3() - v0().getVec3();
@@ -54,7 +58,6 @@ RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
   ModelPoint intersectionPoint = ModelPoint(r);
   return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this);
 }
-
 
 
 std::ostream &operator<<(std::ostream &os, ModelTriangle triangle) {

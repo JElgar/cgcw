@@ -33,6 +33,7 @@ ModelPoint RayTriangleIntersection::getIntersectionPoint() {
  
 Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel model) {
   // TODO get colour if its a texture
+  float brightness = 0.2; 
 
   // Loop through all the lights
   for (Light light : lights) {
@@ -50,17 +51,21 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel mo
         float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
         float lightIntensityAtPoint = light.intensity() / (4 * M_PI * distanceFromLight * distanceFromLight);
 
-        Colour pixelColour = getColour();
-        pixelColour *= lightIntensityAtPoint;
-
-        return pixelColour;
+        brightness += lightIntensityAtPoint;
       } 
     }
   }
-  return Colour(0,0,0);
+  Colour pixelColour = getColour();
+  pixelColour *= brightness;
+  return pixelColour;
 }
 
 Colour RayTriangleIntersection::getColour() {
+  ObjMaterial intersectedMaterial = _intersectedTriangle.material();
+  if (intersectedMaterial.reflectivity() == 0.0) {
+    return _intersectedTriangle.colour();
+  }
+     
   return _intersectedTriangle.colour();
 }
 

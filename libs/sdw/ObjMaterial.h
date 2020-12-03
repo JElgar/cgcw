@@ -12,9 +12,11 @@ class ObjMaterial {
     std::string getName();
     Colour &getColour();
     TextureMap &getTexture();
+    float reflectivity();
 
     void setColour(Colour colour);
     void setTexture(TextureMap texture);
+    void setReflectivity(float reflectivity);
     
     bool hasTexture();
 
@@ -25,4 +27,5 @@ class ObjMaterial {
   	Colour _colour;
     TextureMap _texture;
     bool _hasTexture;
+    float _reflectivity;
 };
