@@ -40,6 +40,7 @@ class ModelTriangle {
 	private:
         std::vector<ModelPoint> _vertices;
         ObjMaterial _material;
+        glm::vec3 _normal;
 };
 
 #include "RayTriangleIntersection.h"

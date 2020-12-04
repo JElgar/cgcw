@@ -8,6 +8,7 @@
 #include "Colour.h"
 #include "Light.h"
 #include "Ray.h"
+#include "Global.h"
 
 class ObjModel;
 

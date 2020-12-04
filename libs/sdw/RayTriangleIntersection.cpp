@@ -38,7 +38,7 @@ ModelPoint RayTriangleIntersection::getIntersectionPoint() {
  
 Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
   // TODO get colour if its a texture
-  float brightness = 0.2; 
+  float brightness = 0.0; 
 
   // Loop through all the lights
   for (Light light : lights) {
@@ -46,22 +46,37 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
     // Create a ray from the point to the light
     ModelPoint intersectionPoint = getIntersectionPoint();
     ModelPoint lightPoint = light.position();
-    Ray ray = Ray(lightPoint, intersectionPoint);
+    Ray ray = Ray(lightPoint.getVec3(), intersectionPoint.getVec3());
 
     // Fire the ray with respect to the model and find out if there are anyt hings between the model point and the light
     RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(ray);
 
     if (!lightIntersectionPoint.isNull()) {
-      if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.0001) {
-        float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
-        float lightIntensityAtPoint = light.intensity() / (4 * M_PI * distanceFromLight * distanceFromLight);
+      if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
 
-        brightness += lightIntensityAtPoint;
-      } 
+        if (LIGHTING_MODE == Proximity) {
+          float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
+          float lightIntensityAtPoint = light.intensity() / (4.0 * M_PI * distanceFromLight * distanceFromLight);
+          brightness += lightIntensityAtPoint;
+          std::cout << "Updating brightness: " <<  brightness << std::endl;
+          std::cout << brightness << std::endl;
+        }
+        
+        if (LIGHTING_MODE == Incidence) {
+          glm::vec3 normal =  _intersectedTriangle.normal();
+          glm::vec3 lightDirection = -ray.direction();
+          float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
+
+          if (lightIntensityAtPoint > 0.0) {
+            brightness += lightIntensityAtPoint;
+          }
+        }
+      }
     }
   }
   Colour pixelColour = getColour(model);
   pixelColour *= brightness;
+  std::cout << "brightness: " << brightness << std::endl;
   return pixelColour;
 }
 
@@ -70,7 +85,7 @@ Colour RayTriangleIntersection::getColour(ObjModel &model) {
 
   float reflectivity = intersectedMaterial.reflectivity();
 
-  if (reflectivity == 0.0) {
+  if (MAX_REFLECTIONS == 0 || reflectivity == 0.0) {
     return _intersectedTriangle.colour();
   }
 
@@ -80,11 +95,15 @@ Colour RayTriangleIntersection::getColour(ObjModel &model) {
 
   Colour reflectedColour;
   if (!reflectedIntersection.isNull()) {
+    std::cout << reflectedIntersection.getIntersectionPoint().x() << reflectedIntersection.getIntersectionPoint().y() << reflectedIntersection.getIntersectionPoint().z() << std::endl;
+    std::cout << _intersectionPoint << std::endl;
     reflectedColour = reflectedIntersection.getIntersectedTriangle().colour(); 
   } else {
     reflectedColour = Colour(0, 0, 0);
   }
-  return _intersectedTriangle.colour() * (1-reflectivity) + reflectedColour * reflectivity;
+  std::cout << reflectedColour << std::endl;
+  Colour adjustedColour = _intersectedTriangle.colour() * (1-reflectivity) + reflectedColour * reflectivity;
+  return adjustedColour;
 }
 
 CanvasPoint RayTriangleIntersection::getCanvasPoint(DrawingWindow &window, Camera camera, float scalar) {

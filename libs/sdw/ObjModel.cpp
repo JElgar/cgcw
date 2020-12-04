@@ -100,6 +100,9 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
         materials.push_back(currentMtl);
       }
       currentMtl = ObjMaterial(tokens[1]);
+      if(tokens[1] == "Blue") {
+        currentMtl.setReflectivity(1.0);
+      }
       currentMaterialIsEmpty = false;
 
     // Set colour value
@@ -127,9 +130,8 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
   float endRatio = (scalar + 1) / (scalar * 2);
   float increment = 1/(scalar+1);
 
-  #pragma omp parallel for
-  for (float x = window.width * startRatio; x < window.width * endRatio; x += increment) {
-    for (float y = window.height * startRatio ; y < window.height * endRatio; y += increment) {
+  for (float y = window.height * startRatio ; y < window.height * endRatio; y += increment) {
+    for (float x = window.width * startRatio; x < window.width * endRatio; x += increment) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
       ray.setDirection(ray.direction() * camera.getOrientationMatrix());

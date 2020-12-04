@@ -32,15 +32,15 @@ uint32_t Colour::pack() {
 }
 
 void Colour::setRed(int value) {
-  red = std::max(value, 255);
+  red = std::min(value, 255);
 }
 
 void Colour::setGreen(int value) {
-  green = std::max(value, 255);
+  green = std::min(value, 255);
 }
 
 void Colour::setBlue(int value) {
-  blue = std::max(value, 255);
+  blue = std::min(value, 255);
 }
     
 void Colour::operator*=(float intensity) {

@@ -20,6 +20,10 @@ void ObjMaterial::setTexture(TextureMap texture) {
   _texture = texture;
 }
 
+void ObjMaterial::setReflectivity(float reflectivity) {
+  _reflectivity = reflectivity;
+}
+
 Colour &ObjMaterial::getColour() {
   return _colour;
 }

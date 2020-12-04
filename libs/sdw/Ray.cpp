@@ -2,11 +2,6 @@
 
 Ray::Ray() = default;
 
-Ray::Ray(glm::vec3 origin, glm::vec3 direction) {
-  _origin = origin;
-  _direction = direction/(float)(direction.length());
-}
-
 // Create a ray that has the origin at the camera and is fired at a canvas point
 Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
   _origin= glm::vec3(camera.x(), camera.y(), camera.z());
@@ -15,18 +10,18 @@ Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
       camera.y() - (pixel.y() - window.height / 2),
       camera.z() - camera.getFocalLength()
   );
+  setDirection(pixelPosition - _origin);
   _direction = pixelPosition - _origin;
-  _direction /= (float)_direction.length();
 }
 
-Ray::Ray(ModelPoint &origin, ModelPoint &point) {
-  _origin = origin.getVec3();
-  _direction = point.getVec3() - origin.getVec3();
-  _direction /= (float)_direction.length();
+Ray::Ray(glm::vec3 origin, glm::vec3 point) {
+  _origin = origin;
+  setDirection(point - origin);
 }
 
 void Ray::setDirection(glm::vec3 direction) {
   _direction = direction;
+  glm::normalize(_direction);
 }
 
 glm::vec3 Ray::direction() {
@@ -38,7 +33,11 @@ glm::vec3 Ray::origin() {
 }
 
 Ray Ray::reflect(RayTriangleIntersection &intersection) {
-  glm::vec3 reflectedDirection = direction() - glm::vec3(2,2,2) * intersection.getIntersectedTriangle().normal() * (glm::dot(direction(), intersection.getIntersectedTriangle().normal()));
+  glm::vec3 norm = intersection.getIntersectedTriangle().normal();
+  glm::vec3 reflectedDirection = direction() - glm::vec3(2,2,2) * norm * glm::dot(direction(), norm);
   
-  return Ray(intersection.getIntersectionPoint().getVec3(), reflectedDirection);
+  std::cout << "Incident ray direction: " << direction().x << ", " << direction().y << ", " << direction().z << std::endl;
+  std::cout << "Reflected ray direction: " << reflectedDirection.x << ", " << reflectedDirection.y << ", " << reflectedDirection.z << std::endl;
+  
+  return Ray(intersection.getIntersectionPoint().getVec3() + reflectedDirection, reflectedDirection);
 }

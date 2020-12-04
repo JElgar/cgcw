@@ -3,6 +3,7 @@
 ModelTriangle::ModelTriangle() = default;
 ModelTriangle::ModelTriangle(ModelPoint v0, ModelPoint v1, ModelPoint v2) {
   _vertices = {v0, v1, v2};
+  _normal = glm::cross(v1.getVec3() - v0.getVec3(), v2.getVec3() - v0.getVec3());
 }
 
 CanvasTriangle ModelTriangle::project(DrawingWindow &window, Camera &camera, float scalar) {
@@ -42,7 +43,7 @@ Colour ModelTriangle::colour() {
 }
 
 glm::vec3 ModelTriangle::normal() {
-  return glm::cross((v1().getVec3() - v0().getVec3()), (v2().getVec3() - v0().getVec3()));
+  return _normal;
 }
 
 RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
@@ -56,6 +57,12 @@ RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
   }
   glm::vec3 r = v0().getVec3() + (possibleSolution[1] * e0) + (possibleSolution[2] * e1);
   ModelPoint intersectionPoint = ModelPoint(r);
+ 
+  // Intersection in the wrong direction - "Behind the origin"
+  if ((intersectionPoint.getVec3().x - ray.origin().x) / ray.direction().x < 0) {
+    return RayTriangleIntersection();
+  }
+
   return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this, ray);
 }
 
