@@ -11,7 +11,8 @@ class RayTriangleIntersection;
 class Ray {
   public:
     Ray();
-    Ray(glm::vec3 origin, glm::vec3 point);
+    Ray(ModelPoint &origin, ModelPoint &point);
+    Ray(ModelPoint &origin, glm::vec3 direction);
     Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window);
     
     glm::vec3 origin();

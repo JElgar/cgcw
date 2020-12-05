@@ -13,9 +13,15 @@ Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
   setDirection(pixelPosition - _origin);
 }
 
-Ray::Ray(glm::vec3 origin, glm::vec3 point) {
-  _origin = origin;
-  setDirection(point - origin);
+
+Ray::Ray(ModelPoint &origin, glm::vec3 direction) {
+  _origin = origin.getVec3();
+  setDirection(direction);
+}
+
+Ray::Ray(ModelPoint &origin, ModelPoint &point) {
+  _origin = origin.getVec3();
+  setDirection(point.getVec3() - origin.getVec3());
 }
 
 void Ray::setDirection(glm::vec3 direction) {
@@ -32,8 +38,10 @@ glm::vec3 Ray::origin() {
 }
 
 Ray Ray::reflect(RayTriangleIntersection &intersection) {
-  glm::vec3 normal = intersection.getIntersectedTriangle().normal();
-  glm::vec3 reflectedDirection = direction() - 2.0f * normal * glm::dot(direction(), normal);
+  glm::vec3 direction = glm::normalize(this->direction());
+  glm::vec3 normal = glm::normalize(intersection.getIntersectedTriangle().normal());
+  glm::vec3 reflectedDirection = glm::normalize(direction - normal * (float)(2.0*glm::dot(direction, normal)));
 
-  return Ray(intersection.getIntersectionPoint().getVec3(), reflectedDirection);
+  ModelPoint origin = intersection.getIntersectionPoint();
+  return Ray(origin, reflectedDirection);
 }
