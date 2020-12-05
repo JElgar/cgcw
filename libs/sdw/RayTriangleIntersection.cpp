@@ -38,7 +38,7 @@ ModelPoint RayTriangleIntersection::getIntersectionPoint() {
  
 Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
   // TODO get colour if its a texture
-  float brightness = 0.0; 
+  float brightness = AMBIENT_LIGTHING_FACTOR; 
 
   // Loop through all the lights
   for (Light light : lights) {
@@ -54,29 +54,28 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
     if (!lightIntersectionPoint.isNull()) {
       if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
 
-        if (LIGHTING_MODE == Proximity) {
+        if (PROXIMITY_LIGTHING_FACTOR > 0) {
           float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
           float lightIntensityAtPoint = light.intensity() / (4.0 * M_PI * distanceFromLight * distanceFromLight);
-          brightness += lightIntensityAtPoint;
+          brightness += lightIntensityAtPoint * PROXIMITY_LIGTHING_FACTOR;
         }
         
-        if (LIGHTING_MODE == Incidence) {
+        if (INCIDENT_LIGTHING_FACTOR > 0) {
           glm::vec3 normal =  _intersectedTriangle.normal();
           glm::vec3 lightDirection = -lightRay.direction();
           float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
 
           if (lightIntensityAtPoint > 0.0) {
-            brightness += lightIntensityAtPoint;
+            brightness += lightIntensityAtPoint * INCIDENT_LIGTHING_FACTOR;
           }
         }
         
-        if (LIGHTING_MODE == Specular) {
-  
+        if (SPECULAR_LIGTHING_FACTOR > 0) {
           Ray reflectedLightRay = lightRay.reflect(*this);
-          float lightIntensityAtPoint = pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), 16);
+          float lightIntensityAtPoint = pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), 128);
 
           if (lightIntensityAtPoint > 0.0) {
-            brightness += lightIntensityAtPoint;
+            brightness += lightIntensityAtPoint * SPECULAR_LIGTHING_FACTOR;
           }
         }
       }
@@ -96,19 +95,15 @@ Colour RayTriangleIntersection::getColour(ObjModel &model) {
     return _intersectedTriangle.colour();
   }
 
-  std::cout << "Reflecting time!" << std::endl;
   Ray reflectedRay = ray().reflect(*this);
   RayTriangleIntersection reflectedIntersection = model.getClosestIntersection(reflectedRay);
 
   Colour reflectedColour;
   if (!reflectedIntersection.isNull()) {
-    std::cout << reflectedIntersection.getIntersectionPoint().x() << reflectedIntersection.getIntersectionPoint().y() << reflectedIntersection.getIntersectionPoint().z() << std::endl;
-    std::cout << _intersectionPoint << std::endl;
     reflectedColour = reflectedIntersection.getIntersectedTriangle().colour(); 
   } else {
     reflectedColour = Colour(0, 0, 0);
   }
-  std::cout << reflectedColour << std::endl;
   Colour adjustedColour = _intersectedTriangle.colour() * (1-reflectivity) + reflectedColour * reflectivity;
   return adjustedColour;
 }
