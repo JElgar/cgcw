@@ -20,6 +20,7 @@ class ObjMaterial {
     void setReflectivity(float reflectivity);
     
     bool hasTexture();
+    bool isNull();
 
   	friend std::ostream &operator<<(std::ostream &os, const ObjMaterial &material);
 
@@ -28,6 +29,7 @@ class ObjMaterial {
   	Colour _colour;
     TextureMap _texture;
     bool _hasTexture;
+    bool _isNull;
     float _reflectivity;
     float _shinyness;
 };

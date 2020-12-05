@@ -17,10 +17,13 @@ class ModelPoint {
     float w();
     glm::vec3 getVec3();
     glm::vec4 getVec4();
+    glm::vec3 normal();
 
     TexturePoint texturePoint();
     void setTexturePoint(TexturePoint texturePoint);
+    void setNormal(glm::vec3 normal);
     bool hasTexturePoint();
+    bool hasVertexNormal();
     
     CanvasPoint project(DrawingWindow &window, Camera &camera, float scalar);
     
@@ -33,4 +36,6 @@ class ModelPoint {
   private:
     glm::vec4 _point;
     TexturePoint _texturePoint;
+    glm::vec3 _normal;
+    bool _hasVertexNormal;
 };

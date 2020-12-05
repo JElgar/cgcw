@@ -12,12 +12,15 @@ RayTriangleIntersection::RayTriangleIntersection() {
 //	_isNull = false;
 //}
 
-RayTriangleIntersection::RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle, Ray &ray) {
+RayTriangleIntersection::RayTriangleIntersection(ModelPoint &point, float distance, ModelTriangle &triangle, Ray &ray, float e2Ratio, float e1Ratio) {
 	_intersectionPoint = point;
 	_distanceFromOrigin = distance;
 	_intersectedTriangle = triangle;
 	_isNull = false;
     _ray = ray;
+    _e2Ratio = e2Ratio;
+    _e1Ratio = e1Ratio;
+    _e0Ratio = 1.0 - (e2Ratio + e1Ratio);
 }
 
 Ray RayTriangleIntersection::ray() {
@@ -34,6 +37,17 @@ float RayTriangleIntersection::getDistanceFromOrigin() {
 
 ModelPoint RayTriangleIntersection::getIntersectionPoint() {
 	return _intersectionPoint;
+}
+
+glm::vec3 RayTriangleIntersection::normal() {
+  if(!_intersectedTriangle.v0().hasVertexNormal()) {
+    std::cout << "It has no vertex normal" << std::endl;
+    return _intersectedTriangle.normal();
+  }
+  glm::vec3 normal = _e0Ratio * _intersectedTriangle.v0().normal() +
+                      _e2Ratio * _intersectedTriangle.v1().normal() +
+                      _e1Ratio * _intersectedTriangle.v2().normal();
+  return normal;
 }
  
 Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
@@ -61,9 +75,8 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
         }
         
         if (INCIDENT_LIGTHING_FACTOR > 0) {
-          glm::vec3 normal =  _intersectedTriangle.normal();
           glm::vec3 lightDirection = -lightRay.direction();
-          float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
+          float lightIntensityAtPoint = light.intensity() * glm::dot(normal(), lightDirection);
 
           if (lightIntensityAtPoint > 0.0) {
             brightness += lightIntensityAtPoint * INCIDENT_LIGTHING_FACTOR;
@@ -72,7 +85,7 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
         
         if (SPECULAR_LIGTHING_FACTOR > 0) {
           Ray reflectedLightRay = lightRay.reflect(*this);
-          float lightIntensityAtPoint = pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), 128);
+          float lightIntensityAtPoint = pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), _intersectedTriangle.material().shinyness());
 
           if (lightIntensityAtPoint > 0.0) {
             brightness += lightIntensityAtPoint * SPECULAR_LIGTHING_FACTOR;

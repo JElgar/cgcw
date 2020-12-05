@@ -18,11 +18,14 @@ class ObjObject;
 class ObjModel {
   public:
     ObjModel(std::string fileLocation, std::string filename, float vScalar);
+    ObjModel(std::vector<ObjObject> objects);
     std::vector<ObjObject> getObjects();
     
     RayTriangleIntersection getClosestIntersection(Ray &ray);
     void draw(DrawingWindow &window, Camera &camera, float scalar);
     void drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar);
+        
+    ObjModel operator+(ObjModel model);
 
   private:
     std::vector<ObjObject> _objects;

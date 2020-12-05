@@ -44,7 +44,10 @@ ObjMaterial ModelTriangle::material() {
 }
 
 Colour ModelTriangle::colour() {
-	return _material.getColour();
+  if (_material.isNull()) {
+    return DEFAULT_COLOUR;
+  }
+  return _material.getColour();
 }
 
 glm::vec3 ModelTriangle::normal() {
@@ -68,7 +71,7 @@ RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
     return RayTriangleIntersection();
   }
 
-  return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this, ray);
+  return RayTriangleIntersection(intersectionPoint, possibleSolution[0], *this, ray, possibleSolution[1], possibleSolution[2]);
 }
 
 

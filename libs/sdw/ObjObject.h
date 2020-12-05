@@ -17,6 +17,8 @@ class ObjObject {
     ObjObject();
     std::string getName();
     ObjMaterial getMaterial();
+    bool hasMaterial();
+
     void addFace(ModelPoint v0, ModelPoint v1, ModelPoint v2, ObjMaterial &material);
     void draw(DrawingWindow &window, Camera &camera, float scalar);
     std::vector<ModelTriangle> getFaces();
@@ -28,6 +30,7 @@ class ObjObject {
     std::string _name;
     ObjMaterial _material;
     std::vector<ModelTriangle> _faces;
+    bool _hasMaterial = false;
 };
 
 #include "RayTriangleIntersection.h"

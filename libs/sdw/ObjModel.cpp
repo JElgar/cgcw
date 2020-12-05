@@ -2,6 +2,7 @@
 
 ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar) {
   std::vector<ModelPoint> vertices;
+  std::vector<glm::vec3> vertexNormals;
   std::vector<TexturePoint> texturePoints;
   std::vector<ObjMaterial> materials;
 
@@ -45,7 +46,11 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
     } else if (tokens[0] == "v") {
       ModelPoint newPoint = ModelPoint(std::stof(tokens[1])*scalar, std::stof(tokens[2])*scalar, std::stof(tokens[3])*scalar);
       vertices.push_back(newPoint);
-    
+  
+    // Load in vertex normals
+    } else if (tokens[0] == "vn") {
+      vertexNormals.push_back(glm::vec3(std::stof(tokens[1])*scalar, std::stof(tokens[2])*scalar, std::stof(tokens[3])*scalar));
+
     // Load in texture points
     } else if (tokens[0] == "vt") {
       TexturePoint newTextPoint = TexturePoint((std::stof(tokens[1]))*480, (std::stof(tokens[2]))*395);
@@ -68,6 +73,12 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
         pointB.setTexturePoint(texturePoints[std::stoi(vertex1[1])-1]);
         pointC.setTexturePoint(texturePoints[std::stoi(vertex2[1])-1]);
       }
+      
+      if (vertex0.size() > 2 && vertex0[2] != "") {
+        pointA.setNormal(vertexNormals[std::stoi(vertex0[2])-1]);
+        pointB.setNormal(vertexNormals[std::stoi(vertex1[2])-1]);
+        pointC.setNormal(vertexNormals[std::stoi(vertex2[2])-1]);
+      }
 
       // Add the face to the current working object
       ObjMaterial currentObjMaterial = currentObj.getMaterial();
@@ -77,9 +88,11 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
 
   // If we havae reached the end and there is a working object add that to the
   // model.
-  if (!currentObjectIsEmpty) {
-    _objects.push_back(currentObj);
-  }
+  _objects.push_back(currentObj);
+}
+
+ObjModel::ObjModel(std::vector<ObjObject> objects) {
+  _objects = objects;
 }
 
 std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string filename) {
@@ -172,5 +185,15 @@ RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray) {
 
 std::vector<ObjObject> ObjModel::getObjects() {
   return _objects;
+}
+
+ObjModel ObjModel::operator+(ObjModel rhs) {
+  std::vector<ObjObject> objects = getObjects();
+  
+  for (ObjObject object : rhs.getObjects()) {
+    objects.push_back(object);
+  }
+  
+  return ObjModel(objects);
 }
 

@@ -4,15 +4,22 @@ ModelPoint::ModelPoint() = default;
 ModelPoint::ModelPoint(float x, float y, float z) {
   _point = glm::vec4(x, y, z, 1);
   _texturePoint = TexturePoint(-1,-1);
+  _hasVertexNormal = false;
 }
 
 ModelPoint::ModelPoint(glm::vec3 point) {
   _point = glm::vec4(point.x, point.y, point.z, 1);
   _texturePoint = TexturePoint(-1,-1);
+  _hasVertexNormal = false;
 }
 
 void ModelPoint::setTexturePoint(TexturePoint texturePoint) {
   _texturePoint = texturePoint;
+}
+
+void ModelPoint::setNormal(glm::vec3 normal) {
+  _normal = normal;
+  _hasVertexNormal = true;
 }
 
 TexturePoint ModelPoint::texturePoint() {
@@ -33,6 +40,14 @@ float ModelPoint::z() {
 
 float ModelPoint::w() {
   return _point.w;
+}
+
+glm::vec3 ModelPoint::normal() {
+  return _normal;
+}
+
+bool ModelPoint::hasVertexNormal() {
+  return _hasVertexNormal;
 }
 
 glm::vec3 ModelPoint::getVec3() {
