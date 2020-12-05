@@ -30,7 +30,7 @@ void Ray::setDirection(glm::vec3 direction) {
 }
 
 glm::vec3 Ray::direction() {
-  return glm::normalize(_direction);
+  return _direction;
 }
 
 glm::vec3 Ray::origin() {
@@ -38,9 +38,8 @@ glm::vec3 Ray::origin() {
 }
 
 Ray Ray::reflect(RayTriangleIntersection &intersection) {
-  glm::vec3 direction = glm::normalize(this->direction());
-  glm::vec3 normal = glm::normalize(intersection.getIntersectedTriangle().normal());
-  glm::vec3 reflectedDirection = glm::normalize(direction - normal * (float)(2.0*glm::dot(direction, normal)));
+  glm::vec3 normal = intersection.getIntersectedTriangle().normal();
+  glm::vec3 reflectedDirection = direction() - normal * (float)(2.0*glm::dot(direction(), normal));
 
   ModelPoint origin = intersection.getIntersectionPoint();
   return Ray(origin, reflectedDirection);
