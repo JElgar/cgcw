@@ -58,11 +58,19 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
           float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
           float lightIntensityAtPoint = light.intensity() / (4.0 * M_PI * distanceFromLight * distanceFromLight);
           brightness += lightIntensityAtPoint;
-          std::cout << "Updating brightness: " <<  brightness << std::endl;
-          std::cout << brightness << std::endl;
         }
         
         if (LIGHTING_MODE == Incidence) {
+          glm::vec3 normal =  _intersectedTriangle.normal();
+          glm::vec3 lightDirection = -ray.direction();
+          float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
+
+          if (lightIntensityAtPoint > 0.0) {
+            brightness += lightIntensityAtPoint;
+          }
+        }
+        
+        if (LIGHTING_MODE == Specular) {
           glm::vec3 normal =  _intersectedTriangle.normal();
           glm::vec3 lightDirection = -ray.direction();
           float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
@@ -76,7 +84,6 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
   }
   Colour pixelColour = getColour(model);
   pixelColour *= brightness;
-  std::cout << "brightness: " << brightness << std::endl;
   return pixelColour;
 }
 

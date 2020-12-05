@@ -11,7 +11,6 @@ Ray::Ray(CanvasPoint pixel, Camera &camera, DrawingWindow &window) {
       camera.z() - camera.getFocalLength()
   );
   setDirection(pixelPosition - _origin);
-  _direction = pixelPosition - _origin;
 }
 
 Ray::Ray(glm::vec3 origin, glm::vec3 point) {
@@ -39,5 +38,5 @@ Ray Ray::reflect(RayTriangleIntersection &intersection) {
   std::cout << "Incident ray direction: " << direction().x << ", " << direction().y << ", " << direction().z << std::endl;
   std::cout << "Reflected ray direction: " << reflectedDirection.x << ", " << reflectedDirection.y << ", " << reflectedDirection.z << std::endl;
   
-  return Ray(intersection.getIntersectionPoint().getVec3() + reflectedDirection, reflectedDirection);
+  return Ray(intersection.getIntersectionPoint().getVec3(), reflectedDirection);
 }
