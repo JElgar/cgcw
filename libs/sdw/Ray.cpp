@@ -20,11 +20,11 @@ Ray::Ray(glm::vec3 origin, glm::vec3 point) {
 
 void Ray::setDirection(glm::vec3 direction) {
   _direction = direction;
-  glm::normalize(_direction);
+  _direction = glm::normalize(_direction);
 }
 
 glm::vec3 Ray::direction() {
-  return _direction;
+  return glm::normalize(_direction);
 }
 
 glm::vec3 Ray::origin() {
@@ -32,11 +32,8 @@ glm::vec3 Ray::origin() {
 }
 
 Ray Ray::reflect(RayTriangleIntersection &intersection) {
-  glm::vec3 norm = intersection.getIntersectedTriangle().normal();
-  glm::vec3 reflectedDirection = direction() - glm::vec3(2,2,2) * norm * glm::dot(direction(), norm);
-  
-  std::cout << "Incident ray direction: " << direction().x << ", " << direction().y << ", " << direction().z << std::endl;
-  std::cout << "Reflected ray direction: " << reflectedDirection.x << ", " << reflectedDirection.y << ", " << reflectedDirection.z << std::endl;
-  
+  glm::vec3 normal = intersection.getIntersectedTriangle().normal();
+  glm::vec3 reflectedDirection = direction() - 2.0f * normal * glm::dot(direction(), normal);
+
   return Ray(intersection.getIntersectionPoint().getVec3(), reflectedDirection);
 }

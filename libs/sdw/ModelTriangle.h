@@ -27,6 +27,7 @@ class ModelTriangle {
         Colour colour();
 
         void setMaterial(ObjMaterial &material);
+        void setNormal();
 
 		CanvasTriangle project(DrawingWindow &window, Camera &camera, float scalar);
 		void draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar);

@@ -46,10 +46,10 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
     // Create a ray from the point to the light
     ModelPoint intersectionPoint = getIntersectionPoint();
     ModelPoint lightPoint = light.position();
-    Ray ray = Ray(lightPoint.getVec3(), intersectionPoint.getVec3());
+    Ray lightRay = Ray(lightPoint.getVec3(), intersectionPoint.getVec3());
 
-    // Fire the ray with respect to the model and find out if there are anyt hings between the model point and the light
-    RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(ray);
+    // Fire the ray with respect to the model and find out if there are any things between the model point and the light
+    RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(lightRay);
 
     if (!lightIntersectionPoint.isNull()) {
       if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
@@ -62,7 +62,7 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
         
         if (LIGHTING_MODE == Incidence) {
           glm::vec3 normal =  _intersectedTriangle.normal();
-          glm::vec3 lightDirection = -ray.direction();
+          glm::vec3 lightDirection = -lightRay.direction();
           float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
 
           if (lightIntensityAtPoint > 0.0) {
@@ -71,9 +71,22 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
         }
         
         if (LIGHTING_MODE == Specular) {
-          glm::vec3 normal =  _intersectedTriangle.normal();
-          glm::vec3 lightDirection = -ray.direction();
-          float lightIntensityAtPoint = light.intensity() * glm::dot(normal, lightDirection);
+  
+          Ray reflectedLightRay = lightRay.reflect(*this);
+          glm::vec3 normal = glm::normalize(_intersectedTriangle.normal());
+          glm::vec3 ri = glm::normalize(lightRay.direction());
+          glm::vec3 rr = glm::normalize(ri - normal * (float)(2.0*glm::dot(ri, normal)));
+
+          glm::vec3 rayDirection = _ray.direction();
+          std::cout << glm::dot(rayDirection, rr) << std::endl;
+          float lightIntensityAtPoint = pow(glm::dot(rayDirection, rr), 16);
+          std::cout << lightIntensityAtPoint << std::endl;
+          //float dot = glm::dot(reflectedRay.direction(), -_ray.direction());
+          ////float lightIntensityAtPoint = std::pow((light.intensity() * dot), _intersectedTriangle.material().shinyness()); 
+          //float lightIntensityAtPoint =  std::pow(dot, 128.0); 
+
+          //std::cout << dot << std::endl;
+          //std::cout << lightIntensityAtPoint << std::endl;
 
           if (lightIntensityAtPoint > 0.0) {
             brightness += lightIntensityAtPoint;

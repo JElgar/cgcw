@@ -13,7 +13,7 @@ TEST(RayTest, TestCentralRayIntersectsBlueBox) {
   CanvasPoint point = CanvasPoint(windowSize/2, windowSize/2);
   Ray ray = Ray(point, camera, window);
 
-  RayTriangleIntersection intersection = model.getClosestIntersection(ray, camera);
+  RayTriangleIntersection intersection = model.getClosestIntersection(ray);
 
-  ASSERT_EQ(intersection.getColour().pack(), Colour(0, 0, 255).pack());
+  ASSERT_EQ(intersection.getIntersectedTriangle().material().getColour().pack(), Colour(0, 0, 255).pack());
 }

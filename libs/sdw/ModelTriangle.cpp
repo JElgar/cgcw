@@ -3,7 +3,7 @@
 ModelTriangle::ModelTriangle() = default;
 ModelTriangle::ModelTriangle(ModelPoint v0, ModelPoint v1, ModelPoint v2) {
   _vertices = {v0, v1, v2};
-  _normal = glm::cross(v1.getVec3() - v0.getVec3(), v2.getVec3() - v0.getVec3());
+  setNormal();
 }
 
 CanvasTriangle ModelTriangle::project(DrawingWindow &window, Camera &camera, float scalar) {
@@ -12,6 +12,11 @@ CanvasTriangle ModelTriangle::project(DrawingWindow &window, Camera &camera, flo
 
 void ModelTriangle::setMaterial(ObjMaterial &material) {
   _material = material;
+}
+
+void ModelTriangle::setNormal() {
+  _normal = glm::cross(v1().getVec3() - v0().getVec3(), v2().getVec3() - v0().getVec3());
+  _normal = glm::normalize(_normal);
 }
 
 void ModelTriangle::draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar) {

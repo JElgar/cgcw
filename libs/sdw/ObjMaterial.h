@@ -13,6 +13,7 @@ class ObjMaterial {
     Colour &getColour();
     TextureMap &getTexture();
     float reflectivity();
+    float shinyness();
 
     void setColour(Colour colour);
     void setTexture(TextureMap texture);
@@ -28,4 +29,5 @@ class ObjMaterial {
     TextureMap _texture;
     bool _hasTexture;
     float _reflectivity;
+    float _shinyness;
 };

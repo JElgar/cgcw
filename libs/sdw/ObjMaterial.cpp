@@ -3,12 +3,14 @@
 ObjMaterial::ObjMaterial() {
   _hasTexture = false;
   _reflectivity = 0.0;
+  _shinyness = 64.0;
 }
 
 ObjMaterial::ObjMaterial(std::string name) {
   _name = name;
   _hasTexture = false;
   _reflectivity = 0.0;
+  _shinyness = 64.0;
 }
 
 void ObjMaterial::setColour(Colour colour) {
@@ -26,6 +28,10 @@ void ObjMaterial::setReflectivity(float reflectivity) {
 
 Colour &ObjMaterial::getColour() {
   return _colour;
+}
+
+float ObjMaterial::shinyness() {
+  return _shinyness;
 }
 
 float ObjMaterial::reflectivity() {
