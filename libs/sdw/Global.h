@@ -4,3 +4,5 @@ extern float PROXIMITY_LIGTHING_FACTOR;
 extern float AMBIENT_LIGTHING_FACTOR;
 
 extern int MAX_REFLECTIONS;
+
+extern float SHADOW_BIAS;
