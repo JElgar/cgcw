@@ -12,10 +12,10 @@
 #define WIDTH 512
 #define HEIGHT 512
 
-void update(DrawingWindow &window, Camera &camera, ObjModel &model) {
+void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light> lights) {
   window.clearPixels();
   //camera.rotate(0.06, 0.06, 0.06);
-  model.draw(window, camera, 500);
+  model.draw(window, camera, lights, 500);
 }
 
 void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
@@ -28,6 +28,13 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
           camera.translate(0, 0, -0.6);
 		} else if (event.key.keysym.sym == SDLK_DOWN) {
           camera.translate(0, 0, 0.6);
+        } else if (event.key.keysym.sym == SDLK_z) {
+          std::cout << "Raytracing" << std::endl;
+          RENDER_MODE = RayTracing; 
+        } else if (event.key.keysym.sym == SDLK_w) {
+          RENDER_MODE = Wireframe; 
+        } else if (event.key.keysym.sym == SDLK_r) {
+          RENDER_MODE = Rasterize; 
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		}
 	}
@@ -54,14 +61,14 @@ int main(int argc, char *argv[]) {
 
     ObjModel model = sphere;
     //ObjModel model = cornell;
-    model.drawRayTracing(window, camera, lights, 500);
+    model.draw(window, camera, lights, 500);
     //model.draw(window, camera, 500);
     
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !
 		if (window.pollForInputEvents(event)) handleEvent(event, window, camera);
-		//update(window, camera, model);
+		update(window, camera, model, lights);
 		// Need to render the frame at the end, or nothing actually gets shown on the screen !
 		window.renderFrame();
 	}

@@ -19,12 +19,16 @@ void ModelTriangle::setNormal() {
   _normal = glm::normalize(_normal);
 }
 
-void ModelTriangle::draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar) {
+void ModelTriangle::fill(Colour &colour, DrawingWindow &window, Camera &camera, float scalar) {
   project(window, camera, scalar).fill(colour, window);
 }
 
-void ModelTriangle::draw(TextureMap &texture, DrawingWindow &window, Camera &camera, float scalar) {
+void ModelTriangle::texture(TextureMap &texture, DrawingWindow &window, Camera &camera, float scalar) {
   project(window, camera, scalar).mapTexture(texture, window);
+}
+
+void ModelTriangle::draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar) {
+  project(window, camera, scalar).draw(colour, window);
 }
 
 ModelPoint ModelTriangle::v0() {

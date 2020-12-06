@@ -35,13 +35,26 @@ void ObjObject::draw(DrawingWindow &window, Camera &camera, float scalar) {
         Colour defaultColour = Colour(255, 0, 0);
         triangle.draw(defaultColour, window, camera, scalar);
       }
-    } else if (_material.hasTexture()){
-      for (ModelTriangle &triangle: _faces) {
-        triangle.draw(_material.getTexture(), window, camera, scalar);
-      }
     } else {
       for (ModelTriangle &triangle: _faces) {
         triangle.draw(_material.getColour(), window, camera, scalar);
+    }
+  }
+}
+
+void ObjObject::fill(DrawingWindow &window, Camera &camera, float scalar) {
+    if (!hasMaterial()) {
+      for (ModelTriangle &triangle: _faces) {
+        Colour defaultColour = Colour(255, 0, 0);
+        triangle.fill(defaultColour, window, camera, scalar);
+      }
+    } else if (_material.hasTexture()){
+      for (ModelTriangle &triangle: _faces) {
+        triangle.texture(_material.getTexture(), window, camera, scalar);
+      }
+    } else {
+      for (ModelTriangle &triangle: _faces) {
+        triangle.fill(_material.getColour(), window, camera, scalar);
     }
   }
 }

@@ -13,19 +13,19 @@ SDW_OBJECT_FILES := $(patsubst $(SDW_DIR)%.cpp, $(BUILD_DIR)/%.o, $(SDW_SOURCE_F
 
 # Build settings
 COMPILER := clang++
-COMPILER_OPTIONS := -c -pipe -Wall -std=c++11 # If you have an older compiler, you might have to use -std=c++0xj
-DEBUG_OPTIONS := -ggdb -g3 -fopenmp
+COMPILER_OPTIONS := -c -pipe -Wall -std=c++11 # -fopenmp=libiomp5 # If you have an older compiler, you might have to use -std=c++0xj
+DEBUG_OPTIONS := -ggdb -g3
 FUSSY_OPTIONS := -Werror -pedantic
 SANITIZER_OPTIONS := -O1 -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer
 SPEEDY_OPTIONS := -Ofast -funsafe-math-optimizations -march=native
-LINKER_OPTIONS :=
+LINKER_OPTIONS := 
 
 # Set up flags
 SDW_COMPILER_FLAGS := -I$(SDW_DIR)
 GLM_COMPILER_FLAGS := -I$(GLM_DIR)
 # If you have a manual install of SDL, you might not have sdl2-config installed, so the following line might not work
 # Compiler flags should look something like: -I/usr/local/include/SDL2 -D_THREAD_SAFE
-SDL_COMPILER_FLAGS := $(shell sdl2-config --cflags)
+SDL_COMPILER_FLAGS := $(shell sdl2-config --cflags) -I/usr/lib/llvm-10/include/openmp/omp.h
 # If you have a manual install of SDL, you might not have sdl2-config installed, so the following line might not work
 # Linker flags should look something like: -L/usr/local/lib -lSDL2
 SDL_LINKER_FLAGS := $(shell sdl2-config --libs)

@@ -10,3 +10,5 @@ int MAX_REFLECTIONS = 1;
 float SHADOW_BIAS = 0.0001; 
 
 Colour DEFAULT_COLOUR = Colour(255, 0, 0);
+
+RenderMode RENDER_MODE = Rasterize;

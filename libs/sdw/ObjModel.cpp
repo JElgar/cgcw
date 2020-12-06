@@ -138,18 +138,35 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
   return materials;
 }
 
+void ObjModel::draw(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar) {
+  if (RENDER_MODE == Wireframe) {
+    drawWireframe(window, camera, scalar);
+  } else if (RENDER_MODE == Rasterize) {
+    drawRasterize(window, camera, scalar);
+  } else if (RENDER_MODE == RayTracing) {
+    drawRayTracing(window, camera, lights, scalar);
+  } else {
+    std::cerr << "Unknown rendering mode selected" << std::endl;
+  }
+}
+
 void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar) {
   float startRatio = (scalar - 1) / (scalar * 2);
   float endRatio = (scalar + 1) / (scalar * 2);
   float increment = 1/(scalar+1);
 
-  for (float y = window.height * startRatio ; y < window.height * endRatio; y += increment) {
+  std::vector<ModelTriangle> faces = getFaces();
+
+  float y = window.height * startRatio;
+
+  #pragma omp parallel for
+  for (int i = 0; i < window.height; i++) {
     for (float x = window.width * startRatio; x < window.width * endRatio; x += increment) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
       ray.setDirection(ray.direction() * camera.getOrientationMatrix());
         
-      RayTriangleIntersection intersection = getClosestIntersection(ray);
+      RayTriangleIntersection intersection = getClosestIntersection(ray, faces);
       if (!intersection.isNull()) {
         CanvasPoint point2 = CanvasPoint(
             ((x - (window.width / 2)) * scalar) + (window.width / 2),
@@ -162,14 +179,42 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
         point2.draw(window);
       }
     }
+    y+=increment;
   }
   std::cout << "Finished ray tracing" << std::endl;
 }
 
-void ObjModel::draw(DrawingWindow &window, Camera &camera, float scalar) {
+void ObjModel::drawRasterize(DrawingWindow &window, Camera &camera, float scalar) {
+  for (ObjObject object: _objects) {
+    object.fill(window, camera, scalar);
+  }
+}
+
+void ObjModel::drawWireframe(DrawingWindow &window, Camera &camera, float scalar) {
   for (ObjObject object: _objects) {
     object.draw(window, camera, scalar);
   }
+}
+
+std::vector<ModelTriangle> ObjModel::getFaces() {
+  std::vector<ModelTriangle> faces;
+  for (ObjObject object: getObjects()) {
+    for (ModelTriangle face: object.getFaces()) {
+      faces.push_back(face);
+    }
+  }
+  return faces;
+}
+
+RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray, std::vector<ModelTriangle> faces) {
+  std::vector<RayTriangleIntersection> intersections;
+  for (ModelTriangle face: faces) {
+    RayTriangleIntersection possibleIntersection = face.getClosestIntersection(ray);
+    if (!possibleIntersection.isNull()) {
+      intersections.push_back(possibleIntersection);
+    }
+  }
+  return ::getClosestIntersection(intersections);
 }
 
 RayTriangleIntersection ObjModel::getClosestIntersection(Ray &ray) {

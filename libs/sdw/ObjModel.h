@@ -20,10 +20,14 @@ class ObjModel {
     ObjModel(std::string fileLocation, std::string filename, float vScalar);
     ObjModel(std::vector<ObjObject> objects);
     std::vector<ObjObject> getObjects();
+    std::vector<ModelTriangle> getFaces();
     
     RayTriangleIntersection getClosestIntersection(Ray &ray);
-    void draw(DrawingWindow &window, Camera &camera, float scalar);
+    RayTriangleIntersection getClosestIntersection(Ray &ray, std::vector<ModelTriangle> faces);
+    void drawWireframe(DrawingWindow &window, Camera &camera, float scalar);
+    void drawRasterize(DrawingWindow &window, Camera &camera, float scalar);
     void drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar);
+    void draw(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar);
         
     ObjModel operator+(ObjModel model);
 

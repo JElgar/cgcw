@@ -12,3 +12,7 @@ extern float SHADOW_BIAS;
 
 // Defaults 
 extern Colour DEFAULT_COLOUR;
+
+// Rending mode
+enum RenderMode {Wireframe, Rasterize, RayTracing};
+extern RenderMode RENDER_MODE;

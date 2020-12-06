@@ -31,7 +31,8 @@ class ModelTriangle {
 
 		CanvasTriangle project(DrawingWindow &window, Camera &camera, float scalar);
 		void draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar);
-		void draw(TextureMap &texture, DrawingWindow &window, Camera &camera, float scalar);
+		void fill(Colour &colour, DrawingWindow &window, Camera &camera, float scalar);
+		void texture(TextureMap &texture, DrawingWindow &window, Camera &camera, float scalar);
         glm::vec3 normal();
 
         RayTriangleIntersection getClosestIntersection(Ray &ray);
