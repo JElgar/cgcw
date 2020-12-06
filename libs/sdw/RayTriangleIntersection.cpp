@@ -128,7 +128,8 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
         
     // If the material is transparent
     if (currentRefractiveIndex != -1) {
-      currentRay = _ray.refract(*this);
+      std::cout << "Refracting ray" << std::endl;
+      currentRay = _ray.refract(currentIntersection);
     }
    
     // If the material is reflective
@@ -136,7 +137,7 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
     
       colour = colour + currentColour*(1-currentReflectivity);
 
-      currentRay = _ray.reflect(*this);
+      currentRay = _ray.reflect(currentIntersection);
       currentIntersection = model.getClosestIntersection(currentRay);
       reflectionCount++;
     }
