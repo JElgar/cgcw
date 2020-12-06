@@ -116,9 +116,9 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
       if(tokens[1] == "Blue") {
         currentMtl.setReflectivity(1.0);
       }
-      if(tokens[1] == "Red") {
-        currentMtl.setRefractiveIndex(1.0);
-      }
+      //if(tokens[1] == "Red") {
+      //  currentMtl.setRefractiveIndex(1.0);
+      //}
       currentMaterialIsEmpty = false;
 
     // Set colour value

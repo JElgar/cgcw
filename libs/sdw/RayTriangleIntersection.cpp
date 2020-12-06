@@ -62,10 +62,16 @@ float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel
 
     // Fire the ray with respect to the model and find out if there are any things between the model point and the light
     RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(lightRay);
-    lightIntersectionPoint = lightIntersectionPoint.bounce(model, faces);
 
     if (!lightIntersectionPoint.isNull()) {
-      if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
+
+      //RayTriangleIntersection bouncedLightIntersectionPoint = lightIntersectionPoint.bounce(model, faces);
+
+      if (
+        glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01 
+        //||
+        //glm::length(bouncedLightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01
+      ) {
 
         if (PROXIMITY_LIGTHING_FACTOR > 0) {
           float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
@@ -141,7 +147,12 @@ RayTriangleIntersection RayTriangleIntersection::bounce(ObjModel model, std::vec
  
 Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
   RayTriangleIntersection intersection = bounce(model, faces);
-  Colour colour = intersection.getIntersectedTriangle().colour();
+  Colour colour;
+  if (intersection.isNull()) {
+    colour = Colour(0,0,0);
+  } else {
+    colour = intersection.getIntersectedTriangle().colour();
+  }
   colour.setBrightness(getBrightness(lights, model, faces));
   return colour;
 }
