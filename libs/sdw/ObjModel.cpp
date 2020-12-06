@@ -158,6 +158,8 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
   std::vector<ModelTriangle> faces = getFaces();
 
   float y = window.height * startRatio;
+  float progress = 0;
+  int count = 0;
 
   #pragma omp parallel for
   for (int i = 0; i < window.height; i++) {
@@ -178,10 +180,13 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
         point2.setColour(colour);
         point2.draw(window);
       }
+      count++;
     }
     y+=increment;
+    progress = count / (float)(window.width * window.height);
+    drawProgressBar(progress);
   }
-  std::cout << "Finished ray tracing" << std::endl;
+  std::cout << std::endl << "Finished ray tracing" << std::endl;
 }
 
 void ObjModel::drawRasterize(DrawingWindow &window, Camera &camera, float scalar) {

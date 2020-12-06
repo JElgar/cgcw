@@ -13,7 +13,9 @@
 #define HEIGHT 512
 
 void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light> lights) {
-  window.clearPixels();
+  if (RENDER_MODE != RayTracing) {
+    window.clearPixels();
+  }
   //camera.rotate(0.06, 0.06, 0.06);
   model.draw(window, camera, lights, 500);
 }
@@ -25,9 +27,9 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
 		} else if (event.key.keysym.sym == SDLK_RIGHT) {
           camera.rotate(0, 0.06, 0.00);
 		} else if (event.key.keysym.sym == SDLK_UP) {
-          camera.translate(0, 0, -0.6);
+          camera.translate(0, -0.6, 0);
 		} else if (event.key.keysym.sym == SDLK_DOWN) {
-          camera.translate(0, 0, 0.6);
+          camera.translate(0, 0.6, 0);
         } else if (event.key.keysym.sym == SDLK_z) {
           std::cout << "Raytracing" << std::endl;
           RENDER_MODE = RayTracing; 
@@ -48,27 +50,27 @@ int main(int argc, char *argv[]) {
 	SDL_Event event;
 
     //Light light = Light(glm::vec3(0.110042, 0.465659, 0.0556608));
-    Light light = Light(glm::vec3(0.0, -0.4, 0.05));
+    //Light light = Light(glm::vec3(0.0, 0.4, 0.05));
     //Light light = Light(glm::vec3(0, 0.45, 0), 2);
-    //Light light = Light(glm::vec3(0.0, 0.0, 0.6), 2.0);
+    Light light = Light(glm::vec3(0.0, 0.0, 0.6), 2.0);
     std::vector<Light> lights;
     lights.push_back(light);
 
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel cornell = ObjModel("assets/", "cornell-box.obj", 0.17);
-    ObjModel sphere = ObjModel("assets/", "sphere.obj", 0.8);
+    ObjModel sphere = ObjModel("assets/", "sphere.obj", 0.17);
 
-    ObjModel model = sphere;
+    ObjModel model = cornell + sphere;
     //ObjModel model = cornell;
-    model.draw(window, camera, lights, 500);
+    model.drawRayTracing(window, camera, lights, 500);
     //model.draw(window, camera, 500);
     
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !
 		if (window.pollForInputEvents(event)) handleEvent(event, window, camera);
-		update(window, camera, model, lights);
+		//update(window, camera, model, lights);
 		// Need to render the frame at the end, or nothing actually gets shown on the screen !
 		window.renderFrame();
 	}

@@ -7,6 +7,7 @@
 std::vector<std::string> split(const std::string &line, char delimiter);
 bool inRange(float inValue, float bound1, float bound2);
 
+void drawProgressBar(float progress);
 void saveVectorToFile(std::vector<uint32_t> vector, std::string filename);
 std::vector<uint32_t> readVectorFromFile(std::string filename);
 

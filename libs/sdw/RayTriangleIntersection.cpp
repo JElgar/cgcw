@@ -41,7 +41,6 @@ ModelPoint RayTriangleIntersection::getIntersectionPoint() {
 
 glm::vec3 RayTriangleIntersection::normal() {
   if(!_intersectedTriangle.v0().hasVertexNormal()) {
-    std::cout << "It has no vertex normal" << std::endl;
     return _intersectedTriangle.normal();
   }
   glm::vec3 normal = _e0Ratio * _intersectedTriangle.v0().normal() +
