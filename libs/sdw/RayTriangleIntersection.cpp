@@ -49,7 +49,7 @@ glm::vec3 RayTriangleIntersection::normal() {
   return normal;
 }
 
-float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel &model) {
+float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
   float brightness = AMBIENT_LIGTHING_FACTOR; 
 
   // Loop through all the lights
@@ -62,6 +62,7 @@ float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel
 
     // Fire the ray with respect to the model and find out if there are any things between the model point and the light
     RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(lightRay);
+    lightIntersectionPoint = lightIntersectionPoint.bounce(model, faces);
 
     if (!lightIntersectionPoint.isNull()) {
       if (glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01) {
@@ -95,17 +96,11 @@ float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel
 
   return brightness;
 }
- 
-Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
 
-  // Get the material at the intersected point
+RayTriangleIntersection RayTriangleIntersection::bounce(ObjModel model, std::vector<ModelTriangle> faces) {
   int reflectionCount = 0;
   RayTriangleIntersection currentIntersection = *this;
   Ray currentRay = _ray;
-  float currentReflectivity = 0.0f;
-  
-  Colour colour = Colour(0,0,0);
-  
   // ---- Refraction and Reflection ---- //
   // If we hit something refractive create a refracted Ray and then recall refracted colour
 
@@ -122,7 +117,6 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
   ) 
   {
     ObjMaterial currentIntersectedMaterial = currentIntersection.getIntersectedTriangle().material();
-    Colour currentColour = currentIntersection.getIntersectedTriangle().colour();
     float currentReflectivity = currentIntersectedMaterial.reflectivity();
     float currentRefractiveIndex = currentIntersectedMaterial.refractiveIndex();
         
@@ -134,24 +128,21 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
    
     // If the material is reflective
     else if (currentReflectivity != 0) {
-    
-      colour = colour + currentColour*(1-currentReflectivity);
-
       currentRay = _ray.reflect(currentIntersection);
-      currentIntersection = model.getClosestIntersection(currentRay);
+      currentIntersection = model.getClosestIntersection(currentRay, faces);
       reflectionCount++;
     }
 
-    currentIntersection = model.getClosestIntersection(currentRay);
+    currentIntersection = model.getClosestIntersection(currentRay, faces);
   }
-   
-  if (currentIntersection.isNull()) {
-    colour = Colour(0,0,0);
-  } else {
-    colour = currentIntersection.getIntersectedTriangle().colour();
-  }
-  colour.setBrightness(getBrightness(lights, model));
 
+  return currentIntersection;
+}
+ 
+Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
+  RayTriangleIntersection intersection = bounce(model, faces);
+  Colour colour = intersection.getIntersectedTriangle().colour();
+  colour.setBrightness(getBrightness(lights, model, faces));
   return colour;
 }
 

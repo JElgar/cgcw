@@ -178,7 +178,7 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
             ((y - (window.height/ 2)) * scalar) + (window.height/ 2),
             point.z() 
         );
-        Colour colour = intersection.getColour(lights, *this);
+        Colour colour = intersection.getColour(lights, *this, faces);
         point2.setZ(-intersection.getDistanceFromOrigin());
         point2.setColour(colour);
         point2.draw(window);
