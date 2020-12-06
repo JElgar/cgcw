@@ -48,9 +48,8 @@ glm::vec3 RayTriangleIntersection::normal() {
                       _e1Ratio * _intersectedTriangle.v2().normal();
   return normal;
 }
- 
-Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
-  // TODO get colour if its a texture
+
+float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel &model) {
   float brightness = AMBIENT_LIGTHING_FACTOR; 
 
   // Loop through all the lights
@@ -93,31 +92,66 @@ Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &m
       }
     }
   }
-  Colour pixelColour = getColour(model);
-  pixelColour *= brightness;
-  return pixelColour;
+
+  return brightness;
 }
+ 
+Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model) {
 
-Colour RayTriangleIntersection::getColour(ObjModel &model) {
-  ObjMaterial intersectedMaterial = _intersectedTriangle.material();
+  // Get the material at the intersected point
+  int reflectionCount = 0;
+  RayTriangleIntersection currentIntersection = *this;
+  Ray currentRay = _ray;
+  float currentReflectivity = 0.0f;
+  
+  Colour colour = Colour(0,0,0);
+  
+  // ---- Refraction and Reflection ---- //
+  // If we hit something refractive create a refracted Ray and then recall refracted colour
 
-  float reflectivity = intersectedMaterial.reflectivity();
+  // While we are colliding with surfaces that are refractive or reflective
+  while (
+    !currentIntersection.isNull() &&
+    (
+      currentIntersection.getIntersectedTriangle().material().refractiveIndex() != -1 || 
+      (
+        reflectionCount < MAX_REFLECTIONS &&
+        currentIntersection.getIntersectedTriangle().material().reflectivity() > 0.0
+      )
+    )
+  ) 
+  {
+    ObjMaterial currentIntersectedMaterial = currentIntersection.getIntersectedTriangle().material();
+    Colour currentColour = currentIntersection.getIntersectedTriangle().colour();
+    float currentReflectivity = currentIntersectedMaterial.reflectivity();
+    float currentRefractiveIndex = currentIntersectedMaterial.refractiveIndex();
+        
+    // If the material is transparent
+    if (currentRefractiveIndex != -1) {
+      currentRay = _ray.refract(*this);
+    }
+   
+    // If the material is reflective
+    else if (currentReflectivity != 0) {
+    
+      colour = colour + currentColour*(1-currentReflectivity);
 
-  if (MAX_REFLECTIONS == 0 || reflectivity == 0.0) {
-    return _intersectedTriangle.colour();
+      currentRay = _ray.reflect(*this);
+      currentIntersection = model.getClosestIntersection(currentRay);
+      reflectionCount++;
+    }
+
+    currentIntersection = model.getClosestIntersection(currentRay);
   }
-
-  Ray reflectedRay = ray().reflect(*this);
-  RayTriangleIntersection reflectedIntersection = model.getClosestIntersection(reflectedRay);
-
-  Colour reflectedColour;
-  if (!reflectedIntersection.isNull()) {
-    reflectedColour = reflectedIntersection.getIntersectedTriangle().colour(); 
+   
+  if (currentIntersection.isNull()) {
+    colour = Colour(0,0,0);
   } else {
-    reflectedColour = Colour(0, 0, 0);
+    colour = currentIntersection.getIntersectedTriangle().colour();
   }
-  Colour adjustedColour = _intersectedTriangle.colour() * (1-reflectivity) + reflectedColour * reflectivity;
-  return adjustedColour;
+  colour.setBrightness(getBrightness(lights, model));
+
+  return colour;
 }
 
 CanvasPoint RayTriangleIntersection::getCanvasPoint(DrawingWindow &window, Camera camera, float scalar) {

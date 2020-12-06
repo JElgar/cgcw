@@ -6,9 +6,13 @@ float PROXIMITY_LIGTHING_FACTOR = 0.3;
 float AMBIENT_LIGTHING_FACTOR = 0.15;
 
 int MAX_REFLECTIONS = 1;
+float LIGHT_REFLECTIVITY = 0.8;
 
 float SHADOW_BIAS = 0.0001; 
 
 Colour DEFAULT_COLOUR = Colour(255, 0, 0);
 
 RenderMode RENDER_MODE = Rasterize;
+
+bool LOADING_BAR_ENABLED = true;
+

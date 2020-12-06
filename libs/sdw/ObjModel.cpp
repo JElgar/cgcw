@@ -183,8 +183,11 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
       count++;
     }
     y+=increment;
-    progress = count / (float)(window.width * window.height);
-    drawProgressBar(progress);
+
+    if (LOADING_BAR_ENABLED) {
+      progress = count / (float)(window.width * window.height);
+      drawProgressBar(progress);
+    }
   }
   std::cout << std::endl << "Finished ray tracing" << std::endl;
 }

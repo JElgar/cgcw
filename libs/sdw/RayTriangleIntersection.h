@@ -21,12 +21,14 @@ class RayTriangleIntersection {
 		float getDistanceFromOrigin();
 		ModelTriangle getIntersectedTriangle();
 		ModelPoint getIntersectionPoint();
-        Colour getColour(std::vector<Light> lights, ObjModel &model);
-        Colour getColour(ObjModel &model);
         Ray ray();
 		CanvasPoint getCanvasPoint(DrawingWindow &window, Camera camera, float scalar);
         bool isNull();
         glm::vec3 normal();
+
+        // Get colour with brightness values applied
+        Colour getColour(std::vector<Light> lights, ObjModel &model);
+        float getBrightness(std::vector<Light> lights, ObjModel &model);
 
 		void draw(DrawingWindow &window, Camera camera, float scalar, Colour colour);
 		friend std::ostream& operator<<(std::ostream &os, RayTriangleIntersection &rti);

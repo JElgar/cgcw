@@ -22,7 +22,6 @@ class Colour {
 		uint32_t pack();
         void setBrightness(float brightness); 
 
-
 		friend std::ostream &operator<<(std::ostream &os, const Colour &colour);
         bool operator==(Colour &rhs);
         void operator*=(float intensity);

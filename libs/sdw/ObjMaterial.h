@@ -14,10 +14,12 @@ class ObjMaterial {
     TextureMap &getTexture();
     float reflectivity();
     float shinyness();
+    float refractiveIndex();
 
     void setColour(Colour colour);
     void setTexture(TextureMap texture);
     void setReflectivity(float reflectivity);
+    void setRefractiveIndex(float reflectivity);
     
     bool hasTexture();
     bool isNull();
@@ -32,4 +34,5 @@ class ObjMaterial {
     bool _isNull;
     float _reflectivity;
     float _shinyness;
+    float _refractiveIndex;
 };

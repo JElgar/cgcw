@@ -21,6 +21,7 @@ class Ray {
     void setDirection(glm::vec3 direction);
 
     Ray reflect(RayTriangleIntersection &intersection);
+    Ray refract(RayTriangleIntersection &intersection);
 
   private:
     glm::vec3 _origin;

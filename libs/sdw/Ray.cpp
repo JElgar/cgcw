@@ -45,3 +45,12 @@ Ray Ray::reflect(RayTriangleIntersection &intersection) {
   ModelPoint adjustedOrigin = ModelPoint(origin.getVec3() + SHADOW_BIAS*normal);
   return Ray(adjustedOrigin, reflectedDirection);
 }
+
+Ray Ray::refract(RayTriangleIntersection &intersection) {
+  glm::vec3 normal = intersection.normal();
+
+  glm::vec3 refractedDirection = direction();
+  ModelPoint origin = intersection.getIntersectionPoint();
+  ModelPoint adjustedOrigin = ModelPoint(origin.getVec3() + SHADOW_BIAS*normal);
+  return Ray(adjustedOrigin, refractedDirection);
+}

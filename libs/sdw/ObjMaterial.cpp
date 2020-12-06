@@ -5,6 +5,7 @@ ObjMaterial::ObjMaterial() {
   _hasTexture = false;
   _reflectivity = 0.0;
   _shinyness = 128.0;
+  _refractiveIndex = -1.0;
 }
 
 ObjMaterial::ObjMaterial(std::string name) {
@@ -13,6 +14,7 @@ ObjMaterial::ObjMaterial(std::string name) {
   _reflectivity = 0.0;
   _shinyness = 128.0;
   _isNull = false;
+  _refractiveIndex = -1.0;
 }
 
 void ObjMaterial::setColour(Colour colour) {
@@ -30,6 +32,10 @@ void ObjMaterial::setReflectivity(float reflectivity) {
   _reflectivity = reflectivity;
 }
 
+void ObjMaterial::setRefractiveIndex(float refractiveIndex) {
+  _refractiveIndex = refractiveIndex;
+}
+
 Colour &ObjMaterial::getColour() {
   return _colour;
 }
@@ -40,6 +46,10 @@ float ObjMaterial::shinyness() {
 
 float ObjMaterial::reflectivity() {
   return _reflectivity;
+}
+
+float ObjMaterial::refractiveIndex() {
+  return _refractiveIndex;
 }
 
 std::string ObjMaterial::getName() {
