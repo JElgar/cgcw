@@ -9,8 +9,11 @@
 #include "ModelTriangle.h"
 #include "ObjModel.h"
 
-#define WIDTH 512
-#define HEIGHT 512
+//#define WIDTH 512
+//#define HEIGHT 512
+
+#define WIDTH 256
+#define HEIGHT 256
 
 void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light> lights) {
   if (RENDER_MODE != RayTracing) {

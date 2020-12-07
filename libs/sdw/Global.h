@@ -20,3 +20,7 @@ extern RenderMode RENDER_MODE;
 
 // Settings
 extern bool LOADING_BAR_ENABLED;
+
+// Shading mode
+enum ShadingMode {Gouraud, Phong, None};
+extern ShadingMode SHADING_MODE;

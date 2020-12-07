@@ -36,14 +36,18 @@ glm::vec3 Ray::direction() {
 glm::vec3 Ray::origin() {
   return _origin;
 }
-
-Ray Ray::reflect(RayTriangleIntersection &intersection) {
-  glm::vec3 normal = intersection.normal();
+    
+Ray Ray::reflect(RayTriangleIntersection &intersection, glm::vec3 normal) {
   glm::vec3 reflectedDirection = direction() - normal * (float)(2.0*glm::dot(direction(), normal));
 
   ModelPoint origin = intersection.getIntersectionPoint();
   ModelPoint adjustedOrigin = ModelPoint(origin.getVec3() + SHADOW_BIAS*normal);
   return Ray(adjustedOrigin, reflectedDirection);
+}
+
+Ray Ray::reflect(RayTriangleIntersection &intersection) {
+  glm::vec3 normal = intersection.normal();
+  return reflect(intersection, normal);
 }
 
 Ray Ray::refract(RayTriangleIntersection &intersection) {
