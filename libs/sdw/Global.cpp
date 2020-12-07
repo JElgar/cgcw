@@ -16,5 +16,5 @@ RenderMode RENDER_MODE = Rasterize;
 
 bool LOADING_BAR_ENABLED = true;
 
-ShadingMode SHADING_MODE = Phong;
+ShadingMode SHADING_MODE = Gouraud;
 

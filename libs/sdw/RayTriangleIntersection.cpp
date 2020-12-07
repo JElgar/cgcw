@@ -50,6 +50,24 @@ glm::vec3 RayTriangleIntersection::normal() {
 
 float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
   float brightness = AMBIENT_LIGTHING_FACTOR; 
+ 
+  // -- Gouraud setup -- //
+  std::vector<float> ratios;
+  std::vector<glm::vec3> normals; 
+  if (SHADING_MODE == Gouraud) {
+    normals = {
+      _intersectedTriangle.v0().normal(), 
+      _intersectedTriangle.v1().normal(), 
+      _intersectedTriangle.v2().normal()
+    };
+    
+    ratios = {
+      _e0Ratio,
+      _e1Ratio,
+      _e2Ratio,
+    };
+  }
+
 
   // Loop through all the lights
   for (Light light : lights) {
@@ -81,24 +99,13 @@ float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel
         if (INCIDENT_LIGTHING_FACTOR > 0) {
           float lightIntensityAtPoint = 0;
 
-          // If the shading mode is gourad
+          // If the shading mode is gourad calculate intersity with each normal and interpolate
           if (SHADING_MODE == Gouraud && _intersectedTriangle.v0().hasVertexNormal()) {
-            std::vector<glm::vec3> normals = {
-              _intersectedTriangle.v0().normal(), 
-              _intersectedTriangle.v1().normal(), 
-              _intersectedTriangle.v2().normal()
-            };
-            
-            std::vector<float> ratios = {
-              _e0Ratio,
-              _e1Ratio,
-              _e2Ratio,
-            };
-
             for (int i = 0; i < normals.size(); i++) {
               lightIntensityAtPoint += ratios[i] * light.intensity() * glm::dot(normals[i], -lightRay.direction());
             }
           }
+
           else {
             lightIntensityAtPoint = light.intensity() * glm::dot(normal(), -lightRay.direction());
           }
@@ -111,20 +118,8 @@ float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel
         if (SPECULAR_LIGTHING_FACTOR > 0) {
           float lightIntensityAtPoint = 0;
 
-          // If the shading mode is gourad
+          // If the shading mode is gourad calculate intersity with each normal and interpolate
           if (SHADING_MODE == Gouraud && _intersectedTriangle.v0().hasVertexNormal()) {
-            std::vector<glm::vec3> normals = {
-              _intersectedTriangle.v0().normal(), 
-              _intersectedTriangle.v1().normal(), 
-              _intersectedTriangle.v2().normal()
-            };
-            
-            std::vector<float> ratios = {
-              _e0Ratio,
-              _e1Ratio,
-              _e2Ratio,
-            };
-
             for (int i = 0; i < normals.size(); i++) {
               Ray reflectedLightRay = lightRay.reflect(*this, normals[i]);
               lightIntensityAtPoint += ratios[i] * pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), _intersectedTriangle.material().shinyness());
