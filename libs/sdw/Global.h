@@ -1,3 +1,4 @@
+#pragma once
 #include "Colour.h"
 
 // Lighitng
@@ -5,6 +6,8 @@ extern float SPECULAR_LIGTHING_FACTOR;
 extern float INCIDENT_LIGTHING_FACTOR;
 extern float PROXIMITY_LIGTHING_FACTOR;
 extern float AMBIENT_LIGTHING_FACTOR;
+
+extern float LIGHT_RESOLUTION;
 
 // Reflections 
 extern int MAX_REFLECTIONS;

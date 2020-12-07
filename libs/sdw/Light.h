@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "ModelPoint.h"
+#include "Global.h"
 
 class Light{
 	public:

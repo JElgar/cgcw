@@ -141,7 +141,7 @@ float RayTriangleIntersection::getBrightness(std::vector<Light*> lights, ObjMode
         }
       }
     }
-    brightness += lightBrightness * (numberOfLightPointsIntersected / lightPoints.size());
+    brightness += lightBrightness * (numberOfLightPointsIntersected / (float)lightPoints.size());
   }
 
   return brightness;
