@@ -48,7 +48,7 @@ glm::vec3 RayTriangleIntersection::normal() {
   return _intersectedTriangle.normal();
 }
 
-float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
+float RayTriangleIntersection::getBrightness(std::vector<Light*> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
   float brightness = AMBIENT_LIGTHING_FACTOR; 
  
   // -- Gouraud setup -- //
@@ -70,73 +70,78 @@ float RayTriangleIntersection::getBrightness(std::vector<Light> lights, ObjModel
 
 
   // Loop through all the lights
-  for (Light light : lights) {
+  for (Light* light : lights) {
+
+    std::vector<ModelPoint> lightPoints = light->getLightPoints();
+    float lightBrightness = 0;
 
     // Create a ray from the point to the light
     ModelPoint intersectionPoint = getIntersectionPoint();
-    ModelPoint lightPoint = light.position();
+    ModelPoint lightPoint = light->position();
     Ray lightRay = Ray(lightPoint, intersectionPoint);
 
-    // Fire the ray with respect to the model and find out if there are any things between the model point and the light
-    RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(lightRay);
+    int numberOfLightPointsIntersected = 0;
 
-    if (!lightIntersectionPoint.isNull()) {
-
-      //RayTriangleIntersection bouncedLightIntersectionPoint = lightIntersectionPoint.bounce(model, faces);
-
+    // Fire a ray at every point on the light and find out how many points we hit
+    for (ModelPoint lightPointPoint : lightPoints) {
+      Ray lightPointRay = Ray(lightPointPoint, intersectionPoint);
+      RayTriangleIntersection lightIntersectionPoint = model.getClosestIntersection(lightPointRay);
       if (
+        !lightIntersectionPoint.isNull() &&
         glm::length(lightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01 
-        //||
-        //glm::length(bouncedLightIntersectionPoint.getIntersectionPoint().getVec3() - intersectionPoint.getVec3()) < 0.01
       ) {
+        numberOfLightPointsIntersected++;
+      }
+    }
 
-        if (PROXIMITY_LIGTHING_FACTOR > 0) {
-          float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
-          float lightIntensityAtPoint = light.intensity() / (4.0 * M_PI * distanceFromLight * distanceFromLight);
-          brightness += lightIntensityAtPoint * PROXIMITY_LIGTHING_FACTOR;
-        }
-        
-        if (INCIDENT_LIGTHING_FACTOR > 0) {
-          float lightIntensityAtPoint = 0;
+    if (numberOfLightPointsIntersected != 0) {
+      if (PROXIMITY_LIGTHING_FACTOR > 0) {
+        float distanceFromLight = glm::length(lightPoint.getVec3() - intersectionPoint.getVec3()); 
+        float lightIntensityAtPoint = light->intensity() / (4.0 * M_PI * distanceFromLight * distanceFromLight);
+        lightBrightness += lightIntensityAtPoint * PROXIMITY_LIGTHING_FACTOR;
+      }
+      
+      if (INCIDENT_LIGTHING_FACTOR > 0) {
+        float lightIntensityAtPoint = 0;
 
-          // If the shading mode is gourad calculate intersity with each normal and interpolate
-          if (SHADING_MODE == Gouraud && _intersectedTriangle.v0().hasVertexNormal()) {
-            for (int i = 0; i < normals.size(); i++) {
-              lightIntensityAtPoint += ratios[i] * light.intensity() * glm::dot(normals[i], -lightRay.direction());
-            }
-          }
-
-          else {
-            lightIntensityAtPoint = light.intensity() * glm::dot(normal(), -lightRay.direction());
-          }
-
-          if (lightIntensityAtPoint > 0.0) {
-            brightness += lightIntensityAtPoint * INCIDENT_LIGTHING_FACTOR;
+        // If the shading mode is gourad calculate intersity with each normal and interpolate
+        if (SHADING_MODE == Gouraud && _intersectedTriangle.v0().hasVertexNormal()) {
+          for (int i = 0; i < normals.size(); i++) {
+            lightIntensityAtPoint += ratios[i] * light->intensity() * glm::dot(normals[i], -lightRay.direction());
           }
         }
+
+        else {
+          lightIntensityAtPoint = light->intensity() * glm::dot(normal(), -lightRay.direction());
+        }
+
+        if (lightIntensityAtPoint > 0.0) {
+          lightBrightness += lightIntensityAtPoint * INCIDENT_LIGTHING_FACTOR;
+        }
+      }
+      
+      if (SPECULAR_LIGTHING_FACTOR > 0) {
+        float lightIntensityAtPoint = 0;
+
+        // If the shading mode is gourad calculate intersity with each normal and interpolate
+        if (SHADING_MODE == Gouraud && _intersectedTriangle.v0().hasVertexNormal()) {
+          for (int i = 0; i < normals.size(); i++) {
+            Ray reflectedLightRay = lightRay.reflect(*this, normals[i]);
+            lightIntensityAtPoint += ratios[i] * pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), _intersectedTriangle.material().shinyness());
+          }
+        } 
         
-        if (SPECULAR_LIGTHING_FACTOR > 0) {
-          float lightIntensityAtPoint = 0;
+        else{
+          Ray reflectedLightRay = lightRay.reflect(*this);
+          lightIntensityAtPoint = pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), _intersectedTriangle.material().shinyness());
+        }
 
-          // If the shading mode is gourad calculate intersity with each normal and interpolate
-          if (SHADING_MODE == Gouraud && _intersectedTriangle.v0().hasVertexNormal()) {
-            for (int i = 0; i < normals.size(); i++) {
-              Ray reflectedLightRay = lightRay.reflect(*this, normals[i]);
-              lightIntensityAtPoint += ratios[i] * pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), _intersectedTriangle.material().shinyness());
-            }
-          } 
-          
-          else{
-            Ray reflectedLightRay = lightRay.reflect(*this);
-            lightIntensityAtPoint = pow(glm::dot(_ray.direction(), reflectedLightRay.direction()), _intersectedTriangle.material().shinyness());
-          }
-
-          if (lightIntensityAtPoint > 0.0) {
-            brightness += lightIntensityAtPoint * SPECULAR_LIGTHING_FACTOR;
-          }
+        if (lightIntensityAtPoint > 0.0) {
+          lightBrightness += lightIntensityAtPoint * SPECULAR_LIGTHING_FACTOR;
         }
       }
     }
+    brightness += lightBrightness * (numberOfLightPointsIntersected / lightPoints.size());
   }
 
   return brightness;
@@ -184,7 +189,7 @@ RayTriangleIntersection RayTriangleIntersection::bounce(ObjModel model, std::vec
   return currentIntersection;
 }
  
-Colour RayTriangleIntersection::getColour(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
+Colour RayTriangleIntersection::getColour(std::vector<Light*> lights, ObjModel &model, std::vector<ModelTriangle> faces) {
   RayTriangleIntersection intersection = bounce(model, faces);
   Colour colour;
   if (intersection.isNull()) {

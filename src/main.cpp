@@ -8,6 +8,7 @@
 #include "TextureMap.h"
 #include "ModelTriangle.h"
 #include "ObjModel.h"
+#include "CircularLight.h"
 
 //#define WIDTH 512
 //#define HEIGHT 512
@@ -20,7 +21,7 @@ void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<
     window.clearPixels();
   }
   //camera.rotate(0.06, 0.06, 0.06);
-  model.draw(window, camera, lights, 500);
+  //model.draw(window, camera, lights, 500);
 }
 
 void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
@@ -55,9 +56,9 @@ int main(int argc, char *argv[]) {
     //Light light = Light(glm::vec3(0.110042, 0.465659, 0.0556608));
     //Light light = Light(glm::vec3(0.0, 0.4, 0.05));
     //Light light = Light(glm::vec3(0, 0.45, 0), 2);
-    Light light = Light(glm::vec3(0.0, 0.0, 1.0), 2.0);
-    std::vector<Light> lights;
-    lights.push_back(light);
+    CircularLight light = CircularLight(glm::vec3(0.0, 0.0, 1.0), 2.0);
+    std::vector<Light*> lights;
+    lights.push_back(&light);
 
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);

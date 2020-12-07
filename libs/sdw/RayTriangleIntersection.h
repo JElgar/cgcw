@@ -27,8 +27,8 @@ class RayTriangleIntersection {
         glm::vec3 normal();
 
         // Get colour with brightness values applied
-        Colour getColour(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces);
-        float getBrightness(std::vector<Light> lights, ObjModel &model, std::vector<ModelTriangle> faces);
+        Colour getColour(std::vector<Light*> lights, ObjModel &model, std::vector<ModelTriangle> faces);
+        float getBrightness(std::vector<Light*> lights, ObjModel &model, std::vector<ModelTriangle> faces);
 
 		void draw(DrawingWindow &window, Camera camera, float scalar, Colour colour);
         RayTriangleIntersection bounce(ObjModel model, std::vector<ModelTriangle> faces);

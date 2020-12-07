@@ -141,7 +141,7 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
   return materials;
 }
 
-void ObjModel::draw(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar) {
+void ObjModel::draw(DrawingWindow &window, Camera &camera, std::vector<Light*> lights, float scalar) {
   if (RENDER_MODE == Wireframe) {
     drawWireframe(window, camera, scalar);
   } else if (RENDER_MODE == Rasterize) {
@@ -153,7 +153,7 @@ void ObjModel::draw(DrawingWindow &window, Camera &camera, std::vector<Light> li
   }
 }
 
-void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar) {
+void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light*> lights, float scalar) {
   float startRatio = (scalar - 1) / (scalar * 2);
   float endRatio = (scalar + 1) / (scalar * 2);
   float increment = 1/(scalar+1);

@@ -26,8 +26,8 @@ class ObjModel {
     RayTriangleIntersection getClosestIntersection(Ray &ray, std::vector<ModelTriangle> faces);
     void drawWireframe(DrawingWindow &window, Camera &camera, float scalar);
     void drawRasterize(DrawingWindow &window, Camera &camera, float scalar);
-    void drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar);
-    void draw(DrawingWindow &window, Camera &camera, std::vector<Light> lights, float scalar);
+    void drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light*> lights, float scalar);
+    void draw(DrawingWindow &window, Camera &camera, std::vector<Light*> lights, float scalar);
         
     ObjModel operator+(ObjModel model);
 

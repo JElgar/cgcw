@@ -5,14 +5,17 @@
 
 class Light{
 	public:
-	  Light();
-	  explicit Light(glm::vec3 position);
-	  Light(glm::vec3 position, float intensity);
-
       ModelPoint position();
       float intensity();
 
-    private:
+      virtual std::vector<ModelPoint> getLightPoints() {
+        std::cout << "CircularLight in the LIGHTS OH NO!" << std::endl;
+        std::vector<ModelPoint> points;
+        points.push_back(_position);
+        return points;
+      }
+
+    protected:
       glm::vec3 _position;
       float _intensity;
 };
