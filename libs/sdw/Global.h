@@ -25,6 +25,7 @@ extern RenderMode RENDER_MODE;
 // Settings
 extern bool LOADING_BAR_ENABLED;
 extern bool PERSPECTIVE_CORRECTION_TEXTURING;
+extern bool RECORDING;
 
 // Shading mode
 enum ShadingMode {Gouraud, Phong, None};

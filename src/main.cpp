@@ -16,10 +16,11 @@
 #define WIDTH 256
 #define HEIGHT 256
 
-void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light*> lights) {
+void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light*> lights, CameraTransition &transition) {
   if (RENDER_MODE != RayTracing) {
     //camera.rotate(0.06, 0.06, 0.06);
     window.clearPixels();
+    camera.transition(transition, window.frame());
     model.draw(window, camera, lights, 500);
   }
 }
@@ -40,7 +41,7 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
         } else if (event.key.keysym.sym == SDLK_w) {
           RENDER_MODE = Wireframe; 
         } else if (event.key.keysym.sym == SDLK_r) {
-          RENDER_MODE = Rasterize; 
+         RENDER_MODE = Rasterize; 
         } else if (event.key.keysym.sym == SDLK_m) {
           camera.translate(0, 0, -0.6);
         } else if (event.key.keysym.sym == SDLK_n) {
@@ -53,6 +54,8 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
           camera.rotate(0, 0, -0.06);
         } else if (event.key.keysym.sym == SDLK_g) {
           camera.rotate(0, 0, 0.06);
+        } else if (event.key.keysym.sym == SDLK_l) {
+          camera.lookAt(glm::vec3(0, 0, 0));
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		}
 	}
@@ -63,6 +66,14 @@ int main(int argc, char *argv[]) {
 
 	//Camera camera = Camera(0, 0, 80, 30);
 	Camera camera = Camera(0, 0, 4, 2);
+
+    CameraWayPoint cameraWayPoint0 = CameraWayPoint(glm::vec3(0, 0, 8), glm::vec3(0, 0, 0), 100);
+    CameraWayPoint cameraWayPoint1 = CameraWayPoint(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), 100);
+    CameraWayPoint cameraWayPoint2 = CameraWayPoint(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0), 300);
+
+    std::vector<CameraWayPoint> wayPoints = {cameraWayPoint0, cameraWayPoint1, cameraWayPoint2};
+    CameraTransition transition = CameraTransition(wayPoints, 0);
+
 	SDL_Event event;
 
     //Light light = Light(glm::vec3(0.110042, 0.465659, 0.0556608));
@@ -86,7 +97,7 @@ int main(int argc, char *argv[]) {
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !
 		if (window.pollForInputEvents(event)) handleEvent(event, window, camera);
-		update(window, camera, model, lights);
+		update(window, camera, model, lights, transition);
 		// Need to render the frame at the end, or nothing actually gets shown on the screen !
 		window.renderFrame();
 	}

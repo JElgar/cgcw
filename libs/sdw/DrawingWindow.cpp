@@ -20,6 +20,8 @@ DrawingWindow::DrawingWindow(int w, int h, bool fullscreen) : width(w), height(h
 	int PIXELFORMAT = SDL_PIXELFORMAT_ARGB8888;
 	texture = SDL_CreateTexture(renderer, PIXELFORMAT, SDL_TEXTUREACCESS_STATIC, width, height);
 	if (!texture) printMessageAndQuit("Could not allocate texture: ", SDL_GetError());
+
+    _frame = 0;
 }
 
 void DrawingWindow::renderFrame() {
@@ -27,6 +29,12 @@ void DrawingWindow::renderFrame() {
 	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 	SDL_RenderPresent(renderer);
+    if (RECORDING) {
+      std::stringstream fileName;
+      fileName << "output/output-" << _frame;
+      saveBMP(fileName.str());
+    }
+    _frame++;
 }
 
 void DrawingWindow::saveBMP(const std::string &filename) const {
@@ -132,4 +140,8 @@ void DrawingWindow::savePixelBufferToFile(std::string filename) {
 
 std::vector<uint32_t> DrawingWindow::getPixelBuffer() {
   return pixelBuffer;
+}
+
+int DrawingWindow::frame() {
+  return _frame;
 }

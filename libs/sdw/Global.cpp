@@ -19,5 +19,6 @@ RenderMode RENDER_MODE = Rasterize;
 
 bool LOADING_BAR_ENABLED = true;
 bool PERSPECTIVE_CORRECTION_TEXTURING = false;
+bool RECORDING = true;
 
 ShadingMode SHADING_MODE = Phong;

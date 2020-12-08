@@ -5,9 +5,12 @@
 #include <vector>
 #include <array>
 #include <limits>
+#include <sstream>
+
 #include "SDL.h"
 #include "Colour.h"
 #include "Utils.h"
+#include "Global.h"
 
 class DrawingWindow {
 
@@ -21,6 +24,7 @@ private:
 	SDL_Texture *texture;
 	std::vector<uint32_t> pixelBuffer;
 	std::vector<float> depthBuffer;
+    int _frame;
 
 
 public:
@@ -36,6 +40,7 @@ public:
 	void clearPixels();
     bool pixelOnScreen(size_t x, size_t y);
     std::vector<uint32_t> getPixelBuffer();
+    int frame();
 	
     void savePPM(const std::string &filename) const;
 	void saveBMP(const std::string &filename) const;
