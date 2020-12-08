@@ -31,7 +31,7 @@ void DrawingWindow::renderFrame() {
 	SDL_RenderPresent(renderer);
     if (RECORDING) {
       std::stringstream fileName;
-      fileName << "output/output-" << _frame;
+      fileName << "output/output-" << _frame << ".bmp";
       saveBMP(fileName.str());
     }
     _frame++;

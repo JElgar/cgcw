@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 
     CameraWayPoint cameraWayPoint0 = CameraWayPoint(glm::vec3(0, 0, 8), glm::vec3(0, 0, 0), 100);
     CameraWayPoint cameraWayPoint1 = CameraWayPoint(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), 100);
-    CameraWayPoint cameraWayPoint2 = CameraWayPoint(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0), 300);
+    CameraWayPoint cameraWayPoint2 = CameraWayPoint(glm::vec3(0, 0, 10), glm::vec3(0, -0.8, 0), 300);
 
     std::vector<CameraWayPoint> wayPoints = {cameraWayPoint0, cameraWayPoint1, cameraWayPoint2};
     CameraTransition transition = CameraTransition(wayPoints, 0);
