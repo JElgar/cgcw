@@ -8,7 +8,7 @@ CircularLight::CircularLight(glm::vec3 position, float intensity, float radius) 
 
 std::vector<ModelPoint> CircularLight::getLightPoints() {
   std::vector<ModelPoint> lightPoints;
-  if (_radius == 0) {
+  if (_radius == 0 || !SOFT_SHADOWS) {
     lightPoints.push_back(_position);
     return lightPoints;
   }

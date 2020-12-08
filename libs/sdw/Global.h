@@ -8,6 +8,7 @@ extern float PROXIMITY_LIGTHING_FACTOR;
 extern float AMBIENT_LIGTHING_FACTOR;
 
 extern float LIGHT_RESOLUTION;
+extern bool SOFT_SHADOWS;
 
 // Reflections 
 extern int MAX_REFLECTIONS;
