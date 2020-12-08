@@ -1,12 +1,14 @@
 #pragma once
 #include <math.h>
 #include <glm/glm.hpp>
+#include <iostream>
+
+#include "Utils.h"
 
 class Camera {
   private:
-    //glm::vec4 _positionVector;
-    glm::mat4 _cameraToWorldMatrix;
-    glm::mat4 _worldToCameraMatrix;
+    glm::mat3 _orientation;
+    glm::vec3 _position;
     float _focalLength;
 
   public:
@@ -18,9 +20,6 @@ class Camera {
     glm::mat3 getOrientationMatrix();
 
     Camera(float x, float y, float z, float focalLength);
-    glm::mat4 getCameraToWorldMatrix();
-    glm::mat4 getWorldToCameraMatrix();
-    void setCameraToWorldMatrix(glm::mat4 matrix);
     float getFocalLength();
     void translate(float x, float y, float z);
     void rotate(float yaw, float pitch, float roll);

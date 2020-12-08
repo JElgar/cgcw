@@ -34,7 +34,7 @@ class ModelPoint {
     friend std::ostream &operator<<(std::ostream &os, ModelPoint &point);
 
   private:
-    glm::vec4 _point;
+    glm::vec3 _point;
     TexturePoint _texturePoint;
     glm::vec3 _normal;
     bool _hasVertexNormal;

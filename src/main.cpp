@@ -10,26 +10,26 @@
 #include "ObjModel.h"
 #include "CircularLight.h"
 
-//#define WIDTH 512
-//#define HEIGHT 512
+#define WIDTH 512
+#define HEIGHT 512
 
-#define WIDTH 256
-#define HEIGHT 256
+// #define WIDTH 256
+// #define HEIGHT 256
 
-void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light> lights) {
+void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light*> lights) {
   if (RENDER_MODE != RayTracing) {
+    //camera.rotate(0.06, 0.06, 0.06);
     window.clearPixels();
+    model.draw(window, camera, lights, 500);
   }
-  //camera.rotate(0.06, 0.06, 0.06);
-  //model.draw(window, camera, lights, 500);
 }
 
 void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_LEFT) {
-          camera.rotate(0, -0.06, 0.00);
+          camera.translate(-0.6, 0, 0.00);
 		} else if (event.key.keysym.sym == SDLK_RIGHT) {
-          camera.rotate(0, 0.06, 0.00);
+          camera.translate(0.6, 0, 0.00);
 		} else if (event.key.keysym.sym == SDLK_UP) {
           camera.translate(0, -0.6, 0);
 		} else if (event.key.keysym.sym == SDLK_DOWN) {
@@ -41,6 +41,18 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
           RENDER_MODE = Wireframe; 
         } else if (event.key.keysym.sym == SDLK_r) {
           RENDER_MODE = Rasterize; 
+        } else if (event.key.keysym.sym == SDLK_m) {
+          camera.translate(0, 0, -0.6);
+        } else if (event.key.keysym.sym == SDLK_n) {
+          camera.translate(0, 0, 0.6);
+        } else if (event.key.keysym.sym == SDLK_a) {
+          camera.rotateInPlace(0, 0, -0.06);
+        } else if (event.key.keysym.sym == SDLK_d) {
+          camera.rotateInPlace(0, 0, 0.06);
+        } else if (event.key.keysym.sym == SDLK_f) {
+          camera.rotate(0, 0, -0.06);
+        } else if (event.key.keysym.sym == SDLK_g) {
+          camera.rotate(0, 0, 0.06);
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		}
 	}
@@ -62,19 +74,19 @@ int main(int argc, char *argv[]) {
 
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 20);
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
-    ObjModel cornell = ObjModel("assets/", "cornell-box.obj", 0.17);
+    ObjModel cornell = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel sphere = ObjModel("assets/", "sphere.obj", 0.17);
 
     ObjModel model = cornell + sphere;
     //ObjModel model = cornell;
-    model.drawRayTracing(window, camera, lights, 500);
+    model.draw(window, camera, lights, 500);
     //model.draw(window, camera, 500);
     
 
 	while (true) {
 		// We MUST poll for events - otherwise the window will freeze !
 		if (window.pollForInputEvents(event)) handleEvent(event, window, camera);
-		//update(window, camera, model, lights);
+		update(window, camera, model, lights);
 		// Need to render the frame at the end, or nothing actually gets shown on the screen !
 		window.renderFrame();
 	}

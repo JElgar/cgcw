@@ -10,6 +10,7 @@ bool inRange(float inValue, float bound1, float bound2);
 void drawProgressBar(float progress);
 void saveVectorToFile(std::vector<uint32_t> vector, std::string filename);
 std::vector<uint32_t> readVectorFromFile(std::string filename);
+glm::mat3 rotationMatrix(float yaw, float pitch, float roll);
 
 template <class T> std::vector<T> interpolate(T from, T to, int numberOfValues) {
 

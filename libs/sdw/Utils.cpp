@@ -58,3 +58,11 @@ void drawProgressBar(float progress) {
   std::cout << "] " << int(progress * 100.0) << " %\r";
   std::cout.flush();
 }
+
+glm::mat3 rotationMatrix(float yaw, float pitch, float roll) {
+  return glm::mat3 (
+    std::cos(yaw)*std::cos(pitch),                                             std::sin(yaw)*std::cos(pitch),                                             -std::sin(pitch),
+    std::cos(yaw)*std::sin(pitch)*std::sin(roll)-std::sin(yaw)*std::cos(roll), std::sin(yaw)*std::sin(pitch)*std::sin(roll)+std::cos(yaw)*std::cos(roll), std::cos(pitch)*std::sin(roll),
+    std::cos(yaw)*std::sin(pitch)*std::cos(roll)+std::sin(yaw)*std::sin(roll), std::sin(yaw)*std::sin(pitch)*std::cos(roll)-std::cos(yaw)*std::sin(roll), std::cos(pitch)*std::cos(roll)
+  );
+}

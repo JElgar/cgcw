@@ -2,13 +2,13 @@
 
 ModelPoint::ModelPoint() = default;
 ModelPoint::ModelPoint(float x, float y, float z) {
-  _point = glm::vec4(x, y, z, 1);
+  _point = glm::vec3(x, y, z);
   _texturePoint = TexturePoint(-1,-1);
   _hasVertexNormal = false;
 }
 
 ModelPoint::ModelPoint(glm::vec3 point) {
-  _point = glm::vec4(point.x, point.y, point.z, 1);
+  _point = point;
   _texturePoint = TexturePoint(-1,-1);
   _hasVertexNormal = false;
 }
@@ -38,10 +38,6 @@ float ModelPoint::z() {
   return _point.z;
 }
 
-float ModelPoint::w() {
-  return _point.w;
-}
-
 glm::vec3 ModelPoint::normal() {
   return _normal;
 }
@@ -51,11 +47,11 @@ bool ModelPoint::hasVertexNormal() {
 }
 
 glm::vec3 ModelPoint::getVec3() {
-  return glm::vec3(x(), y(), z()); 
+  return _point; 
 }
 
 glm::vec4 ModelPoint::getVec4() {
-  return _point; 
+  return glm::vec4(x(), y(), z(), 1); 
 }
 
 bool ModelPoint::hasTexturePoint() {
@@ -64,11 +60,12 @@ bool ModelPoint::hasTexturePoint() {
 
 CanvasPoint ModelPoint::project(DrawingWindow &window, Camera &camera, float scalar) {
 
-  glm::vec4 adjustedPoint = _point*camera.getWorldToCameraMatrix();
+  glm::vec3 adjustedPointPosition = _point - camera.getVec3();
+  glm::vec3 adjustedPoint = adjustedPointPosition * camera.getOrientationMatrix();
   
-  float canvasX = camera.getFocalLength() * ((camera.x()-adjustedPoint.x)/(adjustedPoint.z-camera.z()));
-  float canvasY = camera.getFocalLength() * ((adjustedPoint.y-camera.y())/(adjustedPoint.z-camera.z()));
-  float canvasZ = adjustedPoint.z - camera.z();
+  float canvasX = camera.getFocalLength() * (-adjustedPoint.x/adjustedPoint.z);
+  float canvasY = camera.getFocalLength() * (adjustedPoint.y/adjustedPoint.z);
+  float canvasZ = adjustedPoint.z;
 
   CanvasPoint point = CanvasPoint(
       canvasX*scalar + (float)(window.width/2),
@@ -80,33 +77,6 @@ CanvasPoint ModelPoint::project(DrawingWindow &window, Camera &camera, float sca
     point.setTexturePoint(_texturePoint);
   }
   return point;
-
-  //glm::vec4 projectedPoint = getVec4()*camera.getWorldToCameraMatrix();
-  //projectedPoint /= projectedPoint.w;
-  //projectedPoint = projectedPoint * camera._projectionMatrix;
-  //projectedPoint /= projectedPoint.w;
-  //
-  //std::cout << "x" << projectedPoint.x << " " << projectedPoint.y << " " << projectedPoint.z << " " << projectedPoint.w << std::endl;
-
-  //float x = (uint32_t)((1 - (projectedPoint[0] + 1) * 0.5) * window.width);
-  //float y = (uint32_t)((1 - (projectedPoint[1] + 1) * 0.5) * window.height);
-
-  //if (projectedPoint[0] < -1 || projectedPoint[0] > 1 || projectedPoint[1] < -1 || projectedPoint[1] > 1) return CanvasPoint();
-////
-  //CanvasPoint point = CanvasPoint(x, y, projectedPoint.z);
-  // CanvasPoint point = CanvasPoint(projectedPoint[0] * 0.5 * window.width, projectedPoint[1] * 0.5 * window.height, projectedPoint[2]);
-  // glm::mat4 projectionMatrix = glm::perspective(
-  //   glm::radians(90.0), // The vertical Field of View, in radians: the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
-  //   1.0f,              // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
-  //   0.1f,              // Near clipping plane. Keep as big as possible, or you'll get precision issues.
-  //   100.0f             // Far clipping plane. Keep as little as possible.
-  // );
-  //
-
-  //glm::vec4 projectedPoint = projectionMatrix*camera.getWorldToCameraMatrix()*modelPoint;
-
-  //CanvasPoint point = CanvasPoint(projectedPoint.x, projectedPoint.y, projectedPoint.z);
-
 }
 
 std::ostream &operator<<(std::ostream &os, ModelPoint &point) {
