@@ -65,7 +65,7 @@ CanvasPoint ModelPoint::project(DrawingWindow &window, Camera &camera, float sca
   
   float canvasX = camera.getFocalLength() * (-adjustedPoint.x/adjustedPoint.z);
   float canvasY = camera.getFocalLength() * (adjustedPoint.y/adjustedPoint.z);
-  float canvasZ = adjustedPoint.z;
+  float canvasZ = 1/adjustedPoint.z;
 
   CanvasPoint point = CanvasPoint(
       canvasX*scalar + (float)(window.width/2),

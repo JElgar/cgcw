@@ -1,12 +1,13 @@
 #pragma once
 
-#include "CanvasPoint.h"
-#include "CanvasLine.h"
 #include <iostream>
 #include <algorithm>
+
+#include "CanvasPoint.h"
+#include "CanvasLine.h"
 #include "Colour.h"
 #include "DrawingWindow.h"
-//#include "TextureMap.h"
+#include "Global.h"
 
 class CanvasTriangle {
 	public:
@@ -16,6 +17,8 @@ class CanvasTriangle {
 		CanvasPoint &v0();
 		CanvasPoint &v1();
 		CanvasPoint &v2();
+        CanvasPoint getFurthestPointFromCamera();
+        CanvasPoint getClosestPointFromCamera();
 		
         void fill(Colour &colour, DrawingWindow &window);
 		void draw(Colour &colour, DrawingWindow &window);
@@ -29,4 +32,4 @@ class CanvasTriangle {
         std::vector<CanvasPoint> _vertices;
 };
 
-void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, TextureMap &texture, DrawingWindow &window);
+void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, TextureMap &texture, DrawingWindow &window, int rasterizingRow, CanvasTriangle &triangle);

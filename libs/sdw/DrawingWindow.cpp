@@ -100,9 +100,9 @@ float DrawingWindow::getPixelDepth(size_t x, size_t y) {
 void DrawingWindow::setPixel(size_t x, size_t y, float z, Colour &colour) {
 	float oldDepth = getPixelDepth(x, y);
 	if (z >= 0) {
-	} else if (oldDepth >= 1/z) {
+	} else if (oldDepth >= z) {
 		setPixelColour(x, y, colour);
-		setPixelDepth(x, y, 1/z);
+		setPixelDepth(x, y, z);
 	}
 }
 

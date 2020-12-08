@@ -43,3 +43,4 @@ class CanvasPoint {
 };
 
 bool CanvasPointYComparitor(CanvasPoint & lhs, CanvasPoint & rhs);
+bool CanvasPointZComparitor(CanvasPoint & lhs, CanvasPoint & rhs);

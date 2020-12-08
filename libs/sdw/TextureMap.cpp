@@ -29,15 +29,6 @@ TextureMap::TextureMap(const std::string &filename) {
 	inputStream.close();
 }
 
-//Colour TextureMap::getColourFromPointWithPerspectiveCorrection(TexturePoint point, int currentRasterizingRow, ) {
-//
-//    int q = currentRasterizingRow;
-//
-//    float c0 
-//    float c1
-//	return getColourFromPoint(point.x(), point.y());
-//}
-
 Colour TextureMap::getColourFromPoint(TexturePoint point) {
 	return getColourFromPoint(point.x(), point.y());
 }

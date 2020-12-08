@@ -10,11 +10,11 @@
 #include "ObjModel.h"
 #include "CircularLight.h"
 
-#define WIDTH 512
-#define HEIGHT 512
+//#define WIDTH 640
+//#define HEIGHT 480
 
-// #define WIDTH 256
-// #define HEIGHT 256
+#define WIDTH 256
+#define HEIGHT 256
 
 void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light*> lights) {
   if (RENDER_MODE != RayTracing) {

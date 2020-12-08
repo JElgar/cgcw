@@ -35,12 +35,11 @@ float Camera::getFocalLength() {
 }
 
 void Camera::rotate(float yaw, float pitch, float roll) {
-  std::cout << "Rotating" << std::endl;
   glm::mat3 rotMatrix = rotationMatrix(yaw, pitch, roll);
   _orientation = _orientation * rotMatrix;
+  
   rotMatrix = rotationMatrix(-yaw, -pitch, -roll);
   _position = _position * rotMatrix;
-  std::cout << "Rotated" << std::endl;
 }
 
 void Camera::translate(float x, float y, float z) {

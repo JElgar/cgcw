@@ -99,4 +99,8 @@ bool CanvasPointYComparitor(CanvasPoint & lhs, CanvasPoint & rhs) {
   return lhs.y() < rhs.y();
 }
 
+bool CanvasPointZComparitor(CanvasPoint & lhs, CanvasPoint & rhs) {
+  return lhs.z() < rhs.z();
+}
+
 
