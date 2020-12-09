@@ -38,6 +38,24 @@ float ModelPoint::z() {
   return _point.z;
 }
 
+void ModelPoint::setX(float x) {
+  _point.x = x;
+}
+
+void ModelPoint::setY(float y) {
+  _point.y = y;
+}
+
+void ModelPoint::setZ(float z) {
+  _point.z = z;
+}
+
+void ModelPoint::translate(glm::vec3 translation, float scale) {
+  setX(x() + translation.x * 1/scale);
+  setY(y() + translation.y * 1/scale);
+  setZ(z() + translation.z * 1/scale);
+}
+
 glm::vec3 ModelPoint::normal() {
   return _normal;
 }

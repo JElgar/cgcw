@@ -197,6 +197,7 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
 
 void ObjModel::drawRasterize(DrawingWindow &window, Camera &camera, float scalar) {
   for (ObjObject object: _objects) {
+    std::cout << "Filling" << std::endl;
     object.fill(window, camera, scalar);
   }
 }
@@ -204,6 +205,12 @@ void ObjModel::drawRasterize(DrawingWindow &window, Camera &camera, float scalar
 void ObjModel::drawWireframe(DrawingWindow &window, Camera &camera, float scalar) {
   for (ObjObject object: _objects) {
     object.draw(window, camera, scalar);
+  }
+}
+
+void ObjModel::translate(glm::vec3 translation, float scale) {
+  for (int i = 0; i < _objects.size(); i++) {
+    _objects[i].translate(translation, scale);
   }
 }
 

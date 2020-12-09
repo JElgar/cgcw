@@ -29,6 +29,7 @@ class ObjModel {
     void drawRayTracing(DrawingWindow &window, Camera &camera, std::vector<Light*> lights, float scalar);
     void draw(DrawingWindow &window, Camera &camera, std::vector<Light*> lights, float scalar);
         
+    void translate(glm::vec3 translation, float scale = 1.0);
     ObjModel operator+(ObjModel model);
 
   private:

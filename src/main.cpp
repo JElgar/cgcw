@@ -20,9 +20,9 @@ void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<
   if (RENDER_MODE != RayTracing) {
     //camera.rotate(0.06, 0.06, 0.06);
     window.clearPixels();
-    camera.transition(transition, window.frame());
-    model.draw(window, camera, lights, 500);
+    //camera.transition(transition, window.frame());
   }
+  model.draw(window, camera, lights, 500);
 }
 
 void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
@@ -41,7 +41,7 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
         } else if (event.key.keysym.sym == SDLK_w) {
           RENDER_MODE = Wireframe; 
         } else if (event.key.keysym.sym == SDLK_r) {
-         RENDER_MODE = Rasterize; 
+          RENDER_MODE = Rasterize; 
         } else if (event.key.keysym.sym == SDLK_m) {
           camera.translate(0, 0, -0.6);
         } else if (event.key.keysym.sym == SDLK_n) {
@@ -87,9 +87,12 @@ int main(int argc, char *argv[]) {
     //ObjModel model = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel cornell = ObjModel("assets/", "textured-cornell-box.obj", 0.17);
     ObjModel sphere = ObjModel("assets/", "sphere.obj", 0.17);
+    ObjModel hackSpaceLogo = ObjModel("assets/logo/", "logo.obj", 0.0005);
+    hackSpaceLogo.translate(glm::vec3(0, -110, 130), 500);
 
-    ObjModel model = cornell + sphere;
-    //ObjModel model = cornell;
+    ObjModel model = cornell + sphere + hackSpaceLogo;
+    //ObjModel model = hackSpaceLogo;
+    std::cout << hackSpaceLogo.getFaces().size() << std::endl;
     model.draw(window, camera, lights, 500);
     //model.draw(window, camera, 500);
     

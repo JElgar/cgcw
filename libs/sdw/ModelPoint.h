@@ -14,11 +14,13 @@ class ModelPoint {
     float x();
     float y();
     float z();
-    float w();
     glm::vec3 getVec3();
     glm::vec4 getVec4();
     glm::vec3 normal();
 
+    void setX(float x);
+    void setY(float y);
+    void setZ(float z);
     TexturePoint texturePoint();
     void setTexturePoint(TexturePoint texturePoint);
     void setNormal(glm::vec3 normal);
@@ -26,6 +28,7 @@ class ModelPoint {
     bool hasVertexNormal();
     
     CanvasPoint project(DrawingWindow &window, Camera &camera, float scalar);
+    void translate(glm::vec3 translation, float scale = 1.0);
     
     ModelPoint operator-(ModelPoint &rhs);
     bool operator==(ModelPoint &rhs);

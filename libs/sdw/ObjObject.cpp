@@ -29,6 +29,12 @@ bool ObjObject::hasMaterial() {
   return _hasMaterial;
 }
 
+void ObjObject::translate(glm::vec3 translation, float scale) {
+  for (int i = 0; i < _faces.size(); i++) {
+    _faces[i].translate(translation, scale);
+  }
+}
+
 void ObjObject::draw(DrawingWindow &window, Camera &camera, float scalar) {
     if (!hasMaterial()) {
       for (ModelTriangle &triangle: _faces) {

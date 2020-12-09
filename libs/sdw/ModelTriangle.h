@@ -25,9 +25,11 @@ class ModelTriangle {
 		ModelPoint v2();
         ObjMaterial material();
         Colour colour();
+        std::vector<ModelPoint> vertices();
 
         void setMaterial(ObjMaterial &material);
         void setNormal();
+        void translate(glm::vec3 translation, float scale = 1.0);
 
 		CanvasTriangle project(DrawingWindow &window, Camera &camera, float scalar);
 		void draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar);

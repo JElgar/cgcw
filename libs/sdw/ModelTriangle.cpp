@@ -30,6 +30,10 @@ void ModelTriangle::texture(TextureMap &texture, DrawingWindow &window, Camera &
 void ModelTriangle::draw(Colour &colour, DrawingWindow &window, Camera &camera, float scalar) {
   project(window, camera, scalar).draw(colour, window);
 }
+        
+std::vector<ModelPoint> ModelTriangle::vertices() {
+  return _vertices;
+};
 
 ModelPoint ModelTriangle::v0() {
 	return _vertices[0];
@@ -56,6 +60,12 @@ Colour ModelTriangle::colour() {
 
 glm::vec3 ModelTriangle::normal() {
   return _normal;
+}
+
+void ModelTriangle::translate(glm::vec3 translation, float scale)  {
+  for (int i = 0; i < _vertices.size(); i++) {
+    _vertices[i].translate(translation, scale);
+  }
 }
 
 RayTriangleIntersection ModelTriangle::getClosestIntersection(Ray &ray) {
