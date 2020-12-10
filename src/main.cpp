@@ -37,6 +37,7 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
           camera.translate(0, 0.6, 0);
         } else if (event.key.keysym.sym == SDLK_z) {
           std::cout << "Raytracing" << std::endl;
+          window.clearPixels();
           RENDER_MODE = RayTracing; 
         } else if (event.key.keysym.sym == SDLK_w) {
           RENDER_MODE = Wireframe; 
@@ -47,9 +48,9 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
         } else if (event.key.keysym.sym == SDLK_n) {
           camera.translate(0, 0, 0.6);
         } else if (event.key.keysym.sym == SDLK_a) {
-          camera.rotateInPlace(0, 0, -0.06);
+          camera.rotateInPlace(-0.06, 0, 0);
         } else if (event.key.keysym.sym == SDLK_d) {
-          camera.rotateInPlace(0, 0, 0.06);
+          camera.rotateInPlace(0.06, 0, 0);
         } else if (event.key.keysym.sym == SDLK_f) {
           camera.rotate(0, 0, -0.06);
         } else if (event.key.keysym.sym == SDLK_g) {
@@ -90,8 +91,8 @@ int main(int argc, char *argv[]) {
     ObjModel hackSpaceLogo = ObjModel("assets/logo/", "logo.obj", 0.0005);
     hackSpaceLogo.translate(glm::vec3(0, -110, 130), 500);
 
-    ObjModel model = cornell + sphere + hackSpaceLogo;
-    //ObjModel model = hackSpaceLogo;
+    //ObjModel model = cornell + sphere + hackSpaceLogo;
+    ObjModel model = cornell;
     std::cout << hackSpaceLogo.getFaces().size() << std::endl;
     model.draw(window, camera, lights, 500);
     //model.draw(window, camera, 500);

@@ -169,7 +169,7 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
     for (float x = window.width * startRatio; x < window.width * endRatio; x += increment) {
       CanvasPoint point = CanvasPoint(x, y);
       Ray ray = Ray(point, camera, window);
-      ray.setDirection(ray.direction() * camera.getOrientationMatrix());
+      ray.setDirection(ray.direction() * glm::inverse(camera.getOrientationMatrix()));
         
       RayTriangleIntersection intersection = getClosestIntersection(ray, faces);
       if (!intersection.isNull()) {
@@ -197,7 +197,6 @@ void ObjModel::drawRayTracing(DrawingWindow &window, Camera &camera, std::vector
 
 void ObjModel::drawRasterize(DrawingWindow &window, Camera &camera, float scalar) {
   for (ObjObject object: _objects) {
-    std::cout << "Filling" << std::endl;
     object.fill(window, camera, scalar);
   }
 }
