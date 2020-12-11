@@ -10,19 +10,22 @@
 #include "ObjModel.h"
 #include "CircularLight.h"
 
-//#define WIDTH 640
-//#define HEIGHT 480
+#define WIDTH 640
+#define HEIGHT 480
 
-#define WIDTH 256
-#define HEIGHT 256
+//#define WIDTH 256
+//#define HEIGHT 256
 
 void update(DrawingWindow &window, Camera &camera, ObjModel &model, std::vector<Light*> lights, CameraTransition &transition) {
-  if (RENDER_MODE != RayTracing) {
+  //if (RENDER_MODE != RayTracing) {
     //camera.rotate(0.06, 0.06, 0.06);
-    window.clearPixels();
-    //camera.transition(transition, window.frame());
-  }
+  window.clearPixels();
+  //camera.translate(0, 0, -0.05);
+  //}
+  lights[0]->translate(glm::vec3(0, 0.1, 0));
+  camera.transition(transition, window.frame());
   model.draw(window, camera, lights, 500);
+  //camera.rotate(0, 0.1, 0);
 }
 
 void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
@@ -57,6 +60,10 @@ void handleEvent(SDL_Event event, DrawingWindow &window, Camera &camera) {
           camera.rotate(0, 0, 0.06);
         } else if (event.key.keysym.sym == SDLK_l) {
           camera.lookAt(glm::vec3(0, 0, 0));
+        } else if (event.key.keysym.sym == SDLK_j) {
+          camera.rotate(0, 0.06, 0);
+        } else if (event.key.keysym.sym == SDLK_k) {
+          camera.rotate(0.06, 0, 0);
 		} else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		}
 	}
@@ -68,11 +75,10 @@ int main(int argc, char *argv[]) {
 	//Camera camera = Camera(0, 0, 80, 30);
 	Camera camera = Camera(0, 0, 4, 2);
 
-    CameraWayPoint cameraWayPoint0 = CameraWayPoint(glm::vec3(0, 0, 8), glm::vec3(0, 0, 0), 100);
-    CameraWayPoint cameraWayPoint1 = CameraWayPoint(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), 100);
-    CameraWayPoint cameraWayPoint2 = CameraWayPoint(glm::vec3(0, 0, 10), glm::vec3(0, -0.8, 0), 300);
+    CameraWayPoint cameraWayPoint0 = CameraWayPoint(glm::vec3(0, 2, 4), glm::vec3(0, 0, 0.4), 0);
+    CameraWayPoint cameraWayPoint1 = CameraWayPoint(glm::vec3(0, 0, 6), glm::vec3(0.1, 0.1, -2), 36);
 
-    std::vector<CameraWayPoint> wayPoints = {cameraWayPoint0, cameraWayPoint1, cameraWayPoint2};
+    std::vector<CameraWayPoint> wayPoints = {cameraWayPoint0, cameraWayPoint1};
     CameraTransition transition = CameraTransition(wayPoints, 0);
 
 	SDL_Event event;
@@ -80,7 +86,7 @@ int main(int argc, char *argv[]) {
     //Light light = Light(glm::vec3(0.110042, 0.465659, 0.0556608));
     //Light light = Light(glm::vec3(0.0, 0.4, 0.05));
     //Light light = Light(glm::vec3(0, 0.45, 0), 2);
-    CircularLight light = CircularLight(glm::vec3(0.0, 0.0, 1.0), 2.0, 0.22);
+    CircularLight light = CircularLight(glm::vec3(0.0, -2.0, 1.0), 2.0, 0.22);
     std::vector<Light*> lights;
     lights.push_back(&light);
 
@@ -91,10 +97,11 @@ int main(int argc, char *argv[]) {
     ObjModel hackSpaceLogo = ObjModel("assets/logo/", "logo.obj", 0.0005);
     hackSpaceLogo.translate(glm::vec3(0, -110, 130), 500);
 
-    //ObjModel model = cornell + sphere + hackSpaceLogo;
-    ObjModel model = cornell;
+    ObjModel model = cornell + sphere + hackSpaceLogo;
+    //ObjModel model = cornell + sphere;
+    //ObjModel model = hackSpaceLogo;
     std::cout << hackSpaceLogo.getFaces().size() << std::endl;
-    model.draw(window, camera, lights, 500);
+    //model.draw(window, camera, lights, 500);
     //model.draw(window, camera, 500);
     
 

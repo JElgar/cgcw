@@ -37,6 +37,7 @@ void ObjObject::translate(glm::vec3 translation, float scale) {
 
 void ObjObject::draw(DrawingWindow &window, Camera &camera, float scalar) {
     if (!hasMaterial()) {
+      //std::cout << "Objobject does not ahve material" << std::endl;
       for (ModelTriangle &triangle: _faces) {
         Colour defaultColour = Colour(255, 0, 0);
         triangle.draw(defaultColour, window, camera, scalar);

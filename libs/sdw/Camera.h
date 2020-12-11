@@ -29,6 +29,7 @@ class Camera {
     void rotateInPlace(float yaw, float pitch, float roll);
     void lookAt(glm::vec3 point);
     void setPosition(glm::vec3 position);
+    void orbitX(float angle);
 
 
     void wayPointTransition(CameraWayPoint &from, CameraWayPoint &to, int frame, int startingFrame = 0);

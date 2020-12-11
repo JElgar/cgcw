@@ -5,6 +5,7 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
   std::vector<glm::vec3> vertexNormals;
   std::vector<TexturePoint> texturePoints;
   std::vector<ObjMaterial> materials;
+  int numberOfObjects = 0; 
 
   std::ifstream infile(fileLocation + filename);
   std::string line;
@@ -13,9 +14,10 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
   while (std::getline(infile, line)) {
     std::vector<std::string> tokens = split(line, ' ');
     std::string command = tokens[0];
-    
+   
     // Load in a material 
     if (tokens[0] == "mtllib") {
+      std::cout << "Loading in material" << std::endl;
       std::vector<ObjMaterial> newMaterials = loadMaterials(fileLocation, tokens[1]);
       for (ObjMaterial &material : newMaterials) {
         materials.push_back(material);
@@ -28,6 +30,7 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
       }
       currentObj = ObjObject(tokens[1]);
       currentObjectIsEmpty = false;
+      numberOfObjects++;
     
     // Set the material of the object
     } else if (tokens[0] == "usemtl") {
@@ -53,7 +56,18 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
 
     // Load in texture points
     } else if (tokens[0] == "vt") {
-      TexturePoint newTextPoint = TexturePoint((std::stof(tokens[1]))*480, (std::stof(tokens[2]))*395);
+      int textureHeight;
+      int textureWidth;
+
+      if (currentObj.hasMaterial()) {
+        textureWidth = currentObj.getMaterial().getTexture().width;
+        textureHeight = currentObj.getMaterial().getTexture().height;
+      } else {
+        textureWidth = materials[0].getTexture().width;
+        textureHeight = materials[0].getTexture().height;
+      }
+
+      TexturePoint newTextPoint = TexturePoint((std::stof(tokens[1]))*textureWidth, (std::stof(tokens[2]))*textureHeight);
       texturePoints.push_back(newTextPoint);
     
     // Load in a face with texture points/ material
@@ -82,6 +96,11 @@ ObjModel::ObjModel(std::string fileLocation, std::string filename, float scalar)
 
       // Add the face to the current working object
       ObjMaterial currentObjMaterial = currentObj.getMaterial();
+
+      // If we get one obj and one material
+      if (numberOfObjects == 1 && materials.size() == 1) {
+        currentObj.setMaterial(materials[0]);
+      }
       currentObj.addFace(pointA, pointB, pointC, currentObjMaterial);
     }
   }
@@ -133,10 +152,14 @@ std::vector<ObjMaterial> loadMaterials(std::string fileLocation, std::string fil
     }
   }
 
+  std::cout << "Pushing back current material" << std::endl;
   // If working material at end add that material to the list
-  if (!currentMaterialIsEmpty) {
-    materials.push_back(currentMtl);
+  if (currentMaterialIsEmpty) {
+    currentMtl.setIsNull(false);
+    currentMtl.setName(filename);
   }
+  std::cout << "Current material " << currentMtl.hasTexture() << std::endl;
+  materials.push_back(currentMtl);
 
   return materials;
 }

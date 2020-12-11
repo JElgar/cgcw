@@ -36,7 +36,8 @@ Colour TextureMap::getColourFromPoint(TexturePoint point) {
 Colour TextureMap::getColourFromPoint(int x, int y) {
 	if (x < 0 || x > width || y < 0 || y > height) {
 		std::cout << "Referencing outside texture" <<  x << ", " << y << std::endl;
-		std::runtime_error("Referencing outside texture");
+        x %= width;
+        y %= height;
 	}
 	return Colour(pixels[y*width + x]);
 }

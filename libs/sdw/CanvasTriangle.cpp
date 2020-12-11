@@ -71,11 +71,11 @@ void mapTextureBetween2Lines(CanvasLine &lineLeft, CanvasLine &lineRight, Textur
 
   CanvasPoint closestPoint = triangle.getClosestPointFromCamera();
   CanvasPoint furtherstPoint = triangle.getFurthestPointFromCamera();
-  std::cout << "INITAL VALS" << std::endl;
+  //std::cout << "INITAL VALS" << std::endl;
   float z0 = furtherstPoint.z();
-  std::cout << z0 << std::endl;
+  //std::cout << z0 << std::endl;
   float z1 = closestPoint.z();
-  std::cout << z1 << std::endl;
+  //std::cout << z1 << std::endl;
   float c0 = furtherstPoint.texturePoint().y();
   //std::cout << c0 << std::endl;
   float c1 = closestPoint.texturePoint().y();

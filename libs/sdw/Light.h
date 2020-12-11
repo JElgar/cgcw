@@ -16,6 +16,8 @@ class Light{
         return points;
       }
 
+      void translate(glm::vec3);
+
     protected:
       glm::vec3 _position;
       float _intensity;

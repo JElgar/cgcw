@@ -32,6 +32,14 @@ void ObjMaterial::setReflectivity(float reflectivity) {
   _reflectivity = reflectivity;
 }
 
+void ObjMaterial::setIsNull(bool isNull) {
+  _isNull = isNull;
+}
+    
+void ObjMaterial::setName(std::string name) {
+  _name = name;
+}
+
 void ObjMaterial::setRefractiveIndex(float refractiveIndex) {
   _refractiveIndex = refractiveIndex;
 }

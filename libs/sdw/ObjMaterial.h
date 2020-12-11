@@ -20,6 +20,8 @@ class ObjMaterial {
     void setTexture(TextureMap texture);
     void setReflectivity(float reflectivity);
     void setRefractiveIndex(float reflectivity);
+    void setIsNull(bool isNull);
+    void setName(std::string name);
     
     bool hasTexture();
     bool isNull();
